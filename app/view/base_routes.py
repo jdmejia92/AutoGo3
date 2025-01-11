@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from ..model.car_model import Car
 from app.extensions import db
 
-bp = Blueprint('cars', __name__, url_prefix='/cars')
+bp = Blueprint('base', __name__, url_prefix='/')
 
 @bp.route('/')
 def list_cars():
