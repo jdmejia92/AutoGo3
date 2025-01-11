@@ -1,4 +1,4 @@
-from app import db
+from app.extensions import db
 from model.car_model import Car
 
 def create_car(brand, model, availability=True):

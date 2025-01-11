@@ -1,4 +1,4 @@
-from extensions import db
+from app.extensions import db
 
 class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)

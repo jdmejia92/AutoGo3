@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from ..model.reservation_model import Reservation, User, Car
-from .. import db
+from ..model.reservation_model import Reservation
+from ..model.user_model import User
+from ..model.car_model import Car
+from app.extensions import db
 
 bp = Blueprint('reservations', __name__, url_prefix='/reservations')
 

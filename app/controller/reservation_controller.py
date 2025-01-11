@@ -1,4 +1,4 @@
-from app import db
+from app.extensions import db
 from model.reservation_model import Reservation
 
 def create_reservation(user_id, vehicle_id, start_date, end_date):

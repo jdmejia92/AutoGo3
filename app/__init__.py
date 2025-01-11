@@ -1,5 +1,5 @@
 from flask import Flask
-from extensions import db
+from app.extensions import db, migrate
 
 def create_app():
     app = Flask(__name__)
@@ -7,6 +7,7 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
+    migrate.init_app(app, db)
 
     with app.app_context():
         from .view import user_routes

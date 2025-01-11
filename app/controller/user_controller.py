@@ -1,4 +1,4 @@
-from app import db
+from app.extensions import db
 from model.user_model import User
 
 def create_user(name, email):

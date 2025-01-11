@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from ..model.user_model import User
-from .. import db
+from app.extensions import db
 
 bp = Blueprint('users', __name__, url_prefix='/')
 
