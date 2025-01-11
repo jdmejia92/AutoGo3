@@ -7,7 +7,7 @@ bp = Blueprint('users', __name__, url_prefix='/')
 @bp.route('/')
 def list_users():
     users = User.query.all()
-    template = 'users/login.html'
+    template = 'users/base_template.html'
     print(template)
     return render_template(template, users=users)
 
