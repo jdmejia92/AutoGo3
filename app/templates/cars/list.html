@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>Car List</title>
+</head>
+<body>
+    <a href="{{ url_for('base.base') }}">HOME</a>
+    <h1>List of Cars</h1>
+    <a href="{{ url_for('cars.create_car') }}">Create New Car</a>
+    <ul>
+        {% for vehicle in vehicles %}
+        <li>
+            {{ vehicle.brand }} {{ vehicle.model }}
+            <a href="{{ url_for('cars.update_car', id=vehicle.id) }}">Edit</a>
+            <form action="{{ url_for('cars.delete_car', id=vehicle.id) }}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

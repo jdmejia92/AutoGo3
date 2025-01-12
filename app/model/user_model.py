@@ -1,7 +1,8 @@
 from app.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
@@ -19,3 +20,6 @@ class User(db.Model):
 
     def __repr__(self):
         return f"<User {self.name} ({self.tier})>"
+
+def load_user(user_id):
+    return User.query.get(int(user_id))

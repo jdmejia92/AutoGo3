@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations List</title>
+</head>
+<body>
+    <a href="{{ url_for('base.base') }}">HOME</a>
+    <h1>Reservations</h1>
+    <a href="{{ url_for('reservations.create_reservation') }}">Create New Reservation</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Car</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.user.name }}</td>
+                <td>{{ reservation.car.name }}</td>
+                <td>{{ reservation.start_date }}</td>
+                <td>{{ reservation.end_date }}</td>
+                <td>
+                    <a href="{{ url_for('reservations.update_reservation', id=reservation.id) }}">Edit</a>
+                    <form action="{{ url_for('reservations.delete_reservation', id=reservation.id) }}" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

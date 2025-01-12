@@ -1,13 +1,19 @@
 from flask import Flask
-from app.extensions import db, migrate
+from app.extensions import db, migrate, login
+from .model.user_model import load_user
 
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///vehicle_reservation.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.secret_key = "clave_secreta"
 
     db.init_app(app)
     migrate.init_app(app, db)
+    login.init_app(app)
+    login.login_view = "users.login"
+
+    login.user_loader(load_user)
 
     with app.app_context():
         from .view import user_routes, reservations_routes, cars_routes, base_routes

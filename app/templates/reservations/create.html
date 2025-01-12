@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Reservation</title>
+</head>
+<body>
+    <a href="{{ url_for('base.base') }}">HOME</a>
+    <h1>Create Reservation</h1>
+    <form action="{{ url_for('reservations.create_reservation') }}" method="post">
+        <label for="user_id">User:</label>
+        <select name="user_id" id="user_id" required>
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="car_id">Car:</label>
+        <select name="car_id" id="car_id" required>
+            {% for car in cars %}
+            <option value="{{ car.id }}">{{ car.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="start_date">Start Date:</label>
+        <input type="date" name="start_date" id="start_date" required><br>
+
+        <label for="end_date">End Date:</label>
+        <input type="date" name="end_date" id="end_date" required><br>
+
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>
