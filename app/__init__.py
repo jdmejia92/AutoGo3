@@ -10,12 +10,11 @@ def create_app():
     migrate.init_app(app, db)
 
     with app.app_context():
-        from .view import user_routes
-        from .view import reservations_routes
-        from .view import cars_routes
+        from .view import user_routes, reservations_routes, cars_routes, base_routes
         app.register_blueprint(user_routes.bp)
         app.register_blueprint(cars_routes.bp)
         app.register_blueprint(reservations_routes.bp)
+        app.register_blueprint(base_routes.bp)
         db.create_all()
 
     return app

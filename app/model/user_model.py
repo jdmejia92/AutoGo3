@@ -5,6 +5,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
+    dob = db.Column(db.Date, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)  # Store hashed password
     tier = db.Column(db.Integer, nullable=False, default=2) # admin 0 / worker 1 / client 2
 

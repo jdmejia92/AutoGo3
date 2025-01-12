@@ -32,13 +32,6 @@ def list_users():
     print(template)
     return render_template(template, users=users)
 
-@bp.route('/login')
-def login():
-    users = User.query.all()
-    template = 'users/login.html'
-    print(template)
-    return render_template(template, users=users)
-
 @bp.route('/create', methods=['GET', 'POST'])
 def create_user():
     if request.method == 'POST':
