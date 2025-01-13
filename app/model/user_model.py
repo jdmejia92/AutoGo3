@@ -21,3 +21,6 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f"<User {self.name} ({self.tier})>"
+
+def load_user(user_id):
+    return User.query.get(int(user_id))

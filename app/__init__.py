@@ -9,9 +9,13 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.secret_key = os.getenv('SECRET_KEY')
 
+    from .model.user_model import load_user
+
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
+    login.user_loader(load_user)
+    login.login_view = "users.login"
 
     with app.app_context():
         from .view import user_routes, reservations_routes, cars_routes, base_routes
