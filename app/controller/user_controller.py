@@ -22,7 +22,7 @@ def add_user(name, email, dob, password, tier=2):
     else:
         password_hash = generate_password_hash(password=password)
     
-        new_user = User(name=name, email=email, dob=dob, password_hash=password_hash, tier=int(tier), active=True)
+        new_user = User(name=name, email=email, dob=dob, password_hash=password_hash, tier=int(tier))
 
         try:
             db.session.add(new_user)
@@ -56,11 +56,11 @@ def delete_user(user_id):
 def admin_user():
     query = User.query.filter_by(name="admin").first()
     if query is None:
-        dob = datetime.strptime("1992-08-12", '%Y-%m-%d').date()
-        password_hash = generate_password_hash("123456")  # Hash the admin password
+        dob = datetime.strptime("1990-01-01", '%Y-%m-%d').date()
+        password_hash = generate_password_hash(os.getenv("ADMIN_PASSWORD"))  # Hash the admin password
         admin = User(
-            name="admin",
-            email="admin@admin.com",
+            name=os.getenv("ADMIN_NAME"),
+            email=os.getenv("ADMIN_EMAIL"),
             password_hash=password_hash,
             dob=dob,
             tier=0
