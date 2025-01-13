@@ -1,6 +1,7 @@
 from app.extensions import db
 from werkzeug.security import generate_password_hash
 from ..model.user_model import User
+from datetime import datetime
 
 def check_user(email, password):
     user = User.query.filter_by(email=email).first()
@@ -50,3 +51,14 @@ def delete_user(user_id):
     if user:
         db.session.delete(user)
         db.session.commit()
+
+def admin_user():
+    query = User.query.filter_by(name="admin").first()
+    if query == None:
+        dob = datetime.strptime("1992-08-12", '%Y-%m-%d').date()
+        admin = User(name="admin",email="admin@admin.com",password_hash=123456,dob=dob,tier=0)
+        db.session.add(admin)
+        db.session.commit()
+        print("Admin created")
+    else:
+        print("Admin already existed")

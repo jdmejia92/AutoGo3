@@ -11,9 +11,7 @@
     <form action="{{ url_for('reservations.create_reservation') }}" method="post">
         <label for="user_id">User:</label>
         <select name="user_id" id="user_id" required>
-            {% for user in users %}
             <option value="{{ user.id }}">{{ user.name }}</option>
-            {% endfor %}
         </select><br>
 
         <label for="car_id">Car:</label>

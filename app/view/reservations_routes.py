@@ -27,7 +27,7 @@ def create_reservation():
         return redirect(url_for('reservations.list_reservations'))
     users = User.query.all()
     cars = Car.query.filter_by(availability=True).all()
-    return render_template('reservations/create.html', users=users, cars=cars)
+    return render_template('reservations/create.html', user=current_user, cars=cars)
 
 @bp.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required
