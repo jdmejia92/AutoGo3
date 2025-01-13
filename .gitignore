@@ -4,4 +4,3 @@ __pycache__/
 /instance/
 .DS_Store
 /migrations/
-.env
