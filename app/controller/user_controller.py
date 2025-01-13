@@ -54,11 +54,22 @@ def delete_user(user_id):
 
 def admin_user():
     query = User.query.filter_by(name="admin").first()
-    if query == None:
+    if query is None:
         dob = datetime.strptime("1992-08-12", '%Y-%m-%d').date()
-        admin = User(name="admin",email="admin@admin.com",password_hash=123456,dob=dob,tier=0)
-        db.session.add(admin)
-        db.session.commit()
-        print("Admin created")
+        password_hash = generate_password_hash("123456")  # Hash the admin password
+        admin = User(
+            name="admin",
+            email="admin@admin.com",
+            password_hash=password_hash,
+            dob=dob,
+            tier=0
+        )
+        try:
+            db.session.add(admin)
+            db.session.commit()
+            print("Admin created")
+        except Exception as e:
+            db.session.rollback()
+            print("Error creating admin:", e)
     else:
-        print("Admin already existed")
+        print("Admin already exists")
