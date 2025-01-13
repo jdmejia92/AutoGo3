@@ -2,6 +2,7 @@ from app.extensions import db
 from werkzeug.security import generate_password_hash
 from ..model.user_model import User
 from datetime import datetime
+import os
 
 def check_user(email, password):
     user = User.query.filter_by(email=email).first()
