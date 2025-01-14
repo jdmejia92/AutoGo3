@@ -1,33 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Reservation</title>
-</head>
-<body>
-    <a href="{{ url_for('base.base') }}">HOME</a>
-    <h1>Create Reservation</h1>
-    <form action="{{ url_for('reservations.create_reservation') }}" method="post">
-        <label for="user_id">User:</label>
-        <select name="user_id" id="user_id" required>
-            <option value="{{ user.id }}">{{ user.name }}</option>
-        </select><br>
+{% extends 'base_template.html' %}
 
-        <label for="car_id">Car:</label>
-        <select name="car_id" id="car_id" required>
-            {% for car in cars %}
-            <option value="{{ car.id }}">{{ car.name }}</option>
-            {% endfor %}
-        </select><br>
+{% block content %}
+<section class="hero-wrap hero-wrap-2" style="background-image: url('{{ url_for('static', filename='images/bg_3.jpg') }}');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-9 pb-5">
+                <h1 class="mb-3 bread">Reservar un Vehículo</h1>
+                <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <label for="start_date">Start Date:</label>
-        <input type="date" name="start_date" id="start_date" required><br>
-
-        <label for="end_date">End Date:</label>
-        <input type="date" name="end_date" id="end_date" required><br>
-
-        <button type="submit">Create</button>
-    </form>
-</body>
-</html>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="{{ url_for('reservations.create_reservation') }}" method="POST" class="bg-light p-5 contact-form">
+                    {{ csrf_token() }}
+                    <div class="form-group">
+                        <label for="user_id">Usuario</label>
+                        <select name="user_id" id="user_id" class="form-control" required>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="car_id">Vehículo</label>
+                        <select name="car_id" id="car_id" class="form-control" required>
+                            {% for car in cars %}
+                            <option value="{{ car.id }}">{{ car.brand }} - {{ car.model }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Fecha de inicio</label>
+                        <input type="date" id="start_date" name="start_date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">Fecha de fin</label>
+                        <input type="date" id="end_date" name="end_date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary py-3 px-5">Reservar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
