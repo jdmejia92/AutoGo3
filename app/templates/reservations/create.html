@@ -1,6 +1,8 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
+
+<!-- Hero Section -->
 <section class="hero-wrap hero-wrap-2" style="background-image: url('{{ url_for('static', filename='images/bg_3.jpg') }}');" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
@@ -13,42 +15,151 @@
     </div>
 </section>
 
+<!-- Reservation Form Section -->
 <section class="ftco-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <form action="{{ url_for('reservations.create_reservation') }}" method="POST" class="bg-light p-5 contact-form">
-                    {{ csrf_token() }}
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="form-container w-75 bg-light p-5 rounded">
+            <h2 class="text-center mb-4">Crear Reserva</h2>
+            <form action="{{ url_for('reservations.create_reservation') }}" method="POST" class="contact-form">
+                <!-- Token CSRF para protección (oculto) -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <!-- Información Pre-cargada -->
+                <h4 class="mb-3">Información Pre-cargada</h4>
+                <div class="form-group">
+                    <label for="user_name">Nombre del usuario</label>
+                    <input type="text" id="user_name" name="user_name" class="form-control" maxlength="100" value="{{ current_user.name }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="user_dni">DNI/Identificación</label>
+                    <input type="text" id="user_dni" name="user_dni" class="form-control" maxlength="9" value="{{ current_user.dni }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="user_license">Número de licencia de conducir</label>
+                    <input type="text" id="user_license" name="user_license" class="form-control" maxlength="20" value="{{ current_user.license }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="user_email">Email</label>
+                    <input type="email" id="user_email" name="user_email" class="form-control" maxlength="100" value="{{ current_user.email }}" readonly>
+                </div>
+
+                <!-- Detalles de la Reserva -->
+                <h4 class="mb-3 mt-4">Detalles de la Reserva</h4>
+                <div class="form-group">
+                    <label for="pickup_datetime">Fecha y hora de recogida</label>
+                    <input type="datetime-local" id="pickup_datetime" name="pickup_datetime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="return_datetime">Fecha y hora de devolución</label>
+                    <input type="datetime-local" id="return_datetime" name="return_datetime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="pickup_location">Lugar de recogida</label>
+                    <select id="pickup_location" name="pickup_location" class="form-control" required>
+                        {% for location in locations %}
+                        <option value="{{ location.id }}">{{ location.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="return_location">Lugar de devolución</label>
+                    <select id="return_location" name="return_location" class="form-control" required>
+                        {% for location in locations %}
+                        <option value="{{ location.id }}">{{ location.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Selección del Vehículo -->
+                <h4 class="mb-3 mt-4">Selección del Vehículo</h4>
+                <div class="form-group">
+                    <label for="car_category">Categoría/tipo de vehículo</label>
+                    <select id="car_category" name="car_category" class="form-control" required>
+                        {% for category in car_categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="car_model">Modelo</label>
+                    <select id="car_model" name="car_model" class="form-control" required>
+                        {% for car in cars %}
+                        <option value="{{ car.id }}">{{ car.brand }} - {{ car.model }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transmission">Transmisión</label>
+                    <select id="transmission" name="transmission" class="form-control" required>
+                        <option value="manual">Manual</option>
+                        <option value="automatica">Automática</option>
+                    </select>
+                </div>
+
+                <!-- Opciones Adicionales -->
+                <h4 class="mb-3 mt-4">Opciones Adicionales</h4>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="additional_driver" value="1"> Conductor adicional
+                    </label>
+                </div>
+                <div id="additional_driver_details" style="display: none;">
                     <div class="form-group">
-                        <label for="user_id">Usuario</label>
-                        <select name="user_id" id="user_id" class="form-control" required>
-                            {% for user in users %}
-                            <option value="{{ user.id }}">{{ user.name }}</option>
-                            {% endfor %}
-                        </select>
+                        <label for="additional_driver_name">Nombre del conductor adicional</label>
+                        <input type="text" id="additional_driver_name" name="additional_driver_name" class="form-control" maxlength="100">
                     </div>
                     <div class="form-group">
-                        <label for="car_id">Vehículo</label>
-                        <select name="car_id" id="car_id" class="form-control" required>
-                            {% for car in cars %}
-                            <option value="{{ car.id }}">{{ car.brand }} - {{ car.model }}</option>
-                            {% endfor %}
-                        </select>
+                        <label for="additional_driver_license">Licencia del conductor adicional</label>
+                        <input type="text" id="additional_driver_license" name="additional_driver_license" class="form-control" maxlength="20">
                     </div>
-                    <div class="form-group">
-                        <label for="start_date">Fecha de inicio</label>
-                        <input type="date" id="start_date" name="start_date" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="end_date">Fecha de fin</label>
-                        <input type="date" id="end_date" name="end_date" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary py-3 px-5">Reservar</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="form-group">
+                    <label>Equipamiento extra</label><br>
+                    {% for equipment in extra_equipment %}
+                    <label>
+                        <input type="checkbox" name="extra_equipment[]" value="{{ equipment.id }}"> {{ equipment.name }}
+                    </label><br>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="insurance_type">Tipo de seguro</label>
+                    <select id="insurance_type" name="insurance_type" class="form-control" required>
+                        {% for insurance in insurance_types %}
+                        <option value="{{ insurance.id }}">{{ insurance.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Pago -->
+                <h4 class="mb-3 mt-4">Pago</h4>
+                <div class="form-group">
+                    <label for="payment_method">Método de pago</label>
+                    <select id="payment_method" name="payment_method" class="form-control" required>
+                        {% for method in payment_methods %}
+                        <option value="{{ method.id }}">{{ method.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="terms_accepted" required> Acepto los términos y condiciones
+                    </label>
+                </div>
+
+                <!-- Opcional -->
+                <h4 class="mb-3 mt-4">Comentarios</h4>
+                <div class="form-group">
+                    <textarea id="comments" name="comments" class="form-control"></textarea>
+                </div>
+                
+
+                <!-- Botón de Enviar -->
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary py-3 px-5">Reservar</button>
+                </div>
+            </form>
         </div>
     </div>
 </section>
+
 {% endblock %}
