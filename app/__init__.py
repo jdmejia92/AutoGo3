@@ -1,6 +1,5 @@
 from flask import Flask
 from app.extensions import db, migrate, login
-from flask_wtf.csrf import CSRFProtect
 from .controller.user_controller import admin_user
 import os
 
@@ -12,8 +11,7 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.secret_key = os.getenv('SECRET_KEY', 'default-secret-key')  # Clave secreta predeterminada
 
-    # Habilitar protección CSRF
-    csrf = CSRFProtect(app)
+
 
     # Inicialización de extensiones
     from .model.user_model import load_user

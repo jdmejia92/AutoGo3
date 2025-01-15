@@ -21,11 +21,10 @@
         <div class="form-container w-75 bg-light p-5 rounded">
             <h2 class="text-center mb-4">Crear Reserva</h2>
             <form action="{{ url_for('reservations.create_reservation') }}" method="POST" class="contact-form">
-                <!-- Token CSRF para protección (oculto) -->
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
 
-                <!-- Información Pre-cargada -->
-                <h4 class="mb-3">Información Pre-cargada</h4>
+                <!-- Información Personal -->
+                <h4 class="mb-3">Información Personal</h4>
                 <div class="form-group">
                     <label for="user_name">Nombre del usuario</label>
                     <input type="text" id="user_name" name="user_name" class="form-control" maxlength="100" value="{{ current_user.name }}" readonly>
