@@ -40,3 +40,9 @@ def delete_car(id):
     db.session.delete(vehicle)
     db.session.commit()
     return redirect(url_for('cars.list_cars'))
+
+@bp.route('/user-cars')
+def user_cars():
+    page = request.args.get('page', 1, type=int)
+    cars = Car.query.paginate(page=page, per_page=12)
+    return render_template('cars/user_cars.html', cars=cars.items, pagination=cars)
