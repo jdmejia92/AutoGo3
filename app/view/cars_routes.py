@@ -46,3 +46,63 @@ def user_cars():
     page = request.args.get('page', 1, type=int)
     cars = Car.query.paginate(page=page, per_page=12)
     return render_template('cars/user_cars.html', cars=cars.items, pagination=cars)
+
+@bp.route('/pricing')
+def pricing():
+    cars = [
+        {
+            'id': 1,
+            'name': 'Chevrolet SUV Car',
+            'image': 'images/car-1.jpg',
+            'rating': 5,
+            'hourly_rate': 10.99,
+            'daily_rate': 60.99,
+            'monthly_rate': 995.99,
+        },
+        {
+            'id': 2,
+            'name': 'Chevrolet SUV Car',
+            'image': 'images/car-2.jpg',
+            'rating': 5,
+            'hourly_rate': 10.99,
+            'daily_rate': 60.99,
+            'monthly_rate': 995.99,
+        },
+        {
+            'id': 3,
+            'name': 'Chevrolet SUV Car',
+            'image': 'images/car-3.jpg',
+            'rating': 5,
+            'hourly_rate': 10.99,
+            'daily_rate': 60.99,
+            'monthly_rate': 995.99,
+        },
+        {
+            'id': 4,
+            'name': 'Chevrolet SUV Car',
+            'image': 'images/car-4.jpg',
+            'rating': 5,
+            'hourly_rate': 10.99,
+            'daily_rate': 60.99,
+            'monthly_rate': 995.99,
+        },
+        {
+            'id': 5,
+            'name': 'Chevrolet SUV Car',
+            'image': 'images/car-5.jpg',
+            'rating': 5,
+            'hourly_rate': 10.99,
+            'daily_rate': 60.99,
+            'monthly_rate': 995.99,
+        },
+        {
+            'id': 6,
+            'name': 'Chevrolet SUV Car',
+            'image': 'images/car-6.jpg',
+            'rating': 5,
+            'hourly_rate': 10.99,
+            'daily_rate': 60.99,
+            'monthly_rate': 995.99,
+        },
+    ]
+    return render_template('cars/pricing.html', cars=cars)

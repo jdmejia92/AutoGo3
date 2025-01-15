@@ -50,9 +50,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" value="Renta un auto ahora"
-                                        class="btn btn-secondary py-3 px-4">
+                                     <a href="{{ url_for('reservations.create_reservation') }}" class="btn btn-secondary py-3 px-4">
+                                           Renta un auto ahora
+                                     </a>
                                 </div>
+
                             </form>
                         </div>
                         <div class="col-md-8 d-flex align-items-center">
@@ -116,7 +118,7 @@
                                     <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
                                     <div class="d-flex mb-3">
                                         <span class="cat">Cheverolet</span>
-                                        <p class="price ml-auto">S/500 <span>/día</span></p>
+                                        <p class="price ml-auto">S/50.99 <span>/día</span></p>
                                     </div>
                                     <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Reserva
                                             ahora</a> <a href="#" class="btn btn-secondary py-2 ml-1">Detalles</a></p>
@@ -132,7 +134,7 @@
                                     <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
                                     <div class="d-flex mb-3">
                                         <span class="cat">Cheverolet</span>
-                                        <p class="price ml-auto">S/500 <span>/día</span></p>
+                                        <p class="price ml-auto">S/60 <span>/día</span></p>
                                     </div>
                                     <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Reserva
                                             ahora</a> <a href="#" class="btn btn-secondary py-2 ml-1">Detalles</a></p>
@@ -148,7 +150,7 @@
                                     <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
                                     <div class="d-flex mb-3">
                                         <span class="cat">Cheverolet</span>
-                                        <p class="price ml-auto">S/500 <span>/día</span></p>
+                                        <p class="price ml-auto">S/60.99 <span>/día</span></p>
                                     </div>
                                     <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Reserva
                                             ahora</a> <a href="#" class="btn btn-secondary py-2 ml-1">Detalles</a></p>
@@ -164,7 +166,7 @@
                                     <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
                                     <div class="d-flex mb-3">
                                         <span class="cat">Cheverolet</span>
-                                        <p class="price ml-auto">S/500 <span>/día</span></p>
+                                        <p class="price ml-auto">S/59.99 <span>/día</span></p>
                                     </div>
                                     <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Reserva
                                             ahora</a> <a href="#" class="btn btn-secondary py-2 ml-1">Detalles</a></p>
@@ -182,7 +184,7 @@
         <div class="container">
             <div class="row no-gutters">
                 <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center"
-                    style="background-image: url('{{ url_for('static', filename='images/about.jpg') }}');">
+                    style="background-image: url('{{ url_for('static', filename='images/about.webp') }}');">
                 </div>
                 <div class="col-md-6 wrap-about ftco-animate">
                     <div class="heading-section heading-section-white pl-md-5">
@@ -252,7 +254,7 @@
     </section>
     <!-------------------------------------------    BANNER   ------------------------------------------------------>
     <section class="ftco-section ftco-intro"
-        style="background-image: url('{{ url_for('static', filename='images/bg_3.jpg') }}');">
+        style="background-image: url('{{ url_for('static', filename='images/banner.jpg') }}');">
         <div class="overlay"></div>
         <div class="container">
             <div class="row justify-content-end">
