@@ -1,16 +1,45 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Inicio</title>
+    <title>{% block title %}AutoGO, Alquiler de Autos{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="AutoGO: la mejor forma de alquilar autos en Perú.">
+    <meta name="keywords" content="alquiler de autos, transporte, movilidad, Perú, autos en alquiler">
+    <meta name="author" content="AutoGO">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/open-iconic-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/icomoon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head_styles %}{% endblock %}
 </head>
+
 <body>
-    <a href="{{ url_for('base.base') }}">HOME</a>
-    <h1>Aqui pondra la pagina principal, si tuviera una</h1>
-    <h1>Sistema de Reserva de Vehículos</h1>
-    <nav>
-        <a href="/users/">Login</a> |
-        <a href="/cars/">Vehículos</a> |
-        <a href="/reservations/">Reservas</a>
-    </nav>
+ 
+    <!-- Navbar -->
+    {% include 'components/navbar.html' %}
+
+    <!-- Contenido dinámico -->
+    {% block content %}{% endblock %}
+
+   <!-- Footer -->
+   {% include 'components/footer.html' %}
+
+    <!-- Loader -->
+    {% include 'components/loader.html' %}
+
+    <!-- Scripts -->
+{% include 'components/scripts.html' %}
 </body>
 </html>
