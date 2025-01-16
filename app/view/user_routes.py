@@ -68,3 +68,29 @@ def delete_user(id):
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for('users.list_users'))
+
+@bp.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    """
+    Página de "Mi Cuenta" para usuarios autenticados.
+    """
+    reservations = current_user.reservations  
+    payment_methods = []  
+    documents = []  
+
+    # Renderizar la plantilla actualizada
+    return render_template(
+        'users/account.html', 
+        user=current_user,
+        reservations=reservations,
+        payment_methods=payment_methods,
+        documents=documents
+    )
+
+
+@bp.route('/update', methods=['POST'])
+@login_required
+def update_user():
+   
+    pass
