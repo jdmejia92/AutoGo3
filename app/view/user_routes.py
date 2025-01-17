@@ -73,7 +73,7 @@ def account():
     """
     reservations = current_user.reservations  
     payment_methods = []  
-    documents = []  
+    documents = [] 
 
     # Renderizar la plantilla actualizada
     return render_template(
