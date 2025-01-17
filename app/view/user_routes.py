@@ -32,6 +32,7 @@ def list_users():
     users = list_users_if_admin(current_user.tier)
     return render_template('users/list.html', user=users)
 
+
 @bp.route('/create', methods=['GET', 'POST'])
 def create_user():
     if request.method == 'POST':
@@ -84,9 +85,16 @@ def account():
         documents=documents
     )
 
-
 @bp.route('/update', methods=['POST'])
 @login_required
 def update_user():
-   
     pass
+
+# NUEVA RUTA: Dashboard
+@bp.route('/dashboard', methods=['GET'])
+@login_required
+def dashboard():
+    if current_user.tier != 0:
+        flash('Acceso no autorizado.', 'danger')
+        return redirect(url_for('base.base'))
+    return render_template('dashboard.html')
