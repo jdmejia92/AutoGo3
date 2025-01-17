@@ -4,6 +4,16 @@ from ..model.user_model import User
 from datetime import datetime
 import os
 
+def list_users_if_admin(user_tier):
+    if user_tier == 0:  # Verifica si el usuario es administrador
+        try:
+            users = User.query.all()  # Obtiene todos los usuarios
+            return users
+        except Exception as e:
+            return f"Error al obtener la lista de usuarios: {str(e)}"
+    else:
+        return "Acceso denegado. Solo los administradores pueden listar usuarios."
+
 def check_user(email, password):
     user = User.query.filter_by(email=email).first()
     if not user:

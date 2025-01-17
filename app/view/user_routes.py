@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from ..controller.user_controller import add_user, check_user
+from ..controller.user_controller import add_user, check_user, delete_user, list_users_if_admin
 from datetime import datetime
 from app.extensions import db
 
@@ -29,10 +29,8 @@ def logout():
 @bp.route('/')
 @login_required
 def list_users():
-    
-    template = 'users/list.html'
-    print(template)
-    return render_template(template)
+    users = list_users_if_admin(current_user.tier)
+    return render_template('users/list.html', user=users)
 
 @bp.route('/create', methods=['GET', 'POST'])
 def create_user():
@@ -63,8 +61,6 @@ def create_user():
 
 @bp.route('/delete/<int:id>', methods=['POST'])
 @login_required
-def delete_user(id):
-    user = User.query.get(id)
-    db.session.delete(user)
-    db.session.commit()
+def delete_user_route(id):
+    delete_user(user_id=id)
     return redirect(url_for('users.list_users'))
