@@ -25,12 +25,12 @@ def login():
         # 3. Validar usuario
         result = check_user(email=email, password=password)
 
-        # Si el resultado es un mensaje de error (string o tuple)
+        #  Mensaje de error (string o tuple)
         if isinstance(result, tuple):
             flash(result[0], result[1])  # Mostrar mensaje flash
             return redirect(url_for('users.login'))
 
-        # Si el resultado es un objeto de usuario válido
+        # Usuario válido
         login_user(result)  # Log in exitoso
         flash('Inicio de sesión exitoso. ¡Bienvenido!', 'success')
         return redirect(url_for('base.base'))
@@ -56,9 +56,9 @@ def create_user():
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email')
-        dob = request.form.get('dob')  # Ensure this is submitted
-        password = request.form.get('password')  # Ensure this is submitted
-        tier = request.form.get('tier', 2)  # Default to 'Client' if not provided
+        dob = request.form.get('dob')  
+        password = request.form.get('password')  
+        tier = request.form.get('tier', 2)  
 
         if not dob or not password:
             flash('Date of birth and password are required!', 'error')
@@ -75,7 +75,7 @@ def create_user():
         flash(result)
         return redirect(url_for('base.base'))
 
-    # Render the template for 'GET' requests
+    
     return render_template('users/create.html')
 
 @bp.route('/delete/<int:id>', methods=['POST'])
@@ -94,7 +94,7 @@ def account():
     payment_methods = []  
     documents = [] 
 
-    # Renderizar la plantilla actualizada
+   
     return render_template(
         'users/account.html', 
         user=current_user,
