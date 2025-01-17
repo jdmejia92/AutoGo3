@@ -8,32 +8,39 @@
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
+                <!-- Opción común para todos -->
                 <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
 
-                <!-- Opciones para todos -->
-                <li class="nav-item"><a href="#nosotros" class="nav-link">Nosotros</a></li>
-                <li class="nav-item"><a href="{{ url_for('cars.pricing') }}" class="nav-link">Precios</a></li>
-
-                <!-- Opciones según autenticación -->
-                {% if current_user.is_authenticated %}
-                    {% if current_user.tier == 0 %} <!-- Admin -->
-                        <li class="nav-item"><a href="{{ url_for('cars.list_cars') }}" class="nav-link">Vehículos</a></li>
-                        <li class="nav-item"><a href="{{ url_for('users.list_users') }}" class="nav-link">Usuarios</a></li>
-                        <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
-                    {% else %} <!-- Usuario común -->
-                        <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
-                        <li class="nav-item"><a href="{{ url_for('reservations.create_reservation') }}" class="nav-link">Reservas</a></li>
-                    {% endif %}
-                    <!-- Mi Cuenta -->
-                    <li class="nav-item">
-                        <a href="{{ url_for('users.account') }}" class="nav-link btn btn-primary text-white ml-3 px-4">Mi Cuenta</a>
-                    </li>
-                {% else %}
-                    <!-- Iniciar Sesión -->
-                    <li class="nav-item">
-                        <a href="{{ url_for('users.login') }}" class="nav-link btn btn-primary text-white ml-3 px-4">Iniciar Sesión</a>
-                    </li>
+                <!-- Opciones para admins -->
+                {% if current_user.is_authenticated and current_user.tier == 0 %}
+                    <li class="nav-item"><a href="{{ url_for('users.dashboard') }}" class="nav-link">Dashboard</a></li>
+                    <li class="nav-item"><a href="{{ url_for('cars.list_cars') }}" class="nav-link">Vehículos</a></li>
+                    <li class="nav-item"><a href="{{ url_for('users.list_users') }}" class="nav-link">Usuarios</a></li>
+                    <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
+                {% elif current_user.is_authenticated %}
+                    <!-- Opciones para usuarios comunes -->
+                    <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
+                    <li class="nav-item"><a href="{{ url_for('reservations.create_reservation') }}" class="nav-link">Reservas</a></li>
                 {% endif %}
+
+                <!-- Botón Sesión Iniciada o Iniciar Sesión -->
+                <li class="nav-item dropdown">
+                    {% if current_user.is_authenticated %}
+                        <a class="nav-link dropdown-toggle btn btn-primary text-white ml-3 px-4"
+                           href="{{ url_for('users.account') }}" id="accountDropdown"
+                           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Sesión Iniciada
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="accountDropdown">
+                            <a class="dropdown-item" href="{{ url_for('users.account') }}">Mi cuenta</a>
+                            <a class="dropdown-item" href="{{ url_for('users.logout') }}">Cerrar Sesión</a>
+                        </div>
+                    {% else %}
+                        <a href="{{ url_for('users.login') }}" class="nav-link btn btn-primary text-white ml-3 px-4">
+                            Iniciar Sesión
+                        </a>
+                    {% endif %}
+                </li>
             </ul>
         </div>
     </div>

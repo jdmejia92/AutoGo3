@@ -29,7 +29,6 @@ def logout():
 @bp.route('/')
 @login_required
 def list_users():
-    
     template = 'users/list.html'
     print(template)
     return render_template(template)
@@ -88,9 +87,16 @@ def account():
         documents=documents
     )
 
-
 @bp.route('/update', methods=['POST'])
 @login_required
 def update_user():
-   
     pass
+
+# NUEVA RUTA: Dashboard
+@bp.route('/dashboard', methods=['GET'])
+@login_required
+def dashboard():
+    if current_user.tier != 0:
+        flash('Acceso no autorizado.', 'danger')
+        return redirect(url_for('base.base'))
+    return render_template('dashboard.html')
