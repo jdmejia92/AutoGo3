@@ -1,0 +1,150 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2" style="background-image: url('{{ url_for('static', filename='images/account-banner.jpg') }}');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-9 pb-5">
+                <h1 class="mb-3 bread">Mi Cuenta</h1>
+                <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Account Section -->
+<section class="ftco-section">
+    <div class="container">
+        <div class="account-container">
+            <!-- Navegación Principal -->
+            <ul class="nav nav-tabs" id="accountTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Resumen General</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="personal-info-tab" data-toggle="tab" href="#personal-info" role="tab" aria-controls="personal-info" aria-selected="false">Información Personal</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false">Historial y Reservas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false">Métodos de Pago</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">Seguridad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="preferences-tab" data-toggle="tab" href="#preferences" role="tab" aria-controls="preferences" aria-selected="false">Preferencias</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="false">Documentos</a>
+                </li>
+            </ul>
+
+            <!-- Contenido de las Tabs -->
+            <div class="tab-content" id="accountTabContent">
+                <!-- Resumen General -->
+                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h4 class="card-title">Resumen General</h4>
+                            <div class="row">
+                                <div class="col-md-4 text-center">
+                                    <img src="{{ current_user.profile_picture or url_for('static', filename='images/default-avatar.png') }}" alt="Foto de Perfil" class="img-fluid rounded-circle mb-3">
+                                    <p><strong>Estado:</strong> {{ "Verificado" if current_user.verified else "No Verificado" }}</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p><strong>Nombre Completo:</strong> {{ current_user.name }}</p>
+                                    <p><strong>Email:</strong> {{ current_user.email }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información Personal -->
+                <div class="tab-pane fade" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h4 class="card-title">Información Personal</h4>
+                            <form method="POST" action="{{ url_for('users.update_user') }}">
+                                <div class="form-group">
+                                    <label for="phone">Teléfono</label>
+                                    <input type="text" id="phone" name="phone" class="form-control" value="{{ current_user.phone }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Dirección Completa</label>
+                                    <textarea id="address" name="address" class="form-control">{{ current_user.address }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="license">Licencia de Conducir</label>
+                                    <input type="text" id="license" name="license" class="form-control" value="{{ current_user.license }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="license_expiry">Fecha de Vencimiento</label>
+                                    <input type="date" id="license_expiry" name="license_expiry" class="form-control" value="{{ current_user.license_expiry }}">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Historial y Reservas -->
+                <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h4 class="card-title">Historial y Reservas</h4>
+                            <p>Contenido aquí...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métodos de Pago -->
+                <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h4 class="card-title">Métodos de Pago</h4>
+                            <p>Contenido aquí...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seguridad -->
+                <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h4 class="card-title">Seguridad</h4>
+                            <p>Contenido aquí...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferencias -->
+                <div class="tab-pane fade" id="preferences" role="tabpanel" aria-labelledby="preferences-tab">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h4 class="card-title">Preferencias</h4>
+                            <p>Contenido aquí...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documentos -->
+                <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h4 class="card-title">Documentos</h4>
+                            <p>Contenido aquí...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
