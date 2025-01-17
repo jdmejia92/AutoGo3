@@ -17,12 +17,12 @@ def list_users_if_admin(user_tier):
 def check_user(email, password):
     user = User.query.filter_by(email=email).first()
     if not user:
-        result = ('User not found', 'error')
+        result = ('Usuario o clave invalido', 'danger')
     else:
         if user and user.check_password(password):
             result = user
         else:
-            result = ('Invalid email or password', 'danger')
+            result = ('Usuario o clave invalido', 'danger')
     return result
 
 def add_user(name, email, dob, password, tier=2):

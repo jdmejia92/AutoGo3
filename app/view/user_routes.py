@@ -17,7 +17,7 @@ def login():
             login_user(result)  # Log in the user
             return redirect(url_for('base.base'))
         else:
-            flash(result)
+            flash(result[0])
     return render_template('users/login.html')
 
 @bp.route('/logout')
@@ -97,4 +97,4 @@ def dashboard():
     if current_user.tier != 0:
         flash('Acceso no autorizado.', 'danger')
         return redirect(url_for('base.base'))
-    return render_template('dashboard.html')
+    return render_template('reports/dashboard.html')
