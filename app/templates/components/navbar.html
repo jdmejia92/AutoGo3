@@ -8,15 +8,24 @@
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <!-- Opciones comunes para usuarios no autenticados o logueados -->
-                <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
-                <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros" class="nav-link">Nosotros</a></li>
-                <li class="nav-item"><a href="{{ url_for('cars.pricing') }}" class="nav-link">Precios</a></li>
-                <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
-                <li class="nav-item"><a href="{{ url_for('reservations.create_reservation') }}" class="nav-link">Reservas</a></li>
-
                 {% if current_user.is_authenticated %}
-                    <!-- Opciones para usuarios logueados -->
+                    {% if current_user.tier == 0 %}
+                        <!-- Opciones exclusivas de Admin -->
+                        <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
+                        <li class="nav-item"><a href="{{ url_for('users.dashboard') }}" class="nav-link">Dashboard</a></li>
+                        <li class="nav-item"><a href="{{ url_for('cars.list_cars') }}" class="nav-link">Vehículos</a></li>
+                        <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
+                        <li class="nav-item"><a href="{{ url_for('users.list_users') }}" class="nav-link">Usuarios</a></li>
+                    {% else %}
+                        <!-- Opciones exclusivas para Stock y User -->
+                        <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
+                        <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros" class="nav-link">Nosotros</a></li>
+                        <li class="nav-item"><a href="{{ url_for('cars.pricing') }}" class="nav-link">Precios</a></li>
+                        <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
+                        <li class="nav-item"><a href="{{ url_for('reservations.create_reservation') }}" class="nav-link">Reservas</a></li>
+                    {% endif %}
+                    
+                    <!-- Dropdown para usuarios autenticados -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle btn btn-primary text-white ml-3 px-4"
                            href="{{ url_for('users.account') }}" id="accountDropdown"
@@ -24,12 +33,16 @@
                            Sesión Iniciada
                         </a>
                         <div class="dropdown-menu" aria-labelledby="accountDropdown">
-                            <a class="dropdown-item" href="{{ url_for('users.account') }}">Sesión Iniciada</a>
+                            <a class="dropdown-item" href="{{ url_for('users.account') }}">Mi Cuenta</a>
                             <a class="dropdown-item" href="{{ url_for('users.logout') }}">Cerrar Sesión</a>
                         </div>
                     </li>
                 {% else %}
-                    <!-- Botón de Iniciar Sesión para usuarios no autenticados -->
+                    <!-- Opciones para usuarios no autenticados -->
+                    <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
+                    <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros" class="nav-link">Nosotros</a></li>
+                    <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
+                    <li class="nav-item"><a href="{{ url_for('reservations.create_reservation') }}" class="nav-link">Reservas</a></li>
                     <li class="nav-item">
                         <a href="{{ url_for('users.login') }}" class="nav-link btn btn-primary text-white ml-3 px-4">
                             Iniciar Sesión
