@@ -9,16 +9,34 @@ bp = Blueprint('users', __name__, url_prefix='/users')
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form.get('email', '').strip()  # Validar email
+        password = request.form.get('password', '')  # Validar contraseña
 
+        # 1. Verificar campos vacíos
+        if not email or not password:
+            flash('Por favor, completa ambos campos', 'warning')
+            return redirect(url_for('users.login'))
+
+        # 2. Validar formato de correo electrónico
+        if '@' not in email or '.' not in email.split('@')[-1]:
+            flash('Por favor, ingresa un correo electrónico válido', 'danger')
+            return redirect(url_for('users.login'))
+
+        # 3. Validar usuario
         result = check_user(email=email, password=password)
-        if type(result) != tuple:
-            login_user(result)  # Log in the user
-            return redirect(url_for('base.base'))
-        else:
-            flash(result[0])
+
+        # Si el resultado es un mensaje de error (string o tuple)
+        if isinstance(result, tuple):
+            flash(result[0], result[1])  # Mostrar mensaje flash
+            return redirect(url_for('users.login'))
+
+        # Si el resultado es un objeto de usuario válido
+        login_user(result)  # Log in exitoso
+        flash('Inicio de sesión exitoso. ¡Bienvenido!', 'success')
+        return redirect(url_for('base.base'))
+
     return render_template('users/login.html')
+
 
 @bp.route('/logout')
 @login_required

@@ -1,72 +1,86 @@
-{% extends 'base_template.html' %}
-
-{% block content %}
-
-<body class="bg-gradient-primary" style="font-family: 'Poppins', sans-serif; background: #f8f9fa;">
-
-    <div class="container py-5">
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - AutoGO</title>
+    {% include 'components/styles.html' %}
+</head>
+<body class="bg-gradient-primary" style="font-family: 'Poppins', sans-serif;">
+    <div class="container">
         <!-- Outer Row -->
         <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card shadow-lg my-5 animated fadeIn">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <!-- Imagen de la izquierda -->
+                            <div class="col-lg-6 d-none d-lg-block"
+                                style="
+                                    background: url('/static/images/image_1.jpg') center center no-repeat;
+                                    background-size: cover;
+                                    height: auto;
+                                    width: 100%;"></div>
+                            <!-- Formulario de login -->
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">¡Bienvenido de nuevo!</h1>
+                                    </div>
 
-            <div class="col-lg-6">
+                                    <!-- Mostrar mensajes flash -->
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                        {% if messages %}
+                                            <div>
+                                                {% for category, message in messages %}
+                                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                                        {{ message }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
 
-                <div class="card o-hidden border-0 shadow-lg">
-                    <div class="card-body p-5">
-                        <!-- Card Body -->
-                        <div class="text-center mb-4">
-                            <h1 class="h4 text-gray-900">Iniciar Sesión</h1>
-                        </div>
-                        <form class="user" method="POST" action="{{ url_for('users.login') }}">
-                            <div class="form-group">
-                                <input type="email" name="email" class="form-control form-control-user" id="email"
-                                    placeholder="Ingresa tu Email" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" name="password" class="form-control form-control-user" id="password"
-                                    placeholder="Contraseña" required>
-                            </div>
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox small">
-                                    <input type="checkbox" class="custom-control-input" id="rememberMe">
-                                    <label class="custom-control-label" for="rememberMe">Recuérdame</label>
+                                    <form class="user" method="POST" action="{{ url_for('users.login') }}">
+                                        <div class="form-group">
+                                            <input type="email" name="email" class="form-control form-control-user"
+                                                id="email" aria-describedby="emailHelp"
+                                                placeholder="Ingresa tu correo electrónico..." required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" name="password" class="form-control form-control-user"
+                                                id="password" placeholder="Contraseña" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="rememberMe">
+                                                <label class="custom-control-label" for="rememberMe">Recuérdame</label>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Iniciar Sesión
+                                        </button>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ url_for('users.create_user') }}">¡Crea una Cuenta!</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ url_for('users.login') }}">¿Olvidaste tu Contraseña?</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ url_for('base.base') }}">Volver al Inicio</a>
+                                    </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-user btn-block">
-                                Login
-                            </button>
-                        </form>
-                        <hr>
-                    
-                        <div class="text-center">
-                            <a class="small" href="{{ url_for('users.create_user') }}">¡Crea una Cuenta!
-                            </a>
-                        </div>
-                        <div class="text-center">
-                            <a class="small" href="{{ url_for('users.login') }}">¿Olvidaste tu Contraseña?</a>
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <ul>
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
-
-        <!-- Scripts -->
-{% include 'components/scripts.html' %}
+    <!-- Scripts -->
+    {% include 'components/scripts.html' %}
 </body>
-
-
-{% endblock %}
+</html>
