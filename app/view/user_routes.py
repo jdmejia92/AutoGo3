@@ -115,4 +115,4 @@ def create_admin():
             flash(f"Error al registrar el administrador: {str(e)}", 'error')
 
     # Renderizar la plantilla de creación
-    return render_template('users/create_admin.html')
+    return render_template('admin/create_admin.html')
