@@ -1,0 +1,221 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2" style="background-image: url('{{ url_for('static', filename='images/banner.jpg') }}');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-9 pb-5">
+                <h1 class="mb-3 bread">Registrar Administrador</h1>
+                <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Admin Registration Form Section -->
+<section class="ftco-section">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="form-container w-75 bg-light p-5 rounded">
+            <h2 class="text-center mb-4">Formulario de Registro de Administrador</h2>
+            <form action="{{ url_for('users.create_user') }}" method="POST" class="contact-form">
+
+                <!-- Información Personal -->
+                <h4 class="mb-3">Información Personal</h4>
+                <div class="form-group">
+                    <label for="first_name">Nombre</label>
+                    <input type="text" id="first_name" name="first_name" class="form-control" maxlength="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Apellido</label>
+                    <input type="text" id="last_name" name="last_name" class="form-control" maxlength="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Fecha de Nacimiento</label>
+                    <input type="date" id="dob" name="dob" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="dni">DNI</label>
+                    <input type="text" id="dni" name="dni" class="form-control" maxlength="20" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Dirección</label>
+                    <input type="text" id="address" name="address" class="form-control" maxlength="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Teléfono Móvil</label>
+                    <input type="text" id="phone" name="phone" class="form-control" maxlength="12" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" class="form-control" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="marital_status">Estado Civil</label>
+                    <select id="marital_status" name="marital_status" class="form-control" required>
+                        <option value="Soltero/a">Soltero/a</option>
+                        <option value="Casado/a">Casado/a</option>
+                        <option value="Divorciado/a">Divorciado/a</option>
+                        <option value="Viudo/a">Viudo/a</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="children">Número de Hijos</label>
+                    <input type="number" id="children" name="children" class="form-control" min="0" required>
+                </div>
+
+                <!-- Información Laboral -->
+                <h4 class="mb-3 mt-4">Información Laboral</h4>
+                <div class="form-group">
+                    <label for="department">Departamento</label>
+                    <select id="department" name="department" class="form-control" required onchange="updatePositionOptions()">
+                        <option value="">Seleccione un departamento</option>
+                        <option value="Atención al Cliente">Atención al Cliente</option>
+                        <option value="Operaciones">Operaciones</option>
+                        <option value="Mantenimiento">Mantenimiento</option>
+                        <option value="Administración">Administración</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="position">Cargo</label>
+                    <select id="position" name="position" class="form-control" required onchange="updateSalaryOptions()">
+                        <option value="">Seleccione un cargo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="work_schedule">Horario de Trabajo</label>
+                    <select id="work_schedule" name="work_schedule" class="form-control" required onchange="updateSalaryOptions()">
+                        <option value="Tiempo completo">Tiempo completo</option>
+                        <option value="Medio tiempo">Medio tiempo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="salary">Salario Base</label>
+                    <select id="salary" name="salary" class="form-control" required>
+                        <option value="">Seleccione un salario</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="join_date">Fecha de Ingreso</label>
+                    <input type="date" id="join_date" name="join_date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="contract_type">Tipo de Contrato</label>
+                    <select id="contract_type" name="contract_type" class="form-control" required>
+                        <option value="Indefinido">Indefinido</option>
+                        <option value="Temporal_3">Contrato 3 meses</option>
+                        <option value="Temporal_6">Contrato 6 meses</option>
+                        <option value="Parcial">Parcial</option>
+                        <option value="Por proyecto">Por proyecto</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="education_level">Nivel Educativo</label>
+                    <select id="education_level" name="education_level" class="form-control" required>
+                        <option value="Primaria">Primaria</option>
+                        <option value="Secundaria">Secundaria</option>
+                        <option value="Técnico">Técnico</option>
+                        <option value="Universidad">Universidad</option>
+                        <option value="Postgrado">Postgrado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="emergency_contact">Contacto de Seguridad</label>
+                    <input type="text" id="emergency_contact" name="emergency_contact" class="form-control" maxlength="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="emergency_phone">Número del Contacto</label>
+                    <input type="text" id="emergency_phone" name="emergency_phone" class="form-control" maxlength="12" required>
+                </div>
+                <div class="form-group">
+                    <label for="afp">AFP</label>
+                    <select id="afp" name="afp" class="form-control" required>
+                        <option value="AFP Integra">AFP Integra</option>
+                        <option value="Prima AFP">Prima AFP</option>
+                        <option value="Profuturo AFP">Profuturo AFP</option>
+                        <option value="AFP Habitat">AFP Habitat</option>
+                    </select>
+                </div>
+                
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <input type="submit" value="Registrar" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    const salaryData = {
+        'Tiempo completo': {
+            'Representante de Atención al Cliente': ['S/ 1,300', 'S/ 1,500'],
+            'Coordinador de Reservas': ['S/ 1,500', 'S/ 1,800'],
+            'Coordinador de Flota': ['S/ 1,800', 'S/ 2,200'],
+            'Supervisor de Operaciones': ['S/ 2,200', 'S/ 2,800'],
+            'Conductor': ['S/ 1,200', 'S/ 1,500'],
+            'Técnico de Mantenimiento Vehicular': ['S/ 1,800', 'S/ 2,500'],
+            'Lavador de Autos': ['S/ 1,025', 'S/ 1,200'],
+            'Inspector de Seguridad': ['S/ 1,500', 'S/ 2,000'],
+            'Gerente de Sucursal': ['S/ 3,500', 'S/ 5,000'],
+            'Asistente Administrativo': ['S/ 1,200', 'S/ 1,500'],
+            'Administrador Financiero': ['S/ 3,000', 'S/ 4,500']
+        },
+        'Medio tiempo': {
+            'Representante de Atención al Cliente': ['S/ 650', 'S/ 750'],
+            'Coordinador de Reservas': ['S/ 750', 'S/ 900'],
+            'Coordinador de Flota': ['S/ 900', 'S/ 1,100'],
+            'Supervisor de Operaciones': ['S/ 1,100', 'S/ 1,400'],
+            'Conductor': ['S/ 600', 'S/ 750'],
+            'Técnico de Mantenimiento Vehicular': ['S/ 900', 'S/ 1,200'],
+            'Lavador de Autos': ['S/ 550', 'S/ 600'],
+            'Inspector de Seguridad': ['S/ 750', 'S/ 1,100'],
+            'Gerente de Sucursal': ['S/ 1,750', 'S/ 2,500'],
+            'Asistente Administrativo': ['S/ 600', 'S/ 750'],
+            'Administrador Financiero': ['S/ 1,500', 'S/ 2,200']
+        }
+    };
+
+    function updatePositionOptions() {
+        const department = document.getElementById('department').value;
+        const position = document.getElementById('position');
+
+        const positionsByDepartment = {
+            'Atención al Cliente': ['Representante de Atención al Cliente', 'Coordinador de Reservas'],
+            'Operaciones': ['Coordinador de Flota', 'Supervisor de Operaciones', 'Conductor'],
+            'Mantenimiento': ['Técnico de Mantenimiento Vehicular', 'Lavador de Autos', 'Inspector de Seguridad'],
+            'Administración': ['Gerente de Sucursal', 'Asistente Administrativo', 'Administrador Financiero']
+        };
+
+        position.innerHTML = '<option value="">Seleccione un cargo</option>';
+        if (positionsByDepartment[department]) {
+            positionsByDepartment[department].forEach(pos => {
+                const option = document.createElement('option');
+                option.value = pos;
+                option.textContent = pos;
+                position.appendChild(option);
+            });
+        }
+    }
+
+    function updateSalaryOptions() {
+        const position = document.getElementById('position').value;
+        const schedule = document.getElementById('work_schedule').value;
+        const salary = document.getElementById('salary');
+
+        salary.innerHTML = '<option value="">Seleccione un salario</option>';
+        if (salaryData[schedule] && salaryData[schedule][position]) {
+            salaryData[schedule][position].forEach(sal => {
+                const option = document.createElement('option');
+                option.value = sal;
+                option.textContent = sal;
+                salary.appendChild(option);
+            });
+        }
+    }
+</script>
+
+{% endblock %}

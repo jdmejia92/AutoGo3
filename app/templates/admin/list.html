@@ -7,42 +7,42 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end justify-content-start">
             <div class="col-md-9 pb-5">
-                <h1 class="mb-3 bread">Lista de Autos</h1>
+                <h1 class="mb-3 bread">Reservas</h1>
                 <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Cars List -->
+<!-- Users List -->
 <div class="container mt-5 mb-5">
     <!-- Encabezado de la lista -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-center">Autos Registrados</h2>
-        <a href="{{ url_for('cars.create_car') }}" class="btn btn-primary">Agregar Nuevo Auto</a>
+        <h2 class="text-center">Usuarios Registrados</h2>
+        <a href="{{ url_for('users.create_user') }}" class="btn btn-primary">Crear Nuevo Usuario</a>
+        <a href="{{ url_for('users.create_admin') }}" class="btn btn-primary">Crear Nuevo Admin</a>
     </div>
 
-    <!-- Tabla de autos -->
+    <!-- Tabla de usuarios -->
     <div class="table-responsive">
         <table class="table table-striped table-bordered text-center">
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Acciones</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Acciones</th> 
                 </tr>
             </thead>
             <tbody>
-                {% for vehicle in vehicles %}
+                {% for user in user %}
                 <tr>
-                    <td>{{ vehicle.id }}</td>
-                    <td>{{ vehicle.brand }}</td>
-                    <td>{{ vehicle.model }}</td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <a href="{{ url_for('cars.update_car', id=vehicle.id) }}" class="btn btn-warning btn-sm mr-2">Editar</a>
-                            <form action="{{ url_for('cars.delete_car', id=vehicle.id) }}" method="post" class="d-inline">
+                            <form action="{{ url_for('users.delete_user_route', id=user.id) }}" method="post" class="d-inline">
                                 <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                             </form>
                         </div>
@@ -52,6 +52,7 @@
             </tbody>
         </table>
     </div>
+    
 
     <!-- Mensajes Flash -->
     {% with messages = get_flashed_messages(with_categories=true) %}

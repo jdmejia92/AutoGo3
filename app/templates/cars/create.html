@@ -1,19 +1,168 @@
-<html>
-<head>
-    <title>Create Car</title>
-</head>
-<body>
-    <a href="{{ url_for('base.base') }}">HOME</a>
-    <h1>Create a New Car</h1>
-    <form method="post">
-        <label for="brand">Brand:</label>
-        <input type="text" id="brand" name="brand" required>
-        <br>
-        <label for="model">Model:</label>
-        <input type="text" id="model" name="model" required>
-        <br>
-        <button type="submit">Create</button>
-    </form>
-    <a href="{{ url_for('cars.list_cars') }}">Back to List</a>
-</body>
-</html>
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2" style="background-image: url('{{ url_for('static', filename='images/banner.jpg') }}');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-9 pb-5">
+                <h1 class="mb-3 bread">Registrar Vehículo</h1>
+                <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Vehicle Registration Form Section -->
+<section class="ftco-section">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="form-container w-75 bg-light p-5 rounded">
+            <h2 class="text-center mb-4">Formulario de Registro de Vehículo</h2>
+            <form action="{{ url_for('cars.create_car') }}" method="POST" enctype="multipart/form-data" class="contact-form">
+
+                <!-- Información Básica -->
+                <h4 class="mb-3">Información Básica</h4>
+                <div class="form-group">
+                    <label for="brand">Marca</label>
+                    <select id="brand" name="brand" class="form-control" required>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Ford">Ford</option>
+                        <option value="VW">Volkswagen</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="Kia">Kia</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="model">Modelo</label>
+                    <input type="text" id="model" name="model" class="form-control" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="year">Año</label>
+                    <input type="number" id="year" name="year" class="form-control" min="1900" max="2099" required>
+                </div>
+                <div class="form-group">
+                    <label for="plate">Matrícula</label>
+                    <input type="text" id="plate" name="plate" class="form-control" maxlength="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="color">Color</label>
+                    <input type="text" id="color" name="color" class="form-control" maxlength="20" required>
+                </div>
+                <div class="form-group">
+                    <label for="capacity">Capacidad de pasajeros</label>
+                    <select id="capacity" name="capacity" class="form-control" required>
+                        <option value="2">2</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="7">7</option>
+                        <option value="9">9</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="type">Tipo de Vehículo</label>
+                    <select id="type" name="type" class="form-control" required>
+                        <option value="SUV">SUV</option>
+                        <option value="Sedán">Sedán</option>
+                        <option value="Hatchback">Hatchback</option>
+                        <option value="Pickup">Pickup</option>
+                        <option value="Van">Van</option>
+                    </select>
+                </div>
+
+                <!-- Características Técnicas -->
+                <h4 class="mb-3 mt-4">Características Técnicas</h4>
+                <div class="form-group">
+                    <label for="transmission">Transmisión</label>
+                    <select id="transmission" name="transmission" class="form-control" required>
+                        <option value="Automático">Automático</option>
+                        <option value="Manual">Manual</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fuel">Combustible</label>
+                    <select id="fuel" name="fuel" class="form-control" required>
+                        <option value="Gasolina">Gasolina</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="GLP">GLP</option>
+                        <option value="GNV">GNV</option>
+                        <option value="Eléctrico">Eléctrico</option>
+                        <option value="Híbrido">Híbrido</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="kilometer">Kilometraje</label>
+                    <input type="number" id="kilometer" name="kilometer" class="form-control" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="power">Potencia (HP)</label>
+                    <input type="number" id="power" name="power" class="form-control" min="0" required>
+                </div>
+
+                <!-- Estado y Equipamiento -->
+                <h4 class="mb-3 mt-4">Estado y Equipamiento</h4>
+                <div class="form-group">
+                    <label for="status">Estado</label>
+                    <select id="status" name="status" class="form-control" required>
+                        <option value="Disponible">Disponible</option>
+                        <option value="Mantenimiento">Mantenimiento</option>
+                        <option value="Reservado">Reservado</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="gps"> GPS</label>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="ac"> A/C</label>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="bluetooth"> Bluetooth</label>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="rear_camera"> Cámara de Retroceso</label>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="parking_sensors"> Sensores de Estacionamiento</label>
+                </div>
+
+                <!-- Información Comercial -->
+                <h4 class="mb-3 mt-4">Información Comercial</h4>
+                <div class="form-group">
+                    <label for="category">Categoría</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="Económico">Económico</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Lujo">Lujo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="daily_rate">Tarifa Diaria</label>
+                    <input type="number" id="daily_rate" name="daily_rate" class="form-control" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="insurance_date">Seguro Vigente Hasta</label>
+                    <input type="date" id="insurance_date" name="insurance_date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="itv_date">ITV/Revisión</label>
+                    <input type="date" id="itv_date" name="itv_date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="photos">Fotos del Vehículo</label>
+                    <input type="file" id="photos" name="photos" class="form-control" multiple>
+                </div>
+
+                <!-- Botón de Enviar -->
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary py-3 px-5">Registrar Vehículo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
