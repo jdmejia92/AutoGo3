@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, flash
 from app.extensions import db, migrate, login
 from .controller.admin_controller import create_default_super_admin
 import os
@@ -21,15 +21,18 @@ def create_app():
     # Configuración de Flask-Login
     login.user_loader(load_user)
     login.user_loader(load_admin)
-    login.login_view = "users.login"
+    login.login_view = "auth.login"
+    login.login_message = "Inicia sesión para acceder a esta página."
+    login.login_message_category = "warning"
 
     # Registro de blueprints y tareas iniciales
     with app.app_context():
-        from .view import user_routes, reservations_routes, cars_routes, base_routes
+        from .view import user_routes, reservations_routes, cars_routes, base_routes, auth_routes
         app.register_blueprint(user_routes.bp)
         app.register_blueprint(cars_routes.bp)
         app.register_blueprint(reservations_routes.bp)
         app.register_blueprint(base_routes.bp)
+        app.register_blueprint(auth_routes.bp)
         db.create_all()  # Crear tablas en la base de datos si no existen
         create_default_super_admin()  # Crear usuario administrador
 

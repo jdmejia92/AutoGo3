@@ -1,9 +1,6 @@
 from app.extensions import db
 from werkzeug.security import generate_password_hash
 from ..model.user_model import User
-from ..model.admin_model import Admin
-from datetime import datetime
-import os
 
 def list_users_if_admin(user_tier):
     if user_tier == 0:  # Verifica si el usuario es administrador

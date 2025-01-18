@@ -1,6 +1,7 @@
 from app.extensions import db
 from werkzeug.security import generate_password_hash
 from ..model.admin_model import Admin
+from datetime import date
 import os
 
 def list_admins_if_super_admin(user_role):
@@ -13,16 +14,6 @@ def list_admins_if_super_admin(user_role):
             return f"Error al obtener la lista de administradores: {str(e)}"
     else:
         return "Acceso denegado. Solo los superadministradores pueden listar administradores."
-
-def check_admin(email, password):
-    """Verifica las credenciales de un administrador."""
-    admin = Admin.query.filter_by(email=email).first()
-    if not admin:
-        return ('Usuario o clave inválidos', 'danger')
-    if admin.check_password(password):
-        return admin
-    else:
-        return ('Usuario o clave inválidos', 'danger')
 
 def add_admin(first_name, last_name, email, password, phone=None, role=1):
     """Agrega un nuevo administrador a la base de datos."""
@@ -103,20 +94,64 @@ def create_default_super_admin():
         print("El superadministrador ya existe.")
         return
 
+    # Obtiene los valores de las variables de entorno con valores predeterminados
     first_name = os.getenv("SUPER_ADMIN_FIRST_NAME", "Super")
     last_name = os.getenv("SUPER_ADMIN_LAST_NAME", "Admin")
     admin_password = os.getenv("SUPER_ADMIN_PASSWORD", "default_password")
+    dob = os.getenv("SUPER_ADMIN_DOB", "1970-01-01")
+    dni = os.getenv("SUPER_ADMIN_DNI", "00000000")
+    address = os.getenv("SUPER_ADMIN_ADDRESS", "Direccion por defecto")
+    phone = os.getenv("SUPER_ADMIN_PHONE", "999999999")
+    marital_status = os.getenv("SUPER_ADMIN_MARITAL_STATUS", "Soltero")
+    children = int(os.getenv("SUPER_ADMIN_CHILDREN", 0))
+    department = os.getenv("SUPER_ADMIN_DEPARTMENT", "Administración")
+    position = os.getenv("SUPER_ADMIN_POSITION", "Super Admin")
+    work_schedule = os.getenv("SUPER_ADMIN_WORK_SCHEDULE", "Tiempo completo")
+    salary = float(os.getenv("SUPER_ADMIN_SALARY", 0.0))
+    join_date = os.getenv("SUPER_ADMIN_JOIN_DATE", "2025-01-01")
+    contract_type = os.getenv("SUPER_ADMIN_CONTRACT_TYPE", "Indefinido")
+    education_level = os.getenv("SUPER_ADMIN_EDUCATION_LEVEL", "Universitario")
+    emergency_contact = os.getenv("SUPER_ADMIN_EMERGENCY_CONTACT", "Contacto de emergencia")
+    emergency_phone = os.getenv("SUPER_ADMIN_EMERGENCY_PHONE", "888888888")
+    afp = os.getenv("SUPER_ADMIN_AFP", "AFP Default")
 
+    # Convierte las fechas de cadena a objetos date
+    try:
+        dob = date.fromisoformat(dob)
+        join_date = date.fromisoformat(join_date)
+    except ValueError as e:
+        print("Error en el formato de fecha:", e)
+        return
+
+    # Crea el hash de la contraseña
     password_hash = generate_password_hash(admin_password)
 
+    # Crea el objeto superadministrador
     super_admin = Admin(
         first_name=first_name,
         last_name=last_name,
+        dob=dob,
+        dni=dni,
+        address=address,
+        phone=phone,
         email=admin_email,
-        password_hash=password_hash,
-        role=0  # Super Admin
+        marital_status=marital_status,
+        children=children,
+        department=department,
+        position=position,
+        work_schedule=work_schedule,
+        salary=salary,
+        join_date=join_date,
+        contract_type=contract_type,
+        education_level=education_level,
+        emergency_contact=emergency_contact,
+        emergency_phone=emergency_phone,
+        afp=afp,
+        role=0,  # Super Admin
+        password_hash=password_hash
     )
 
+    # Guarda el superadministrador en la base de datos
     try:
         db.session.add(super_admin)
         db.session.commit()

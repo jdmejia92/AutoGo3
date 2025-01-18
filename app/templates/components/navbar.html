@@ -28,13 +28,13 @@
                     <!-- Dropdown para usuarios autenticados -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle btn btn-primary text-white ml-3 px-4"
-                           href="{{ url_for('users.account') }}" id="accountDropdown"
+                           href="{{ url_for('auth.account') }}" id="accountDropdown"
                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                            Sesión Iniciada
                         </a>
                         <div class="dropdown-menu" aria-labelledby="accountDropdown">
-                            <a class="dropdown-item" href="{{ url_for('users.account') }}">Mi Cuenta</a>
-                            <a class="dropdown-item" href="{{ url_for('users.logout') }}">Cerrar Sesión</a>
+                            <a class="dropdown-item" href="{{ url_for('auth.account') }}">Mi Cuenta</a>
+                            <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
                         </div>
                     </li>
                 {% else %}
@@ -44,7 +44,7 @@
                     <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
                     <li class="nav-item"><a href="{{ url_for('reservations.create_reservation') }}" class="nav-link">Reservas</a></li>
                     <li class="nav-item">
-                        <a href="{{ url_for('users.login') }}" class="nav-link btn btn-primary text-white ml-3 px-4">
+                        <a href="{{ url_for('auth.login') }}" class="nav-link btn btn-primary text-white ml-3 px-4">
                             Iniciar Sesión
                         </a>
                     </li>
