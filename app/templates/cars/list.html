@@ -1,21 +1,71 @@
-<html>
-<head>
-    <title>Car List</title>
-</head>
-<body>
-    <a href="{{ url_for('base.base') }}">HOME</a>
-    <h1>List of Cars</h1>
-    <a href="{{ url_for('cars.create_car') }}">Create New Car</a>
-    <ul>
-        {% for vehicle in vehicles %}
-        <li>
-            {{ vehicle.brand }} {{ vehicle.model }}
-            <a href="{{ url_for('cars.update_car', id=vehicle.id) }}">Edit</a>
-            <form action="{{ url_for('cars.delete_car', id=vehicle.id) }}" method="post" style="display:inline;">
-                <button type="submit">Delete</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'base_template.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2" style="background-image: url('{{ url_for('static', filename='images/bg_3.jpg') }}');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-9 pb-5">
+                <h1 class="mb-3 bread">Lista de Autos</h1>
+                <a href="{{ url_for('base.base') }}" class="btn btn-light">Volver a Inicio</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cars List -->
+<div class="container mt-5 mb-5">
+    <!-- Encabezado de la lista -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-center">Autos Registrados</h2>
+        <a href="{{ url_for('cars.create_car') }}" class="btn btn-primary">Agregar Nuevo Auto</a>
+    </div>
+
+    <!-- Tabla de autos -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vehicle in vehicles %}
+                <tr>
+                    <td>{{ vehicle.id }}</td>
+                    <td>{{ vehicle.brand }}</td>
+                    <td>{{ vehicle.model }}</td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ url_for('cars.update_car', id=vehicle.id) }}" class="btn btn-warning btn-sm mr-2">Editar</a>
+                            <form action="{{ url_for('cars.delete_car', id=vehicle.id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mensajes Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="alert-section mt-4">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+</div>
+
+{% endblock %}
