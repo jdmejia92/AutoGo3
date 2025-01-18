@@ -27,7 +27,7 @@ class Admin(UserMixin, db.Model):
     afp = db.Column(db.String(50), nullable=False)  # AFP
 
     # Roles: 0 = Admin, 1 = Worker
-    role = db.Column(db.Integer, nullable=False, default=1)
+    tier = db.Column(db.Integer, nullable=False, default=1)
 
     password_hash = db.Column(db.String(256), nullable=False)  # Almacena la contraseña encriptada
 
