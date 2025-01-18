@@ -1,32 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Users</title>
-</head>
-<body>
-    <a href="{{ url_for('base.base') }}">HOME</a>
-    <h1>Users List</h1>
-    <a href="{{ url_for('users.create_user') }}">Create New User</a>
-    <ul>
-        {% for user in user %}
-            <li>
-                {{ user.name }} - {{ user.email }}
-                <form method="POST" action="{{ url_for('users.delete_user_route', id=user.id) }}" style="display:inline;">
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-    <a href="{{ url_for('users.logout') }}">Logout</a>
-</body>
-</html>
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+
+    <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text justify-content-start align-items-center justify-content-center">
+                <div class="col-lg-8 ftco-animate">
+                    <div class="text w-100 text-center mb-md-5 pb-md-5">
+                        <h1 class="text-dark">Users List</h1>
+                        <a href="{{ url_for('users.create_user') }}">Create New User</a>
+                        <ul class="flex justify-content-start">
+                            {% for user in user %}
+                                <li>
+                                    {{ user.name }} - {{ user.email }}
+                                    <form method="POST" action="{{ url_for('users.delete_user_route', id=user.id) }}" style="display:inline;">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                <ul>
+                                    {% for category, message in messages %}
+                                        <li class="{{ category }}">{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

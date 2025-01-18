@@ -24,7 +24,7 @@ def login():
 @login_required
 def logout():
     logout_user()  # Log out the user
-    return redirect(url_for('users.login'))
+    return redirect(url_for('base.base'))
 
 @bp.route('/')
 @login_required

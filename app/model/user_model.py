@@ -1,15 +1,32 @@
 from app.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-import os
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), nullable=False)
-    email = db.Column(db.String(256), unique=True, nullable=False)
-    dob = db.Column(db.Date, nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    dni = db.Column(db.String(9), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)  # Store hashed password
-    tier = db.Column(db.Integer, nullable=False, default=2) # admin 0 / worker 1 / client 2
+    phone = db.Column(db.String(15), nullable=True)
+
+    # Driving Information
+    license_number = db.Column(db.String(20), nullable=True)
+    license_expiration = db.Column(db.Date, nullable=True)
+    license_country = db.Column(db.String(100), nullable=False)
+
+    # Address Information
+    address = db.Column(db.String(100), nullable=False)
+    city = db.Column(db.String(50), nullable=False)
+    postal_code = db.Column(db.String(10), nullable=False)
+    country = db.Column(db.String(100), nullable=False)
+    state = db.Column(db.String(50), nullable=False)
+
+    # Verification
+    terms_accepted = db.Column(db.Boolean, nullable=False, default=True)
+    privacy_policy_accepted = db.Column(db.Boolean, nullable=False, default=True)
+    offers_accepted = db.Column(db.Boolean, nullable=True, default=False)
 
     def set_password(self, password):
         """Hash and store the password."""
@@ -20,7 +37,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f"<User {self.name} ({self.tier})>"
+        return f"<User {self.first_name} {self.last_name} ({self.tier})>"
 
 def load_user(user_id):
     return User.query.get(int(user_id))

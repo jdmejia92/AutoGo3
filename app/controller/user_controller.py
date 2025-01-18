@@ -1,6 +1,7 @@
 from app.extensions import db
 from werkzeug.security import generate_password_hash
 from ..model.user_model import User
+from ..model.admin_model import Admin
 from datetime import datetime
 import os
 
@@ -62,25 +63,3 @@ def delete_user(user_id):
     if user:
         db.session.delete(user)
         db.session.commit()
-
-def admin_user():
-    query = User.query.filter_by(name="admin").first()
-    if query is None:
-        dob = datetime.strptime("1990-01-01", '%Y-%m-%d').date()
-        password_hash = generate_password_hash(os.getenv("ADMIN_PASSWORD"))  # Hash the admin password
-        admin = User(
-            name=os.getenv("ADMIN_NAME"),
-            email=os.getenv("ADMIN_EMAIL"),
-            password_hash=password_hash,
-            dob=dob,
-            tier=0
-        )
-        try:
-            db.session.add(admin)
-            db.session.commit()
-            print("Admin created")
-        except Exception as e:
-            db.session.rollback()
-            print("Error creating admin:", e)
-    else:
-        print("Admin already exists")
