@@ -147,7 +147,7 @@ def create_default_super_admin():
         emergency_contact=emergency_contact,
         emergency_phone=emergency_phone,
         afp=afp,
-        role=0,  # Super Admin
+        tier=0,  # Super Admin
         password_hash=password_hash
     )
 
