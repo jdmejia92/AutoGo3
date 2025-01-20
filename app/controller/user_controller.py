@@ -23,24 +23,45 @@ def check_user(email, password):
             result = ('Usuario o clave invalido', 'danger')
     return result
 
-def add_user(name, email, dob, password, tier=2):
-    user = User.query.filter_by(email=email).first()
+def add_user(first_name, last_name, dni, email, password, phone=None, license_number=None, 
+            license_expiration=None, license_country=None, address=None, city=None, 
+            postal_code=None, country=None, state=None, terms_accepted=True, 
+            privacy_policy_accepted=True, offers_accepted=False):
+    # Check if a user with the same email or DNI already exists
+    user = User.query.filter((User.email == email) | (User.dni == dni)).first()
     if user:
-        result = ('User already exist', 'error')
-    else:
-        password_hash = generate_password_hash(password=password)
-    
-        new_user = User(name=name, email=email, dob=dob, password_hash=password_hash, tier=int(tier))
+        return ('User already exists', 'error')
 
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-            result = ('User created successfully!', 'success')
-        except Exception as e:
-            db.session.rollback()
-            result = ('Error creating user: ' + str(e.orig), 'error')
+    # Create a new user instance
+    new_user = User(
+        first_name=first_name,
+        last_name=last_name,
+        dni=dni,
+        email=email,
+        phone=phone,
+        license_number=license_number,
+        license_expiration=license_expiration,
+        license_country=license_country,
+        address=address,
+        city=city,
+        postal_code=postal_code,
+        country=country,
+        state=state,
+        terms_accepted=terms_accepted,
+        privacy_policy_accepted=privacy_policy_accepted,
+        offers_accepted=offers_accepted
+    )
 
-    return result
+    # Set the hashed password
+    new_user.set_password(password)
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        return ('Usuario creado exitosamente!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        return (f'Error al crear el usuario: {str(e.orig)}', 'error')
 
 def get_user_by_id(user_id):
     return User.query.get(user_id)

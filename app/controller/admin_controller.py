@@ -15,21 +15,44 @@ def list_admins_if_super_admin(user_role):
     else:
         return "Acceso denegado. Solo los superadministradores pueden listar administradores."
 
-def add_admin(first_name, last_name, email, password, phone=None, role=1):
+def add_admin(
+    first_name, last_name, dob, dni, address, phone, email, marital_status, children, 
+    department, position, work_schedule, salary, join_date, contract_type, education_level, 
+    emergency_contact, emergency_phone, afp, password, tier=1
+):
     """Agrega un nuevo administrador a la base de datos."""
     existing_admin = Admin.query.filter_by(email=email).first()
     if existing_admin:
         return ('El administrador ya existe', 'error')
+
+    existing_dni = Admin.query.filter_by(dni=dni).first()
+    if existing_dni:
+        return ('El DNI ya está registrado', 'error')
 
     password_hash = generate_password_hash(password)
 
     new_admin = Admin(
         first_name=first_name,
         last_name=last_name,
-        email=email,
-        password_hash=password_hash,
+        dob=dob,
+        dni=dni,
+        address=address,
         phone=phone,
-        role=int(role)
+        email=email,
+        marital_status=marital_status,
+        children=children,
+        department=department,
+        position=position,
+        work_schedule=work_schedule,
+        salary=salary,
+        join_date=join_date,
+        contract_type=contract_type,
+        education_level=education_level,
+        emergency_contact=emergency_contact,
+        emergency_phone=emergency_phone,
+        afp=afp,
+        password_hash=password_hash,
+        tier=tier
     )
 
     try:
@@ -39,6 +62,7 @@ def add_admin(first_name, last_name, email, password, phone=None, role=1):
     except Exception as e:
         db.session.rollback()
         return ('Error al crear el administrador: ' + str(e.orig), 'error')
+
 
 def get_admin_by_id(admin_id):
     """Obtiene un administrador por su ID."""

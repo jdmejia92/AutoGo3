@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required, current_user
-from ..controller.user_controller import add_user, check_user, delete_user, list_users_if_admin
+from flask_login import login_required, current_user
+from ..controller.user_controller import add_user, delete_user, list_users_if_admin
+from ..controller.admin_controller import add_admin
 from datetime import datetime
 from app.extensions import db
 
@@ -15,29 +16,69 @@ def list_users():
 @bp.route('/create', methods=['GET', 'POST'])
 def create_user():
     if request.method == 'POST':
-        name = request.form.get('name')
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        dni = request.form.get('dni')
         email = request.form.get('email')
-        dob = request.form.get('dob')  
-        password = request.form.get('password')  
-        tier = request.form.get('tier', 2)  
+        password = request.form.get('password')
+        phone = request.form.get('phone')
+        license_number = request.form.get('license_number')
+        license_expiration = request.form.get('license_expiration')
+        license_country = request.form.get('license_country')
+        address = request.form.get('address')
+        city = request.form.get('city')
+        postal_code = request.form.get('postal_code')
+        country = request.form.get('country')
+        state = request.form.get('state')
+        terms_accepted = request.form.get('terms_accepted', 'on') == 'on'
+        privacy_policy_accepted = request.form.get('privacy_policy_accepted', 'on') == 'on'
+        offers_accepted = request.form.get('offers_accepted', 'on') == 'on'
 
-        if not dob or not password:
-            flash('Date of birth and password are required!', 'error')
-            return render_template('create_user.html', name=name, email=email, dob=dob, tier=tier)
+        # Validate required fields
+        if not dni or not password or not first_name or not last_name or not email or not license_country or not address or not city or not postal_code or not country or not state:
+            flash('Todos los campos obligatorios deben ser completados!', 'error')
+            return render_template('users/create.html', first_name=first_name, last_name=last_name, dni=dni, email=email, phone=phone, 
+                                    license_number=license_number, license_expiration=license_expiration, license_country=license_country, 
+                                    address=address, city=city, postal_code=postal_code, country=country, state=state, 
+                                    terms_accepted=terms_accepted, privacy_policy_accepted=privacy_policy_accepted, offers_accepted=offers_accepted)
 
-        try:
-            dob = datetime.strptime(dob, '%Y-%m-%d').date()
-        except ValueError:
-            flash('Invalid date format for Date of Birth!', 'error')
-            return render_template('create_user.html', name=name, email=email, dob=dob, tier=tier)
+        # Parse license expiration date
+        if license_expiration:
+            try:
+                license_expiration = datetime.strptime(license_expiration, '%Y-%m-%d').date()
+            except ValueError:
+                flash('Formato inválido de Fecha de Expiración de Licencia!', 'error')
+                return render_template('users/create.html', first_name=first_name, last_name=last_name, dni=dni, email=email, phone=phone, 
+                                        license_number=license_number, license_expiration=license_expiration, license_country=license_country, 
+                                        address=address, city=city, postal_code=postal_code, country=country, state=state, 
+                                        terms_accepted=terms_accepted, privacy_policy_accepted=privacy_policy_accepted, offers_accepted=offers_accepted)
 
         # Create the user
-        result = add_user(name=name, email=email, dob=dob, password=password, tier=int(tier))
-        flash(result)
+        result = add_user(
+            first_name=first_name,
+            last_name=last_name,
+            dni=dni,
+            email=email,
+            password=password,
+            phone=phone,
+            license_number=license_number,
+            license_expiration=license_expiration,
+            license_country=license_country,
+            address=address,
+            city=city,
+            postal_code=postal_code,
+            country=country,
+            state=state,
+            terms_accepted=terms_accepted,
+            privacy_policy_accepted=privacy_policy_accepted,
+            offers_accepted=offers_accepted
+        )
+
+        flash(result[0], result[1])
         return redirect(url_for('base.base'))
 
-    
     return render_template('users/create.html')
+
 
 @bp.route('/delete/<int:id>', methods=['POST'])
 @login_required
@@ -45,10 +86,12 @@ def delete_user_route(id):
     delete_user(user_id=id)
     return redirect(url_for('users.list_users'))
 
+
 @bp.route('/update', methods=['POST'])
 @login_required
 def update_user():
     pass
+
 
 # NUEVA RUTA: Dashboard
 @bp.route('/dashboard', methods=['GET'])
@@ -59,6 +102,7 @@ def dashboard():
         return redirect(url_for('base.base'))
     return render_template('reports/dashboard.html')
 
+
 @bp.route('/create_admin', methods=['GET', 'POST'])
 @login_required
 def create_admin():
@@ -68,8 +112,8 @@ def create_admin():
         return redirect(url_for('base.base'))
 
     if request.method == 'POST':
-        # Obtener datos del formulario
         try:
+            # Obtener datos del formulario
             first_name = request.form['first_name']
             last_name = request.form['last_name']
             dob = datetime.strptime(request.form['dob'], '%Y-%m-%d').date()
@@ -79,32 +123,44 @@ def create_admin():
             email = request.form['email']
             marital_status = request.form['marital_status']
             children = int(request.form['children'])
-            position = request.form['position']
             department = request.form['department']
+            position = request.form['position']
+            work_schedule = request.form['work_schedule']
+            salary = float(request.form['salary'])
             join_date = datetime.strptime(request.form['join_date'], '%Y-%m-%d').date()
             contract_type = request.form['contract_type']
-            salary = float(request.form['salary'])
-            work_schedule = request.form['work_schedule']
             education_level = request.form['education_level']
-            emergency_contact_name = request.form['emergency_contact_name']
-            emergency_contact_phone = request.form['emergency_contact_phone']
-            blood_group = request.form['blood_group']
-            medical_conditions = request.form['medical_conditions']
-            bank_account = request.form['bank_account']
+            emergency_contact = request.form['emergency_contact']
+            emergency_phone = request.form['emergency_phone']
             afp = request.form['afp']
-            health_insurance = request.form['health_insurance']
             password = request.form['password']  # Contraseña inicial del administrador
 
             # Crear el nuevo administrador
-            result = add_user(
-                name=f"{first_name} {last_name}",
-                email=email,
+            result = add_admin(
+                first_name=first_name,
+                last_name=last_name,
                 dob=dob,
+                dni=dni,
+                address=address,
+                phone=phone,
+                email=email,
+                marital_status=marital_status,
+                children=children,
+                department=department,
+                position=position,
+                work_schedule=work_schedule,
+                salary=salary,
+                join_date=join_date,
+                contract_type=contract_type,
+                education_level=education_level,
+                emergency_contact=emergency_contact,
+                emergency_phone=emergency_phone,
+                afp=afp,
                 password=password,
-                tier=1  # Tier 1 es nivel de administrador
+                tier=1  # Nivel de administrador
             )
 
-            # Manejo de resultado
+            # Manejo del resultado
             if isinstance(result, tuple) and result[1] == 'success':
                 flash('Administrador registrado con éxito.', 'success')
                 return redirect(url_for('users.list_users'))
