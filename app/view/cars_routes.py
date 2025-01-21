@@ -8,7 +8,8 @@ bp = Blueprint('cars', __name__, url_prefix='/cars')
 
 @bp.route('/')
 def list_cars():
-    return list_all_cars()
+    cars = list_all_cars()
+    return render_template('cars/user_cars.html', cars=cars)
 
 @bp.route('/cars')
 def user_cars():
