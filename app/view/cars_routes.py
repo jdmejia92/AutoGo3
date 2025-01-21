@@ -1,88 +1,118 @@
-from flask import Blueprint, render_template, request, redirect, url_for
-from flask_login import login_user, logout_user, login_required, current_user
-from ..model.car_model import Car
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import login_required
+from ..controller.car_controller import list_all_cars, create_car, validate_car_data, handle_photos, get_car_by_id, update_car
 from app.extensions import db
+from ..extensions import app
 
 bp = Blueprint('cars', __name__, url_prefix='/cars')
 
 @bp.route('/')
 def list_cars():
-    vehicles = Car.query.all()
-    return render_template('cars/list.html', vehicles=vehicles)
+    return list_all_cars()
 
 @bp.route('/create', methods=['GET', 'POST'])
 @login_required
-def create_car():
+def create_car_route():
     if request.method == 'POST':
-        brand = request.form['brand']
-        model = request.form['model']
-        year = request.form['year']
-        plate = request.form['plate']
-        color = request.form['color']
-        capacity = request.form['capacity']
-        type_ = request.form['type']
-        transmission = request.form['transmission']
-        fuel = request.form['fuel']
-        kilometer = request.form['kilometer']
-        power = request.form['power']
-        status = request.form['status']
-        gps = 'gps' in request.form
-        ac = 'ac' in request.form
-        bluetooth = 'bluetooth' in request.form
-        rear_camera = 'rear_camera' in request.form
-        parking_sensors = 'parking_sensors' in request.form
-        category = request.form['category']
-        daily_rate = request.form['daily_rate']
-        insurance_date = request.form['insurance_date']
-        itv_date = request.form['itv_date']
-        
-        # Subir las fotos si existen
+        form_data = {
+            'brand': request.form.get('brand', '').strip(),
+            'model': request.form.get('model', '').strip(),
+            'year': request.form.get('year', '').strip(),
+            'plate': request.form.get('plate', '').strip(),
+            'color': request.form.get('color', '').strip(),
+            'capacity': request.form.get('capacity', '').strip(),
+            'type': request.form.get('type', '').strip(),
+            'transmission': request.form.get('transmission', '').strip(),
+            'fuel': request.form.get('fuel', '').strip(),
+            'kilometer': request.form.get('kilometer', '').strip(),
+            'power': request.form.get('power', '').strip(),
+            'status': request.form.get('status', '').strip(),
+            'category': request.form.get('category', '').strip(),
+            'daily_rate': request.form.get('daily_rate', '').strip(),
+            'insurance_date': request.form.get('insurance_date', '').strip(),
+            'itv_date': request.form.get('itv_date', '').strip()
+        }
+
+        # Validate the form data
+        errors = validate_car_data(form_data)
+        if errors:
+            flash('Por favor corregir los siguientes errores: ' & errors, 'error')
+            return render_template('cars/create.html', form=request.form)
+
+        # Process photos
         photos = request.files.getlist('photos')
-        # Aquí podrías guardar las fotos en una carpeta y agregar las rutas a la base de datos
+        photo_paths = handle_photos(photos, app.config['UPLOAD_FOLDER'])
 
-        # Crear el vehículo
-        vehicle = Car(
-            brand=brand,
-            model=model,
-            fabrication_year=year,
-            plate=plate,
-            color=color,
-            capacity=capacity,
-            type=type_,
-            transmission=transmission,
-            fuel=fuel,
-            kilometer=kilometer,
-            power=power,
-            status=status,
-            gps=gps,
-            ac=ac,
-            bluetooth=bluetooth,
-            rear_camera=rear_camera,
-            parking_sensors=parking_sensors,
-            category=category,
-            daily_rate=daily_rate,
-            insurance_date=insurance_date,
-            itv_date=itv_date
-        )
+        # Create the car object
+        vehicle = create_car(**form_data)
 
-        # Guardar el vehículo en la base de datos
-        db.session.add(vehicle)
-        db.session.commit()
-
+        # Handle successful creation and redirect
         return redirect(url_for('cars.list_cars'))
-    
+
     return render_template('cars/create.html')
 
 @bp.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required
-def update_car(id):
-    vehicle = Car.query.get_or_404(id)
+def update_car_route(id):
+    vehicle = get_car_by_id(id)
+    
     if request.method == 'POST':
-        vehicle.brand = request.form['brand']
-        vehicle.model = request.form['model']
-        db.session.commit()
+        form_data = {
+            'brand': request.form.get('brand', '').strip(),
+            'model': request.form.get('model', '').strip(),
+            'year': request.form.get('year', '').strip(),
+            'plate': request.form.get('plate', '').strip(),
+            'color': request.form.get('color', '').strip(),
+            'capacity': request.form.get('capacity', '').strip(),
+            'type': request.form.get('type', '').strip(),
+            'transmission': request.form.get('transmission', '').strip(),
+            'fuel': request.form.get('fuel', '').strip(),
+            'kilometer': request.form.get('kilometer', '').strip(),
+            'power': request.form.get('power', '').strip(),
+            'status': request.form.get('status', '').strip(),
+            'category': request.form.get('category', '').strip(),
+            'daily_rate': request.form.get('daily_rate', '').strip(),
+            'insurance_date': request.form.get('insurance_date', '').strip(),
+            'itv_date': request.form.get('itv_date', '').strip()
+        }
+
+        # Validate the form data
+        errors = validate_car_data(form_data)
+        if errors:
+            flash('Por favor corregir los siguientes errores: ' & errors, 'error')
+            return render_template('cars/update.html', vehicle=vehicle, form=request.form)
+
+        # Process photos
+        photos = request.files.getlist('photos')
+        photo_paths = handle_photos(photos, app.config['UPLOAD_FOLDER'])
+
+        update_car(
+            id, 
+            brand=form_data.get('brand'), 
+            model=form_data.get('model'), 
+            status=form_data.get('status'), 
+            car_type=form_data.get('type'), 
+            transmission=form_data.get('transmission'), 
+            fuel=form_data.get('fuel'), 
+            kilometer=form_data.get('kilometer'), 
+            power=form_data.get('power'), 
+            gps=request.form.get('gps') == 'on',
+            ac=request.form.get('ac') == 'on', 
+            bluetooth=request.form.get('bluetooth') == 'on', 
+            rear_camera=request.form.get('rear_camera') == 'on', 
+            parking_sensors=request.form.get('parking_sensors') == 'on', 
+            category=form_data.get('category'), 
+            daily_rate=form_data.get('daily_rate'), 
+            insurance_date=form_data.get('insurance_date'), 
+            itv_date=form_data.get('itv_date'), 
+            photos=photo_paths,
+            description=request.form.get('description')
+        )
+
         return redirect(url_for('cars.list_cars'))
+
     return render_template('cars/update.html', vehicle=vehicle)
+
 
 @bp.route('/delete/<int:id>', methods=['POST'])
 @login_required

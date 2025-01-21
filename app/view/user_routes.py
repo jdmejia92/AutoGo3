@@ -75,11 +75,11 @@ def delete_user_route(id):
     return redirect(url_for('users.list_users'))
 
 
-@bp.route('/update/', methods=['GET', 'POST'])
+@bp.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required
-def update_user():
+def update_user(id):
     # Fetch the user from the database
-    user = get_user_by_id(current_user.id)  # Replace with your actual function to fetch the user
+    user = get_user_by_id(id)  # Replace with your actual function to fetch the user
     if not user:
         flash('Usuario no encontrado!', 'error')
         return redirect(url_for('base.base'))

@@ -1,15 +1,14 @@
 from flask import Flask
-from app.extensions import db, migrate, login
+from app.extensions import db, migrate, login, app
 from .controller.admin_controller import create_default_super_admin
 import os
 
-def create_app():
-    app = Flask(__name__)
-    
+def create_app():    
     # Configuración básica de la aplicación
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.secret_key = os.getenv('SECRET_KEY', 'default-secret-key')  # Clave secreta predeterminada
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'images')
 
     # Inicialización de extensiones
     from .model.user_model import load_user as user_loader
