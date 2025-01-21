@@ -47,10 +47,13 @@ class Admin(UserMixin, db.Model):
     def is_admin(self):
         """Check if the user is a worker."""
         return self.role == 1
+    
+    def get_id(self):
+        return self.email
 
     def __repr__(self):
-        return f"<User {self.first_name} {self.last_name} (Role: {'Admin' if self.role == 0 else 'Worker'})>"
+        return f"<User {self.first_name} {self.last_name} (Role: {'Admin' if self.tier == 0 else 'Worker'})>"
 
 # Carga de usuario para Flask-Login
-def load_admin(admin_id):
-    return Admin.query.get(int(admin_id))
+def load_admin(email):
+    return Admin.query.filter_by(email=email).first()

@@ -14,6 +14,22 @@ def list_admins_if_super_admin(user_role):
             return f"Error al obtener la lista de administradores: {str(e)}"
     else:
         return "Acceso denegado. Solo los superadministradores pueden listar administradores."
+    
+def get_admin_by_id(admin_id):
+    """Obtiene un administrador por su ID."""
+    return Admin.query.get(admin_id)
+
+def check_admin(email, password):
+    """Verifica si las credenciales de un administrador son correctas."""
+    admin = Admin.query.filter_by(email=email).first()
+    if not admin:
+        result = ('Usuario o clave invalido', 'danger')
+    else:
+        if admin and admin.check_password(password):
+            result = admin
+        else:
+            result = ('Usuario o clave invalido', 'danger')
+    return result
 
 def add_admin(
     first_name, last_name, dob, dni, address, phone, email, marital_status, children, 
@@ -63,10 +79,6 @@ def add_admin(
         db.session.rollback()
         return ('Error al crear el administrador: ' + str(e.orig), 'error')
 
-
-def get_admin_by_id(admin_id):
-    """Obtiene un administrador por su ID."""
-    return Admin.query.get(admin_id)
 
 def update_admin(admin_id, first_name=None, last_name=None, email=None, phone=None, password=None):
     """Actualiza los datos de un administrador."""

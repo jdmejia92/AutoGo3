@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from ..controller.auth_controller import check_login
-from ..controller.admin_controller import get_admin_by_id
+from ..controller.admin_controller import check_admin
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -12,8 +12,9 @@ def login():
         password = request.form['password']
 
         result = check_login(email=email, password=password)
+        print(result)
         if type(result) != tuple:
-            login_user(result) # Log in the user
+            login_user(result)
             return redirect(url_for('base.base'))
         else:
             flash(result[0], result[1])
@@ -31,9 +32,10 @@ def account():
     """
     Página de "Mi Cuenta" para usuarios autenticados.
     """
-    admin = get_admin_by_id(current_user.id)
+    admin = check_admin(current_user.email, current_user.password_hash)
 
     if admin:
+        print(current_user)
         payment_methods = []  
         documents = []
 

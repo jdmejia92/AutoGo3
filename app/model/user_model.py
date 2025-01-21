@@ -35,9 +35,12 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         """Verify the password."""
         return check_password_hash(self.password_hash, password)
+    
+    def get_id(self):
+        return self.email
 
     def __repr__(self):
         return f"<User {self.first_name} {self.last_name}>"
 
-def load_user(user_id):
-    return User.query.get(int(user_id))
+def load_user_model(email):
+    return User.query.filter_by(email=email).first()

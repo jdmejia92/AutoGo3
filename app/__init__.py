@@ -1,4 +1,3 @@
-from flask import Flask
 from app.extensions import db, migrate, login, app
 from .controller.admin_controller import create_default_super_admin
 import os
@@ -11,7 +10,7 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'images')
 
     # Inicialización de extensiones
-    from .model.user_model import load_user as user_loader
+    from .model.user_model import load_user_model
     from .model.admin_model import load_admin
     db.init_app(app)
     migrate.init_app(app, db)
@@ -19,11 +18,13 @@ def create_app():
 
     # Configuración de Flask-Login
     @login.user_loader
-    def load_user(user_id):
-        user = user_loader(int(user_id))
+    def load_user(email):
+        # Busca en la tabla de usuarios
+        user = load_user_model(email)
         if user:
             return user
-        return load_admin(int(user_id))
+        # Si no es un usuario, busca en la tabla de administradores
+        return load_admin(email)
 
     login.login_view = "auth.login"
     login.login_message = "Inicia sesión para acceder a esta página."
