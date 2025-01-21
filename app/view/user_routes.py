@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from ..controller.user_controller import add_user, delete_user, list_users_if_admin
-from ..controller.admin_controller import add_admin
-from datetime import datetime
+from ..controller.user_controller import add_user, delete_user, list_users_if_admin, get_user_by_id, update_user_info
+from ..controller.admin_controller import add_admin, get_admin_by_id
 from app.extensions import db
 
 bp = Blueprint('users', __name__, url_prefix='/users')
@@ -42,17 +41,6 @@ def create_user():
                                     address=address, city=city, postal_code=postal_code, country=country, state=state, 
                                     terms_accepted=terms_accepted, privacy_policy_accepted=privacy_policy_accepted, offers_accepted=offers_accepted)
 
-        # Parse license expiration date
-        if license_expiration:
-            try:
-                license_expiration = datetime.strptime(license_expiration, '%Y-%m-%d').date()
-            except ValueError:
-                flash('Formato inválido de Fecha de Expiración de Licencia!', 'error')
-                return render_template('users/create.html', first_name=first_name, last_name=last_name, dni=dni, email=email, phone=phone, 
-                                        license_number=license_number, license_expiration=license_expiration, license_country=license_country, 
-                                        address=address, city=city, postal_code=postal_code, country=country, state=state, 
-                                        terms_accepted=terms_accepted, privacy_policy_accepted=privacy_policy_accepted, offers_accepted=offers_accepted)
-
         # Create the user
         result = add_user(
             first_name=first_name,
@@ -87,17 +75,69 @@ def delete_user_route(id):
     return redirect(url_for('users.list_users'))
 
 
-@bp.route('/update', methods=['POST'])
+@bp.route('/update/', methods=['GET', 'POST'])
 @login_required
 def update_user():
-    pass
+    # Fetch the user from the database
+    user = get_user_by_id(current_user.id)  # Replace with your actual function to fetch the user
+    if not user:
+        flash('Usuario no encontrado!', 'error')
+        return redirect(url_for('base.base'))
+
+    if request.method == 'POST':
+        first_name = request.form.get('first_name', user.first_name)
+        last_name = request.form.get('last_name', user.last_name)
+        dni = request.form.get('dni', user.dni)
+        email = request.form.get('email', user.email)
+        password = request.form.get('password')
+        phone = request.form.get('phone', user.phone)
+        license_number = request.form.get('license_number', user.license_number)
+        license_expiration = request.form.get('license_expiration', user.license_expiration)
+        license_country = request.form.get('license_country', user.license_country)
+        address = request.form.get('address', user.address)
+        city = request.form.get('city', user.city)
+        postal_code = request.form.get('postal_code', user.postal_code)
+        country = request.form.get('country', user.country)
+        state = request.form.get('state', user.state)
+        offers_accepted = request.form.get('offers_accepted', True)
+
+        # Validate required fields
+        if not dni or not first_name or not last_name or not email or not license_country or not address or not city or not postal_code or not country or not state:
+            flash('Todos los campos obligatorios deben ser completados!', 'error')
+            return render_template('users/create.html', user=user)
+
+        # Update the user
+        result = update_user_info(
+            user_id=current_user.id,
+            first_name=first_name,
+            last_name=last_name,
+            dni=dni,
+            email=email,
+            password=password,
+            phone=phone,
+            license_number=license_number,
+            license_expiration=license_expiration,
+            license_country=license_country,
+            address=address,
+            city=city,
+            postal_code=postal_code,
+            country=country,
+            state=state,
+            offers_accepted=offers_accepted
+        )
+
+        flash(result[0], result[1])
+        return redirect(url_for('auth.account'))
+
+    return render_template('users/create.html', user=user)
 
 
 # NUEVA RUTA: Dashboard
 @bp.route('/dashboard', methods=['GET'])
 @login_required
 def dashboard():
-    if current_user.tier != 0:
+    admin = get_admin_by_id(current_user.id)
+    if admin:
         flash('Acceso no autorizado.', 'danger')
         return redirect(url_for('base.base'))
     return render_template('reports/dashboard.html')
@@ -116,7 +156,7 @@ def create_admin():
             # Obtener datos del formulario
             first_name = request.form['first_name']
             last_name = request.form['last_name']
-            dob = datetime.strptime(request.form['dob'], '%Y-%m-%d').date()
+            dob = request.form['dob']
             dni = request.form['dni']
             address = request.form['address']
             phone = request.form['phone']
@@ -127,7 +167,7 @@ def create_admin():
             position = request.form['position']
             work_schedule = request.form['work_schedule']
             salary = float(request.form['salary'])
-            join_date = datetime.strptime(request.form['join_date'], '%Y-%m-%d').date()
+            join_date = request.form['join_date']
             contract_type = request.form['contract_type']
             education_level = request.form['education_level']
             emergency_contact = request.form['emergency_contact']

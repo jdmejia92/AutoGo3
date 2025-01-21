@@ -37,7 +37,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f"<User {self.first_name} {self.last_name} ({self.tier})>"
+        return f"<User {self.first_name} {self.last_name}>"
 
 def load_user(user_id):
     return User.query.get(int(user_id))

@@ -1,4 +1,4 @@
-from flask import Flask, flash
+from flask import Flask
 from app.extensions import db, migrate, login
 from .controller.admin_controller import create_default_super_admin
 import os
@@ -12,15 +12,20 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY', 'default-secret-key')  # Clave secreta predeterminada
 
     # Inicialización de extensiones
-    from .model.user_model import load_user
+    from .model.user_model import load_user as user_loader
     from .model.admin_model import load_admin
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
 
     # Configuración de Flask-Login
-    login.user_loader(load_user)
-    login.user_loader(load_admin)
+    @login.user_loader
+    def load_user(user_id):
+        user = user_loader(int(user_id))
+        if user:
+            return user
+        return load_admin(int(user_id))
+
     login.login_view = "auth.login"
     login.login_message = "Inicia sesión para acceder a esta página."
     login.login_message_category = "warning"
