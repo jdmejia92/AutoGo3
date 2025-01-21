@@ -2,7 +2,7 @@ from app.extensions import db, migrate, login, app
 from .controller.admin_controller import create_default_super_admin
 import os
 
-def create_app():    
+def create_app():
     # Configuración básica de la aplicación
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
