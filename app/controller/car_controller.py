@@ -10,6 +10,14 @@ def list_all_cars():
         return users
     except Exception as e:
         return f"Error al obtener la lista de carros: {str(e)}", 'error'
+    
+def list_cars_for_users(request):
+    page = request.args.get('page', 1, type=int)
+    cars = Car.query.paginate(page=page, per_page=12)
+    return cars
+
+def get_car_by_id(car_id):
+    return Car.query.get(car_id)
 
 def create_car(
     brand, model, fabrication_year, plate, color, chairs, car_type, transmission, fuel,
@@ -84,10 +92,6 @@ def handle_photos(photos, upload_folder):
             photo.save(photo_path)
             photo_paths.append(photo_path)
     return photo_paths
-
-
-def get_car_by_id(car_id):
-    return Car.query.get(car_id)
 
 def update_car(car_id, brand=None, model=None, status=None, car_type=None, transmission=None, fuel=None,
                 kilometer=None, power=None, gps=None, ac=None, bluetooth=None, rear_camera=None, 
