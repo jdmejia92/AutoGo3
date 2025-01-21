@@ -70,7 +70,7 @@
                     <div class="card mt-4">
                         <div class="card-body">
                             <h4 class="card-title">Información Personal</h4>
-                            <form method="POST" action="{{ url_for('users.update_user') }}">
+                            <form method="POST" action="{{ url_for('users.update_user', id=current_user.id) }}">
                                 <div class="form-group">
                                     <label for="phone">Teléfono</label>
                                     <input type="text" id="phone" name="phone" class="form-control" value="{{ current_user.phone }}">

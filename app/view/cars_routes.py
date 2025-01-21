@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required
-from ..controller.car_controller import list_all_cars, create_car, validate_car_data, handle_photos, get_car_by_id, update_car, list_cars_for_users
+from ..controller.car_controller import list_all_cars, create_car, validate_car_data, handle_photos, get_car_by_id, update_car, list_cars_for_users, delete_car
 from app.extensions import db
 from ..extensions import app
 
@@ -122,9 +122,7 @@ def update_car_route(id):
 @bp.route('/delete/<int:id>', methods=['POST'])
 @login_required
 def delete_car(id):
-    vehicle = Car.query.get_or_404(id)
-    db.session.delete(vehicle)
-    db.session.commit()
+    vehicle = delete_car(id)
     return redirect(url_for('cars.list_cars'))
 
 @bp.route('/pricing')
