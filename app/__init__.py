@@ -1,9 +1,11 @@
 from flask import Flask
-from app.extensions import db, migrate, login, app
+from app.extensions import db, migrate, login
 from .controller.admin_controller import create_default_super_admin
 import os
 
-def create_app():    
+def create_app():
+    app = Flask(__name__)
+
     # Configuración básica de la aplicación
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
