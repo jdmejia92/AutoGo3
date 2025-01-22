@@ -1,19 +1,145 @@
-<html>
-<head>
-    <title>Update Car</title>
-</head>
-<body>
-    <a href="{{ url_for('base.base') }}">HOME</a>
-    <h1>Update Car</h1>
-    <form method="post">
-        <label for="brand">Brand:</label>
-        <input type="text" id="brand" name="brand" value="{{ vehicle.brand }}" required>
-        <br>
-        <label for="model">Model:</label>
-        <input type="text" id="model" name="model" value="{{ vehicle.model }}" required>
-        <br>
-        <button type="submit">Update</button>
-    </form>
-    <a href="{{ url_for('cars.list_cars') }}">Back to List</a>
-</body>
-</html>
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2" style="background-image: url('{{ url_for('static', filename='images/banner.jpg') }}');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-9 pb-5">
+                <h1 class="mb-3 bread">Actualizar Vehículo</h1>
+                <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Update Car Form Section -->
+<section class="ftco-section">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="form-container w-75 bg-light p-5 rounded">
+            <h2 class="text-center mb-4">Formulario de Actualización de Vehículo</h2>
+            <form method="POST" enctype="multipart/form-data" class="contact-form">
+                <!-- Información Básica -->
+                <h4 class="mb-3">Información Básica</h4>
+                <div class="form-group">
+                    <label for="brand">Marca</label>
+                    <select id="brand" name="brand" class="form-control" required>
+                        <option value="Toyota" {% if vehicle.brand == "Toyota" %}selected{% endif %}>Toyota</option>
+                        <option value="Honda" {% if vehicle.brand == "Honda" %}selected{% endif %}>Honda</option>
+                        <option value="Ford" {% if vehicle.brand == "Ford" %}selected{% endif %}>Ford</option>
+                        <option value="VW" {% if vehicle.brand == "VW" %}selected{% endif %}>Volkswagen</option>
+                        <option value="Hyundai" {% if vehicle.brand == "Hyundai" %}selected{% endif %}>Hyundai</option>
+                        <option value="Kia" {% if vehicle.brand == "Kia" %}selected{% endif %}>Kia</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="model">Modelo</label>
+                    <input type="text" id="model" name="model" class="form-control" value="{{ vehicle.model }}" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="fabrication_year">Año de Fabricación</label>
+                    <input type="number" id="fabrication_year" name="fabrication_year" class="form-control" value="{{ vehicle.fabrication_year }}" min="1900" max="2099" required>
+                </div>
+                <div class="form-group">
+                    <label for="plate">Matrícula</label>
+                    <input type="text" id="plate" name="plate" class="form-control" value="{{ vehicle.plate }}" maxlength="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="color">Color</label>
+                    <input type="text" id="color" name="color" class="form-control" value="{{ vehicle.color }}" maxlength="20" required>
+                </div>
+                <div class="form-group">
+                    <label for="chairs">Capacidad de Pasajeros</label>
+                    <select id="chairs" name="chairs" class="form-control" required>
+                        <option value="2" {% if vehicle.chairs == 2 %}selected{% endif %}>2</option>
+                        <option value="4" {% if vehicle.chairs == 4 %}selected{% endif %}>4</option>
+                        <option value="5" {% if vehicle.chairs == 5 %}selected{% endif %}>5</option>
+                        <option value="7" {% if vehicle.chairs == 7 %}selected{% endif %}>7</option>
+                        <option value="9" {% if vehicle.chairs == 9 %}selected{% endif %}>9</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="car_type">Tipo de Vehículo</label>
+                    <select id="car_type" name="car_type" class="form-control" required>
+                        <option value="SUV" {% if vehicle.car_type == "SUV" %}selected{% endif %}>SUV</option>
+                        <option value="Sedán" {% if vehicle.car_type == "Sedán" %}selected{% endif %}>Sedán</option>
+                        <option value="Hatchback" {% if vehicle.car_type == "Hatchback" %}selected{% endif %}>Hatchback</option>
+                        <option value="Pickup" {% if vehicle.car_type == "Pickup" %}selected{% endif %}>Pickup</option>
+                        <option value="Van" {% if vehicle.car_type == "Van" %}selected{% endif %}>Van</option>
+                    </select>
+                </div>
+
+                <!-- Características Técnicas -->
+                <h4 class="mb-3 mt-4">Características Técnicas</h4>
+                <div class="form-group">
+                    <label for="transmission">Transmisión</label>
+                    <select id="transmission" name="transmission" class="form-control" required>
+                        <option value="Automático" {% if vehicle.transmission == "Automático" %}selected{% endif %}>Automático</option>
+                        <option value="Manual" {% if vehicle.transmission == "Manual" %}selected{% endif %}>Manual</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fuel">Combustible</label>
+                    <select id="fuel" name="fuel" class="form-control" required>
+                        <option value="Gasolina" {% if vehicle.fuel == "Gasolina" %}selected{% endif %}>Gasolina</option>
+                        <option value="Diesel" {% if vehicle.fuel == "Diesel" %}selected{% endif %}>Diesel</option>
+                        <option value="GLP" {% if vehicle.fuel == "GLP" %}selected{% endif %}>GLP</option>
+                        <option value="GNV" {% if vehicle.fuel == "GNV" %}selected{% endif %}>GNV</option>
+                        <option value="Eléctrico" {% if vehicle.fuel == "Eléctrico" %}selected{% endif %}>Eléctrico</option>
+                        <option value="Híbrido" {% if vehicle.fuel == "Híbrido" %}selected{% endif %}>Híbrido</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="kilometer">Kilometraje</label>
+                    <input type="number" id="kilometer" name="kilometer" class="form-control" value="{{ vehicle.kilometer }}" min="0" required>
+                </div>
+
+                <!-- Estado -->
+                <h4 class="mb-3 mt-4">Estado</h4>
+                <div class="form-group">
+                    <label for="status">Estado</label>
+                    <select id="status" name="status" class="form-control" required>
+                        <option value="Disponible" {% if vehicle.status == "Disponible" %}selected{% endif %}>Disponible</option>
+                        <option value="Mantenimiento" {% if vehicle.status == "Mantenimiento" %}selected{% endif %}>Mantenimiento</option>
+                        <option value="Reservado" {% if vehicle.status == "Reservado" %}selected{% endif %}>Reservado</option>
+                        <option value="Inactivo" {% if vehicle.status == "Inactivo" %}selected{% endif %}>Inactivo</option>
+                    </select>
+                </div>
+
+                <!-- Archivos de Imagen -->
+                <h4 class="mb-3 mt-4">Fotos del Vehículo</h4>
+                <div class="form-group">
+                    <label for="current_photos">Fotos Actuales</label>
+                    <div class="current-photos mb-3">
+                        <div class="row">
+                            {% for photo in vehicle.photos[:6] %}
+                            <div class="col-md-4 mb-3">
+                                <div class="photo-item text-center">
+                                    <img src="{{ url_for('static', filename='uploads/' ~ photo.filename) }}" alt="Foto del Vehículo" class="img-thumbnail" style="width: 100%; height: auto;">
+                                    <div class="mt-2">
+                                        <label><input type="checkbox" name="delete_photos" value="{{ photo.id }}"> Eliminar</label>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="photos">Agregar Nuevas Fotos</label>
+                    <input type="file" id="photos" name="photos" class="form-control" multiple>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary py-3 px-5">Actualizar Vehículo</button>
+                    <a href="{{ url_for('cars.list_cars') }}" class="btn btn-outline-secondary py-3 px-5">Volver al Listado</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

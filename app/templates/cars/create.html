@@ -20,7 +20,7 @@
     <div class="container d-flex justify-content-center align-items-center">
         <div class="form-container w-75 bg-light p-5 rounded">
             <h2 class="text-center mb-4">Formulario de Registro de Vehículo</h2>
-            <form action="{{ url_for('cars.create_car') }}" method="POST" enctype="multipart/form-data" class="contact-form">
+            <form action="{{ url_for('cars.create_car_route') }}" method="POST" enctype="multipart/form-data" class="contact-form">
 
                 <!-- Información Básica -->
                 <h4 class="mb-3">Información Básica</h4>
@@ -30,8 +30,9 @@
                         <option value="Toyota">Toyota</option>
                         <option value="Honda">Honda</option>
                         <option value="Ford">Ford</option>
-                        <option value="VW">Volkswagen</option>
+                        <option value="Volkswagen">Volkswagen</option>
                         <option value="Hyundai">Hyundai</option>
+                        <option value="Nissan">Nissan</option>
                         <option value="Kia">Kia</option>
                     </select>
                 </div>
@@ -40,8 +41,8 @@
                     <input type="text" id="model" name="model" class="form-control" maxlength="50" required>
                 </div>
                 <div class="form-group">
-                    <label for="year">Año</label>
-                    <input type="number" id="year" name="year" class="form-control" min="1900" max="2099" required>
+                    <label for="fabrication_year">Año de Fabricación</label>
+                    <input type="number" id="fabrication_year" name="fabrication_year" class="form-control" min="1900" max="2099" required>
                 </div>
                 <div class="form-group">
                     <label for="plate">Matrícula</label>
@@ -52,8 +53,8 @@
                     <input type="text" id="color" name="color" class="form-control" maxlength="20" required>
                 </div>
                 <div class="form-group">
-                    <label for="capacity">Capacidad de pasajeros</label>
-                    <select id="capacity" name="capacity" class="form-control" required>
+                    <label for="chairs">Capacidad de Pasajeros</label>
+                    <select id="chairs" name="chairs" class="form-control" required>
                         <option value="2">2</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
@@ -62,8 +63,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="type">Tipo de Vehículo</label>
-                    <select id="type" name="type" class="form-control" required>
+                    <label for="car_type">Tipo de Vehículo</label>
+                    <select id="car_type" name="car_type" class="form-control" required>
                         <option value="SUV">SUV</option>
                         <option value="Sedán">Sedán</option>
                         <option value="Hatchback">Hatchback</option>
@@ -155,6 +156,10 @@
                     <label for="photos">Fotos del Vehículo</label>
                     <input type="file" id="photos" name="photos" class="form-control" multiple>
                 </div>
+                <div class="form-group">
+                    <label for="description">Descripción</label>
+                    <textarea id="description" name="description" class="form-control" rows="4"></textarea>
+                </div>
 
                 <!-- Botón de Enviar -->
                 <div class="form-group text-center">
@@ -178,5 +183,29 @@
         {% endif %}
     {% endwith %}
 </section>
+
+<!-- Validaciones en el frontend -->
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const fabricationYear = document.getElementById('fabrication_year').value;
+        const insuranceDate = document.getElementById('insurance_date').value;
+        const itvDate = document.getElementById('itv_date').value;
+
+        if (fabricationYear < 1900 || fabricationYear > 2099) {
+            alert('El año debe estar entre 1900 y 2099.');
+            e.preventDefault();
+        }
+
+        if (new Date(insuranceDate) < new Date()) {
+            alert('La fecha del seguro debe ser futura.');
+            e.preventDefault();
+        }
+
+        if (new Date(itvDate) < new Date()) {
+            alert('La fecha de la ITV debe ser futura.');
+            e.preventDefault();
+        }
+    });
+</script>
 
 {% endblock %}

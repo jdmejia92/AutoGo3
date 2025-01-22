@@ -1,13 +1,17 @@
-from app.extensions import db, migrate, login, app
+from flask import Flask
+from app.extensions import db, migrate, login
 from .controller.admin_controller import create_default_super_admin
 import os
 
 def create_app():
+    app = Flask(__name__)
+
     # Configuración básica de la aplicación
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE', 'sqlite:///default.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.secret_key = os.getenv('SECRET_KEY', 'default-secret-key')  # Clave secreta predeterminada
+    app.secret_key = os.getenv('SECRET_KEY', 'default-secret-key')
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'images')
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     # Inicialización de extensiones
     from .model.user_model import load_user_model
@@ -19,11 +23,9 @@ def create_app():
     # Configuración de Flask-Login
     @login.user_loader
     def load_user(email):
-        # Busca en la tabla de usuarios
         user = load_user_model(email)
         if user:
             return user
-        # Si no es un usuario, busca en la tabla de administradores
         return load_admin(email)
 
     login.login_view = "auth.login"
@@ -31,8 +33,8 @@ def create_app():
     login.login_message_category = "warning"
 
     # Registro de blueprints y tareas iniciales
+    from .view import user_routes, reservations_routes, cars_routes, base_routes, auth_routes
     with app.app_context():
-        from .view import user_routes, reservations_routes, cars_routes, base_routes, auth_routes
         app.register_blueprint(user_routes.bp)
         app.register_blueprint(cars_routes.bp)
         app.register_blueprint(reservations_routes.bp)
