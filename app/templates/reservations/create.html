@@ -26,17 +26,44 @@
                 <!-- Información Personal -->
                 <h4 class="mb-3">Información Personal</h4>
                 <div class="form-group">
-                    <label for="user_name">Nombre del usuario</label>
-                    <input type="text" id="user_name" name="user_name" class="form-control" maxlength="100" value="{{ current_user.name }}" readonly>
+                    <label for="first_name">Nombre</label>
+                    <input 
+                        type="text" 
+                        id="first_name" 
+                        name="first_name" 
+                        class="form-control" 
+                        maxlength="50" 
+                        value="{{ current_user.first_name }}" 
+                        required>
                 </div>
+                <div class="form-group">
+                    <label for="last_name">Apellido</label>
+                    <input 
+                        type="text" 
+                        id="last_name" 
+                        name="last_name" 
+                        class="form-control" 
+                        maxlength="50" 
+                        value="{{ current_user.last_name }}" 
+                        required>
+                </div>
+                
                 <div class="form-group">
                     <label for="user_dni">DNI/Identificación</label>
                     <input type="text" id="user_dni" name="user_dni" class="form-control" maxlength="9" value="{{ current_user.dni }}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="user_license">Número de licencia de conducir</label>
-                    <input type="text" id="user_license" name="user_license" class="form-control" maxlength="20" value="{{ current_user.license }}" readonly>
+                    <label for="license_number">Número de licencia de conducir</label>
+                    <input 
+                        type="text" 
+                        id="license_number" 
+                        name="license_number" 
+                        class="form-control" 
+                        maxlength="20" 
+                        value="{{ current_user.license }}" 
+                        required>
                 </div>
+                
                 <div class="form-group">
                     <label for="user_email">Email</label>
                     <input type="email" id="user_email" name="user_email" class="form-control" maxlength="100" value="{{ current_user.email }}" readonly>
@@ -55,38 +82,42 @@
                 <div class="form-group">
                     <label for="pickup_location">Lugar de recogida</label>
                     <select id="pickup_location" name="pickup_location" class="form-control" required>
-                        {% for location in locations %}
-                        <option value="{{ location.id }}">{{ location.name }}</option>
-                        {% endfor %}
+                        <option value="sede">Sede</option>
+                        <option value="aeropuerto">Aeropuerto</option>
+                        <option value="domicilio">Domicilio</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="return_location">Lugar de devolución</label>
                     <select id="return_location" name="return_location" class="form-control" required>
-                        {% for location in locations %}
-                        <option value="{{ location.id }}">{{ location.name }}</option>
-                        {% endfor %}
+                        <option value="sede">Sede</option>
+                        <option value="aeropuerto">Aeropuerto</option>
+                        <option value="domicilio">Domicilio</option>
                     </select>
                 </div>
+                
 
                 <!-- Selección del Vehículo -->
                 <h4 class="mb-3 mt-4">Selección del Vehículo</h4>
                 <div class="form-group">
-                    <label for="car_category">Categoría/tipo de vehículo</label>
+                    <label for="car_category">Vehículo</label>
                     <select id="car_category" name="car_category" class="form-control" required>
-                        {% for category in car_categories %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% for car in cars %}
+                        <option value="{{ car.id }}">{{ car.brand }} - {{ car.model }} - {{ car.car_type }}</option>
                         {% endfor %}
                     </select>
                 </div>
+                
                 <div class="form-group">
                     <label for="car_model">Modelo</label>
                     <select id="car_model" name="car_model" class="form-control" required>
-                        {% for car in cars %}
-                        <option value="{{ car.id }}">{{ car.brand }} - {{ car.model }}</option>
-                        {% endfor %}
+                        <option value="economico">Económico</option>
+                        <option value="intermedio">Intermedio</option>
+                        <option value="premium">Premium</option>
+                        <option value="lujo">Lujo</option>
                     </select>
                 </div>
+                
                 <div class="form-group">
                     <label for="transmission">Transmisión</label>
                     <select id="transmission" name="transmission" class="form-control" required>
@@ -120,25 +151,69 @@
                     </label><br>
                     {% endfor %}
                 </div>
+                <!-- Seguro -->
                 <div class="form-group">
                     <label for="insurance_type">Tipo de seguro</label>
                     <select id="insurance_type" name="insurance_type" class="form-control" required>
-                        {% for insurance in insurance_types %}
-                        <option value="{{ insurance.id }}">{{ insurance.name }}</option>
-                        {% endfor %}
+                        <option value="civil_liability">Seguro de Responsabilidad Civil</option>
+                        <option value="collision">Seguro de Colisión</option>
+                        <option value="total_damage">Seguro de Daño Total</option>
+                        <option value="personal_protection">Seguro de Protección Personal</option>
+                        <option value="theft_protection">Seguro contra Robo</option>
+                        <option value="road_assistance">Cobertura de Asistencia en Carretera</option>
                     </select>
                 </div>
+                
 
                 <!-- Pago -->
-                <h4 class="mb-3 mt-4">Pago</h4>
-                <div class="form-group">
-                    <label for="payment_method">Método de pago</label>
-                    <select id="payment_method" name="payment_method" class="form-control" required>
-                        {% for method in payment_methods %}
-                        <option value="{{ method.id }}">{{ method.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+<h4 class="mb-3 mt-4">Pago</h4>
+<div class="form-group">
+    <label for="payment_method">Método de pago</label>
+    <div class="payment-options d-grid gap-3">
+        <div class="row">
+            <div class="col-4 text-center">
+                <button type="button" class="btn btn-light" data-payment="credit_card">
+                    <img src="/static/svg/credit-card-solid.svg" alt="Tarjeta de Crédito" width="50" height="50">
+                    <p>Tarjeta de Crédito</p>
+                </button>
+            </div>
+            <div class="col-4 text-center">
+                <button type="button" class="btn btn-light" data-payment="visa">
+                    <img src="/static/svg/cc-visa-brands-solid.svg" alt="Visa" width="50" height="50">
+                    <p>Visa</p>
+                </button>
+            </div>
+            <div class="col-4 text-center">
+                <button type="button" class="btn btn-light" data-payment="mastercard">
+                    <img src="/static/svg/cc-mastercard-brands-solid.svg" alt="MasterCard" width="50" height="50">
+                    <p>MasterCard</p>
+                </button>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4 text-center">
+                <button type="button" class="btn btn-light" data-payment="paypal">
+                    <img src="/static/svg/cc-paypal-brands-solid.svg" alt="PayPal" width="50" height="50">
+                    <p>PayPal</p>
+                </button>
+            </div>
+            <div class="col-4 text-center">
+                <button type="button" class="btn btn-light" data-payment="diners_club">
+                    <img src="/static/svg/cc-diners-club-brands-solid.svg" alt="Diners Club" width="50" height="50">
+                    <p>Diners Club</p>
+                </button>
+            </div>
+            <div class="col-4 text-center">
+                <button type="button" class="btn btn-light" data-payment="amazon_pay">
+                    <img src="/static/svg/cc-amazon-pay-brands-solid.svg" alt="Amazon Pay" width="50" height="50">
+                    <p>Amazon Pay</p>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <!-- T&C -->
                 <div class="form-group">
                     <label>
                         <input type="checkbox" name="terms_accepted" required> Acepto los términos y condiciones
@@ -162,3 +237,5 @@
 </section>
 
 {% endblock %}
+
+
