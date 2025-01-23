@@ -26,7 +26,7 @@ def create_reservation():
         db.session.commit()
         return redirect(url_for('reservations.list_reservations'))
     users = User.query.all()
-    cars = Car.query.filter_by(availability=True).all()
+    cars = Car.query.filter_by(status="Disponible").all()
     return render_template('reservations/create.html', user=current_user, cars=cars)
 
 @bp.route('/update/<int:id>', methods=['GET', 'POST'])
@@ -41,7 +41,7 @@ def update_reservation(id):
         db.session.commit()
         return redirect(url_for('reservations.list_reservations'))
     users = User.query.all()
-    cars = Car.query.filter_by(availability=True).all()
+    cars = Car.query.filter_by(status="Disponible").all()
     return render_template('reservations/update.html', reservation=reservation, users=users, cars=cars)
 
 @bp.route('/delete/<int:id>', methods=['POST'])
