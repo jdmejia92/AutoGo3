@@ -27,7 +27,7 @@
                 <h4 class="mb-3">Información Personal</h4>
                 <div class="form-group">
                     <label for="user_name">Nombre del usuario</label>
-                    <input type="text" id="user_name" name="user_name" class="form-control" maxlength="100" value="{{ current_user.name }}" readonly>
+                    <input type="text" id="user_name" name="user_name" class="form-control" maxlength="100" value="{{ current_user.first_name }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="user_dni">DNI/Identificación</label>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <label for="user_license">Número de licencia de conducir</label>
-                    <input type="text" id="user_license" name="user_license" class="form-control" maxlength="20" value="{{ current_user.license }}" readonly>
+                    <input type="text" id="user_license" name="user_license" class="form-control" maxlength="20" value="{{ current_user.license_number }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="user_email">Email</label>

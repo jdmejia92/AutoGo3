@@ -2319,8 +2319,8 @@ pre code {
 
 .form-control:disabled,
 .form-control[readonly] {
-  background-color: #e9ecef;
-  opacity: 1;
+  background-color: #c7c7c7 !important;
+  opacity: 0.6;
 }
 
 select.form-control:focus::-ms-value {
