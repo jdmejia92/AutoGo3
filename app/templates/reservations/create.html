@@ -53,15 +53,8 @@
                     <input type="text" id="user_dni" name="user_dni" class="form-control" maxlength="9" value="{{ current_user.dni }}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="license_number">Número de licencia de conducir</label>
-                    <input 
-                        type="text" 
-                        id="license_number" 
-                        name="license_number" 
-                        class="form-control" 
-                        maxlength="20" 
-                        value="{{ current_user.license }}" 
-                        required>
+                    <label for="user_license">Número de licencia de conducir</label>
+                    <input type="text" id="user_license" name="user_license" class="form-control" maxlength="20" value="{{ current_user.license }}" readonly>
                 </div>
                 
                 <div class="form-group">
