@@ -81,22 +81,27 @@ def create_reservation():
 @login_required
 def update_reservation(id):
     reservation = get_reservation_by_id(id)
+    
     if not reservation or reservation.user_id != current_user.id:
         flash('Reserva no encontrada o no autorizada.', 'danger')
         return redirect(url_for('reservations.list_reservations'))
-    
+
+    cars = list_cars_for_users(request)  # Obtener los autos disponibles para el usuario
+
     if request.method == 'POST':
         pickup_datetime = request.form['pickup_datetime']
         return_datetime = request.form['return_datetime']
         pickup_location = request.form['pickup_location']
         return_location = request.form['return_location']
+        car_id = request.form['car_id']
         status = request.form.get('status')
-        
-        update_reservation(id, pickup_datetime, return_datetime, pickup_location, return_location, status)
+
+        update_reservation(id, pickup_datetime, return_datetime, pickup_location, return_location, car_id, status)
         flash('Reserva actualizada con éxito.', 'success')
         return redirect(url_for('reservations.list_reservations'))
-    
-    return render_template('reservations/update.html', reservation=reservation)
+
+    return render_template('reservations/update.html', reservation=reservation, cars=cars)
+
 
 @bp.route('/delete/<int:id>', methods=['POST'])
 @login_required

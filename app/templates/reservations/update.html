@@ -1,35 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Reservation</title>
-</head>
-<body>
-  <a href="{{ url_for('base.base') }}">HOME</a>
-    <h1>Update Reservation</h1>
-    <form action="{{ url_for('reservations.update_reservation', id=reservation.id) }}" method="post">
-        <label for="user_id">User:</label>
-        <select name="user_id" id="user_id" required>
-            {% for user in users %}
-            <option value="{{ user.id }}" {% if user.id == reservation.user_id %}selected{% endif %}>{{ user.name }}</option>
-            {% endfor %}
-        </select><br>
+{% extends 'base_template.html' %}
 
-        <label for="car_id">Car:</label>
-        <select name="car_id" id="car_id" required>
-            {% for car in cars %}
-            <option value="{{ car.id }}" {% if car.id == reservation.car_id %}selected{% endif %}>{{ car.name }}</option>
-            {% endfor %}
-        </select><br>
+{% block content %}
 
-        <label for="start_date">Start Date:</label>
-        <input type="date" name="start_date" id="start_date" value="{{ reservation.start_date }}" required><br>
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{{ url_for('static', filename='images/new-booking.jpg') }}');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs">
+                    <span class="mr-2">
+                        <a href="{{ url_for('base.base') }}">Inicio <i class="ion-ios-arrow-forward"></i></a>
+                    </span>
+                    <span>Reservas <i class="ion-ios-arrow-forward"></i></span>
+                </p>
+                <h1 class="mb-3 bread">Actualizar Reserva</h1>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <label for="end_date">End Date:</label>
-        <input type="date" name="end_date" id="end_date" value="{{ reservation.end_date }}" required><br>
+<!-- Reservation Update Form -->
+<section class="ftco-section">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="form-container w-75 bg-light p-5 rounded shadow">
+            <h2 class="text-center mb-4">Modificar Reserva</h2>
 
-        <button type="submit">Update</button>
-    </form>
-</body>
-</html>
+            <!-- Mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div>
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('reservations.update_reservation', id=reservation.id) }}" method="POST" class="contact-form">
+                
+                <!-- Información de la Reserva -->
+                <h4 class="mb-3">Detalles de la Reserva</h4>
+                <div class="form-group">
+                    <label for="pickup_datetime">Fecha y hora de recogida</label>
+                    <input type="datetime-local" id="pickup_datetime" name="pickup_datetime" class="form-control" value="{{ reservation.pickup_datetime.strftime('%Y-%m-%dT%H:%M') }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="return_datetime">Fecha y hora de devolución</label>
+                    <input type="datetime-local" id="return_datetime" name="return_datetime" class="form-control" value="{{ reservation.return_datetime.strftime('%Y-%m-%dT%H:%M') }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="pickup_location">Lugar de recogida</label>
+                    <select id="pickup_location" name="pickup_location" class="form-control" required>
+                        <option value="sede" {% if reservation.pickup_location == 'sede' %}selected{% endif %}>Sede</option>
+                        <option value="aeropuerto" {% if reservation.pickup_location == 'aeropuerto' %}selected{% endif %}>Aeropuerto</option>
+                        <option value="domicilio" {% if reservation.pickup_location == 'domicilio' %}selected{% endif %}>Domicilio</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="return_location">Lugar de devolución</label>
+                    <select id="return_location" name="return_location" class="form-control" required>
+                        <option value="sede" {% if reservation.return_location == 'sede' %}selected{% endif %}>Sede</option>
+                        <option value="aeropuerto" {% if reservation.return_location == 'aeropuerto' %}selected{% endif %}>Aeropuerto</option>
+                        <option value="domicilio" {% if reservation.return_location == 'domicilio' %}selected{% endif %}>Domicilio</option>
+                    </select>
+                </div>
+
+                <!-- Selección del Vehículo -->
+                <h4 class="mb-3 mt-4">Selección del Vehículo</h4>
+                <div class="form-group">
+                    <label for="car_category">Vehículo</label>
+                    <select id="car_category" name="car_category" class="form-control" required>
+                        {% for car in cars %}
+                        <option value="{{ car.id }}">{{ car.brand }}, {{ car.model }}  {{ car.car_type }}, {{ car.plate }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Opciones Adicionales -->
+                <h4 class="mb-3 mt-4">Opciones Adicionales</h4>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="additional_driver" value="1" {% if reservation.additional_driver %}checked{% endif %}> Conductor adicional
+                    </label>
+                </div>
+                <div id="additional_driver_details" {% if not reservation.additional_driver %}style="display: none;"{% endif %}>
+                    <div class="form-group">
+                        <label for="additional_driver_name">Nombre del conductor adicional</label>
+                        <input type="text" id="additional_driver_name" name="additional_driver_name" class="form-control" maxlength="100" value="{{ reservation.additional_driver_name or '' }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="additional_driver_license">Licencia del conductor adicional</label>
+                        <input type="text" id="additional_driver_license" name="additional_driver_license" class="form-control" maxlength="20" value="{{ reservation.additional_driver_license or '' }}">
+                    </div>
+                </div>
+
+                <!-- Seguro -->
+                <h4 class="mb-3 mt-4">Tipo de Seguro</h4>
+                <div class="form-group">
+                    <label for="insurance_type">Seguro</label>
+                    <select id="insurance_type" name="insurance_type" class="form-control" required>
+                        <option value="civil_liability" {% if reservation.insurance_type == 'civil_liability' %}selected{% endif %}>Seguro de Responsabilidad Civil</option>
+                        <option value="collision" {% if reservation.insurance_type == 'collision' %}selected{% endif %}>Seguro de Colisión</option>
+                        <option value="total_damage" {% if reservation.insurance_type == 'total_damage' %}selected{% endif %}>Seguro de Daño Total</option>
+                        <option value="personal_protection" {% if reservation.insurance_type == 'personal_protection' %}selected{% endif %}>Seguro de Protección Personal</option>
+                        <option value="theft_protection" {% if reservation.insurance_type == 'theft_protection' %}selected{% endif %}>Seguro contra Robo</option>
+                        <option value="road_assistance" {% if reservation.insurance_type == 'road_assistance' %}selected{% endif %}>Cobertura de Asistencia en Carretera</option>
+                    </select>
+                </div>
+
+                <!-- Estado de la Reserva -->
+                <h4 class="mb-3 mt-4">Estado de la Reserva</h4>
+                <div class="form-group">
+                    <label for="status">Estado</label>
+                    <select id="status" name="status" class="form-control" required>
+                        <option value="pendiente" {% if reservation.status == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                        <option value="confirmada" {% if reservation.status == 'confirmada' %}selected{% endif %}>Confirmada</option>
+                        <option value="cancelada" {% if reservation.status == 'cancelada' %}selected{% endif %}>Cancelada</option>
+                    </select>
+                </div>
+
+                <!-- Botón de Enviar -->
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary py-3 px-5">Actualizar Reserva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

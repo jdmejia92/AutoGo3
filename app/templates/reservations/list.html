@@ -27,7 +27,7 @@
     {% if messages %}
         <div>
             {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert">
                     {{ message }}
                 </div>
             {% endfor %}
@@ -37,7 +37,7 @@
 
     <!-- Tabla de reservas -->
     <div class="table-responsive">
-        <table class="table table-striped table-bordered text-center">
+        <table class="table table-striped table-bordered text-center align-middle">
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
@@ -55,19 +55,19 @@
                 {% if reservations %}
                     {% for reservation in reservations %}
                     <tr>
-                        <td>{{ reservation.id }}</td>
-                        <td>{{ reservation.user.first_name }} {{ reservation.user.last_name }}</td>
-                        <td>{{ reservation.car.brand }} {{ reservation.car.model }}</td>
-                        <td>{{ reservation.pickup_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
-                        <td>{{ reservation.return_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
-                        <td>{{ reservation.pickup_location }}</td>
-                        <td>{{ reservation.return_location }}</td>
-                        <td>
+                        <td class="align-middle">{{ reservation.id }}</td>
+                        <td class="align-middle">{{ reservation.user.first_name }} {{ reservation.user.last_name }}</td>
+                        <td class="align-middle">{{ reservation.car.brand }} {{ reservation.car.model }}</td>
+                        <td class="align-middle">{{ reservation.pickup_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td class="align-middle">{{ reservation.return_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td class="align-middle">{{ reservation.pickup_location }}</td>
+                        <td class="align-middle">{{ reservation.return_location }}</td>
+                        <td class="align-middle">
                             <span class="badge {% if reservation.status == 'pendiente' %}badge-warning{% elif reservation.status == 'confirmada' %}badge-success{% else %}badge-secondary{% endif %}">
                                 {{ reservation.status }}
                             </span>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center align-middle">
                             <div class="d-flex justify-content-center">
                                 <a href="{{ url_for('reservations.update_reservation', id=reservation.id) }}" class="btn btn-warning btn-sm mr-2">
                                     Editar
@@ -81,7 +81,7 @@
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="9" class="text-center">No hay reservas registradas.</td>
+                        <td colspan="9" class="text-center align-middle">No hay reservas registradas.</td>
                     </tr>
                 {% endif %}
             </tbody>
