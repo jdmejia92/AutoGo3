@@ -38,41 +38,49 @@ def view_reservation(id):
 @login_required
 def create_reservation():
     if request.method == 'POST':
-        car_id = request.form['car_category']
-        pickup_datetime = request.form['pickup_datetime']
-        return_datetime = request.form['return_datetime']
-        pickup_location = request.form['pickup_location']
-        return_location = request.form['return_location']
-        additional_driver = 'additional_driver' in request.form
-        additional_driver_name = request.form.get('additional_driver_name')
-        additional_driver_license = request.form.get('additional_driver_license')
-        insurance_type = request.form['insurance_type']
-        payment_method = request.form.get('payment_method', '')
-        terms_accepted = 'terms_accepted' in request.form
-        comments = request.form.get('comments')
-        
-        reservation = create_reservation_controller(
-            user_id=current_user.id,
-            car_id=car_id,
-            pickup_datetime=pickup_datetime,
-            return_datetime=return_datetime,
-            pickup_location=pickup_location,
-            return_location=return_location,
-            additional_driver=additional_driver,
-            additional_driver_name=additional_driver_name,
-            additional_driver_license=additional_driver_license,
-            insurance_type=insurance_type,
-            payment_method=payment_method,
-            terms_accepted=terms_accepted,
-            comments=comments
-        )
+        try:
+            # Guardar form_data al inicio
+            form_data = request.form.to_dict()
+            
+            car_id = request.form['car_category']
+            pickup_datetime = request.form['pickup_datetime']
+            return_datetime = request.form['return_datetime']
+            pickup_location = request.form['pickup_location']
+            return_location = request.form['return_location']
+            additional_driver = 'additional_driver' in request.form
+            additional_driver_name = request.form.get('additional_driver_name')
+            additional_driver_license = request.form.get('additional_driver_license')
+            insurance_type = request.form['insurance_type']
+            payment_method = request.form.get('payment_method', '')
+            terms_accepted = 'terms_accepted' in request.form
+            comments = request.form.get('comments')
+            
+            reservation = create_reservation_controller(
+                user_id=current_user.id,
+                car_id=car_id,
+                pickup_datetime=pickup_datetime,
+                return_datetime=return_datetime,
+                pickup_location=pickup_location,
+                return_location=return_location,
+                additional_driver=additional_driver,
+                additional_driver_name=additional_driver_name,
+                additional_driver_license=additional_driver_license,
+                insurance_type=insurance_type,
+                payment_method=payment_method,
+                terms_accepted=terms_accepted,
+                comments=comments
+            )
 
-        if reservation[1] == 'warning':
+            if reservation[1] == 'warning':
+                flash(reservation[0], reservation[1])
+                return redirect(url_for('reservations.create_reservation'))
+            
             flash(reservation[0], reservation[1])
-            form_data = request.args.to_dict()
-            return redirect(url_for('reservations.create_reservation', data=form_data))
-        flash(reservation[0], reservation[1])
-        return redirect(url_for('reservations.list_reservations', data=form_data))
+            return redirect(url_for('reservations.list_reservations'))
+            
+        except Exception as e:
+            flash(f'Error al crear la reserva: {str(e)}', 'danger')
+            return redirect(url_for('reservations.create_reservation'))
     
     cars = list_cars_for_users(request)
     return render_template('reservations/create.html', user=current_user, cars=cars)
@@ -86,31 +94,38 @@ def update_reservation(id):
         flash('Reserva no encontrada o no autorizada.', 'danger')
         return redirect(url_for('reservations.list_reservations'))
 
-    cars = list_cars_for_users(request)  # Obtener los autos disponibles para el usuario
+    cars = list_cars_for_users(request)
 
     if request.method == 'POST':
-        pickup_datetime = request.form['pickup_datetime']
-        return_datetime = request.form['return_datetime']
-        pickup_location = request.form['pickup_location']
-        return_location = request.form['return_location']
-        car_id = request.form['car_id']
-        status = request.form.get('status')
+        try:
+            pickup_datetime = request.form['pickup_datetime']
+            return_datetime = request.form['return_datetime']
+            pickup_location = request.form['pickup_location']
+            return_location = request.form['return_location']
+            car_id = request.form['car_id']
+            status = request.form.get('status')
 
-        update_reservation(id, pickup_datetime, return_datetime, pickup_location, return_location, car_id, status)
-        flash('Reserva actualizada con éxito.', 'success')
-        return redirect(url_for('reservations.list_reservations'))
+            update_reservation(id, pickup_datetime, return_datetime, pickup_location, return_location, car_id, status)
+            flash('Reserva actualizada con éxito.', 'success')
+            return redirect(url_for('reservations.list_reservations'))
+        except Exception as e:
+            flash(f'Error al actualizar la reserva: {str(e)}', 'danger')
+            return redirect(url_for('reservations.update_reservation', id=id))
 
     return render_template('reservations/update.html', reservation=reservation, cars=cars)
-
 
 @bp.route('/delete/<int:id>', methods=['POST'])
 @login_required
 def delete_reservation(id):
-    reservation = get_reservation_by_id(id)
-    if not reservation or reservation.user_id != current_user.id:
-        flash('No tienes permiso para eliminar esta reserva.', 'danger')
+    try:
+        reservation = get_reservation_by_id(id)
+        if not reservation or reservation.user_id != current_user.id:
+            flash('No tienes permiso para eliminar esta reserva.', 'danger')
+            return redirect(url_for('reservations.list_reservations'))
+        
+        delete_reservation(id)
+        flash('Reserva eliminada con éxito.', 'success')
         return redirect(url_for('reservations.list_reservations'))
-    
-    delete_reservation(id)
-    flash('Reserva eliminada con éxito.', 'success')
-    return redirect(url_for('reservations.list_reservations'))
+    except Exception as e:
+        flash(f'Error al eliminar la reserva: {str(e)}', 'danger')
+        return redirect(url_for('reservations.list_reservations'))
