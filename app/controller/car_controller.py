@@ -22,7 +22,7 @@ def list_cars_for_users(request):
     """Fetch paginated cars for users."""
     page = request.args.get('page', 1, type=int)
     try:
-        cars = Car.query.paginate(page=page, per_page=12)
+        cars = Car.query.filter(Car.status == 0).paginate(page=page, per_page=12)
         return cars
     except Exception as e:
         return f"Error al obtener la lista de carros paginada: {str(e)}", 'error'

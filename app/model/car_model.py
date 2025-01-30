@@ -15,7 +15,7 @@ class Car(db.Model):
     kilometer = db.Column(db.Integer, nullable=False)
     transmission = db.Column(db.String(100), nullable=False)  # Automático, Manual
     power = db.Column(db.Integer, nullable=False)  # Potencia en HP
-    status = db.Column(db.String(50), nullable=False)  # Disponible, Mantenimiento, etc.
+    status = db.Column(db.Integer, nullable=False, default=0)  # 0 = Disponible, 1 = Ocupado, 2 = Mantenimiento, etc.
     gps = db.Column(db.Boolean, default=False)
     ac = db.Column(db.Boolean, default=False)
     bluetooth = db.Column(db.Boolean, default=False)

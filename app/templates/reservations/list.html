@@ -24,6 +24,19 @@
         <a href="{{ url_for('reservations.create_reservation') }}" class="btn btn-primary">Nueva Reserva</a>
     </div>
 
+<!-- Mostrar mensajes flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <div>
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endwith %}
+
     <!-- Tabla de reservas -->
     <div class="table-responsive">
         <table class="table table-striped table-bordered text-center">
@@ -38,7 +51,28 @@
                 </tr>
             </thead>
             <tbody>
+                {% if reservations %}
+                {% for reservation in reservations %}
                 <!-- Reserva 1 -->
+                <tr>
+                    <td>{{ reservation.id }}</td>
+                    <td>{{ reservation.user.first_name }} {{ reservation.user.last_name }}</td>
+                    <td>{{ reservation.car.brand }} {{ reservation.car.model }}</td>
+                    <td>{{ reservation.pickup_datetime }}</td>
+                    <td>{{ reservation.return_datetime }}</td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ url_for('reservations.update_reservation', id=reservation.id) }}" class="btn btn-warning btn-sm mr-2">
+                                Editar
+                            </a>
+                            <form action="{{ url_for('reservations.delete_reservation', id=reservation.id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
                 <tr>
                     <td>1</td>
                     <td>Juan Pérez</td>
@@ -105,6 +139,23 @@
                                 Editar
                             </a>
                             <form action="{{ url_for('reservations.delete_reservation', id=4) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Lucía Fernández</td>
+                    <td>Chevrolet Spark</td>
+                    <td>2025-04-05</td>
+                    <td>2025-04-10</td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ url_for('reservations.update_reservation', id=5) }}" class="btn btn-warning btn-sm mr-2">
+                                Editar
+                            </a>
+                            <form action="{{ url_for('reservations.delete_reservation', id=5) }}" method="post" class="d-inline">
                                 <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                             </form>
                         </div>

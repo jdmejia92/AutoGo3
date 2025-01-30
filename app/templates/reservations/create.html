@@ -40,7 +40,7 @@
                         class="form-control" 
                         maxlength="50" 
                         value="{{ current_user.first_name }}" 
-                        required>
+                        readonly>
                 </div>
                 <div class="form-group">
                     <label for="last_name">Apellido</label>
@@ -51,7 +51,7 @@
                         class="form-control" 
                         maxlength="50" 
                         value="{{ current_user.last_name }}" 
-                        required>
+                        readonly>
                 </div>
                 
                 <div class="form-group">
@@ -60,7 +60,7 @@
                 </div>
                 <div class="form-group">
                     <label for="user_license">Número de licencia de conducir</label>
-                    <input type="text" id="user_license" name="user_license" class="form-control" maxlength="20" value="{{ current_user.license }}" readonly>
+                    <input type="text" id="user_license" name="user_license" class="form-control" maxlength="20" value="{{ current_user.license_number }}" readonly>
                 </div>
                 
                 <div class="form-group">
@@ -95,20 +95,16 @@
                     </select>
                 </div>
                 
-
-               <!-- Selección del Vehículo -->
-<h4 class="mb-3 mt-4">Selección del Vehículo</h4>
-<div class="form-group">
-    <label for="car_category">Vehículo</label>
-    <select id="car_category" name="car_category" class="form-control" required>
-        {% for car in cars %}
-        <option value="{{ car.id }}">{{ car.brand }}, {{ car.model }}  {{ car.car_type }}, {{ car.plate }}</option>
-        {% endfor %}
-    </select>
-</div>
-
-                
-
+                <!-- Selección del Vehículo -->
+                <h4 class="mb-3 mt-4">Selección del Vehículo</h4>
+                <div class="form-group">
+                    <label for="car_category">Vehículo</label>
+                    <select id="car_category" name="car_category" class="form-control" required>
+                        {% for car in cars %}
+                        <option value="{{ car.id }}">{{ car.brand }}, {{ car.model }}  {{ car.car_type }}, {{ car.plate }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
                 <!-- Opciones Adicionales -->
                 <h4 class="mb-3 mt-4">Opciones Adicionales</h4>
@@ -150,52 +146,52 @@
                 
 
                 <!-- Pago -->
-<h4 class="mb-3 mt-4">Pago</h4>
-<div class="form-group">
-    <label for="payment_method">Método de pago</label>
-    <div class="payment-options d-grid gap-3">
-        <div class="row">
-            <div class="col-4 text-center">
-                <button type="button" class="btn btn-light" data-payment="credit_card">
-                    <img src="/static/svg/credit-card-solid.svg" alt="Tarjeta de Crédito" width="50" height="50">
-                    <p>Tarjeta de Crédito</p>
-                </button>
-            </div>
-            <div class="col-4 text-center">
-                <button type="button" class="btn btn-light" data-payment="visa">
-                    <img src="/static/svg/cc-visa-brands-solid.svg" alt="Visa" width="50" height="50">
-                    <p>Visa</p>
-                </button>
-            </div>
-            <div class="col-4 text-center">
-                <button type="button" class="btn btn-light" data-payment="mastercard">
-                    <img src="/static/svg/cc-mastercard-brands-solid.svg" alt="MasterCard" width="50" height="50">
-                    <p>MasterCard</p>
-                </button>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-4 text-center">
-                <button type="button" class="btn btn-light" data-payment="paypal">
-                    <img src="/static/svg/cc-paypal-brands-solid.svg" alt="PayPal" width="50" height="50">
-                    <p>PayPal</p>
-                </button>
-            </div>
-            <div class="col-4 text-center">
-                <button type="button" class="btn btn-light" data-payment="diners_club">
-                    <img src="/static/svg/cc-diners-club-brands-solid.svg" alt="Diners Club" width="50" height="50">
-                    <p>Diners Club</p>
-                </button>
-            </div>
-            <div class="col-4 text-center">
-                <button type="button" class="btn btn-light" data-payment="amazon_pay">
-                    <img src="/static/svg/cc-amazon-pay-brands-solid.svg" alt="Amazon Pay" width="50" height="50">
-                    <p>Amazon Pay</p>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+                <h4 class="mb-3 mt-4">Pago</h4>
+                <div class="form-group">
+                    <label for="payment_method">Método de pago</label>
+                    <div class="payment-options d-grid gap-3">
+                        <div class="row">
+                            <div class="col-4 text-center">
+                                <button type="button" class="btn btn-light" data-payment="credit_card">
+                                    <img src="/static/svg/credit-card-solid.svg" alt="Tarjeta de Crédito" width="50" height="50">
+                                    <p>Tarjeta de Crédito</p>
+                                </button>
+                            </div>
+                            <div class="col-4 text-center">
+                                <button type="button" class="btn btn-light" data-payment="visa">
+                                    <img src="/static/svg/cc-visa-brands-solid.svg" alt="Visa" width="50" height="50">
+                                    <p>Visa</p>
+                                </button>
+                            </div>
+                            <div class="col-4 text-center">
+                                <button type="button" class="btn btn-light" data-payment="mastercard">
+                                    <img src="/static/svg/cc-mastercard-brands-solid.svg" alt="MasterCard" width="50" height="50">
+                                    <p>MasterCard</p>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-4 text-center">
+                                <button type="button" class="btn btn-light" data-payment="paypal">
+                                    <img src="/static/svg/cc-paypal-brands-solid.svg" alt="PayPal" width="50" height="50">
+                                    <p>PayPal</p>
+                                </button>
+                            </div>
+                            <div class="col-4 text-center">
+                                <button type="button" class="btn btn-light" data-payment="diners_club">
+                                    <img src="/static/svg/cc-diners-club-brands-solid.svg" alt="Diners Club" width="50" height="50">
+                                    <p>Diners Club</p>
+                                </button>
+                            </div>
+                            <div class="col-4 text-center">
+                                <button type="button" class="btn btn-light" data-payment="amazon_pay">
+                                    <img src="/static/svg/cc-amazon-pay-brands-solid.svg" alt="Amazon Pay" width="50" height="50">
+                                    <p>Amazon Pay</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- T&C -->
                 <div class="form-group">
