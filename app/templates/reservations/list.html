@@ -14,8 +14,6 @@
     </div>
 </section>
 
-
-
 <!-- Reservations List -->
 <div class="container mt-5 mb-5">
     <!-- Encabezado de la lista -->
@@ -24,18 +22,18 @@
         <a href="{{ url_for('reservations.create_reservation') }}" class="btn btn-primary">Nueva Reserva</a>
     </div>
 
-<!-- Mostrar mensajes flash -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-    <div>
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
-{% endif %}
-{% endwith %}
+    <!-- Mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div>
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
 
     <!-- Tabla de reservas -->
     <div class="table-responsive">
@@ -45,122 +43,47 @@
                     <th>ID</th>
                     <th>Usuario</th>
                     <th>Vehículo</th>
-                    <th>Fecha de Inicio</th>
-                    <th>Fecha de Fin</th>
+                    <th>Fecha de Recogida</th>
+                    <th>Fecha de Devolución</th>
+                    <th>Ubicación Recogida</th>
+                    <th>Ubicación Devolución</th>
+                    <th>Estado</th>
                     <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% if reservations %}
-                {% for reservation in reservations %}
-                <!-- Reserva 1 -->
-                <tr>
-                    <td>{{ reservation.id }}</td>
-                    <td>{{ reservation.user.first_name }} {{ reservation.user.last_name }}</td>
-                    <td>{{ reservation.car.brand }} {{ reservation.car.model }}</td>
-                    <td>{{ reservation.pickup_datetime }}</td>
-                    <td>{{ reservation.return_datetime }}</td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center">
-                            <a href="{{ url_for('reservations.update_reservation', id=reservation.id) }}" class="btn btn-warning btn-sm mr-2">
-                                Editar
-                            </a>
-                            <form action="{{ url_for('reservations.delete_reservation', id=reservation.id) }}" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
+                    {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.id }}</td>
+                        <td>{{ reservation.user.first_name }} {{ reservation.user.last_name }}</td>
+                        <td>{{ reservation.car.brand }} {{ reservation.car.model }}</td>
+                        <td>{{ reservation.pickup_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ reservation.return_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ reservation.pickup_location }}</td>
+                        <td>{{ reservation.return_location }}</td>
+                        <td>
+                            <span class="badge {% if reservation.status == 'pendiente' %}badge-warning{% elif reservation.status == 'confirmada' %}badge-success{% else %}badge-secondary{% endif %}">
+                                {{ reservation.status }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center">
+                                <a href="{{ url_for('reservations.update_reservation', id=reservation.id) }}" class="btn btn-warning btn-sm mr-2">
+                                    Editar
+                                </a>
+                                <form action="{{ url_for('reservations.delete_reservation', id=reservation.id) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">No hay reservas registradas.</td>
+                    </tr>
                 {% endif %}
-                <tr>
-                    <td>1</td>
-                    <td>Juan Pérez</td>
-                    <td>Toyota Corolla</td>
-                    <td>2025-01-15</td>
-                    <td>2025-01-20</td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center">
-                            <a href="{{ url_for('reservations.update_reservation', id=1) }}" class="btn btn-warning btn-sm mr-2">
-                                Editar
-                            </a>
-                            <form action="{{ url_for('reservations.delete_reservation', id=1) }}" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Reserva 2 -->
-                <tr>
-                    <td>2</td>
-                    <td>María López</td>
-                    <td>Honda Civic</td>
-                    <td>2025-02-01</td>
-                    <td>2025-02-05</td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center">
-                            <a href="{{ url_for('reservations.update_reservation', id=2) }}" class="btn btn-warning btn-sm mr-2">
-                                Editar
-                            </a>
-                            <form action="{{ url_for('reservations.delete_reservation', id=2) }}" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Reserva 3 -->
-                <tr>
-                    <td>3</td>
-                    <td>Carlos Ramírez</td>
-                    <td>Ford Focus</td>
-                    <td>2025-03-10</td>
-                    <td>2025-03-15</td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center">
-                            <a href="{{ url_for('reservations.update_reservation', id=3) }}" class="btn btn-warning btn-sm mr-2">
-                                Editar
-                            </a>
-                            <form action="{{ url_for('reservations.delete_reservation', id=3) }}" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Reserva 4 -->
-                <tr>
-                    <td>4</td>
-                    <td>Lucía Fernández</td>
-                    <td>Chevrolet Spark</td>
-                    <td>2025-04-05</td>
-                    <td>2025-04-10</td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center">
-                            <a href="{{ url_for('reservations.update_reservation', id=4) }}" class="btn btn-warning btn-sm mr-2">
-                                Editar
-                            </a>
-                            <form action="{{ url_for('reservations.delete_reservation', id=4) }}" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Lucía Fernández</td>
-                    <td>Chevrolet Spark</td>
-                    <td>2025-04-05</td>
-                    <td>2025-04-10</td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center">
-                            <a href="{{ url_for('reservations.update_reservation', id=5) }}" class="btn btn-warning btn-sm mr-2">
-                                Editar
-                            </a>
-                            <form action="{{ url_for('reservations.delete_reservation', id=5) }}" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
