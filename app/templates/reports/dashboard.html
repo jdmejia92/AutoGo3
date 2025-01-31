@@ -14,7 +14,8 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end justify-content-start">
             <div class="col-md-9 pb-5">
-                <h1 class="mb-3 bread text-white">Dashboard Analytics</h1>
+                <h1 class="mb-3 bread text-white">Dashboard</h1>
+                <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
             </div>
         </div>
     </div>
@@ -47,233 +48,288 @@
 
     <!-- Tab Content -->
 <div class="tab-content" id="dashboardTabContent">
-  <!-- TAB GENERAL -->
-  <div class="tab-pane fade show active" id="general" role="tabpanel">
-      <!-- KPIs Row -->
-      <div class="row g-3 mb-4">
-          <div class="col-md-3">
-              <div class="card border-0 shadow-sm rounded-lg">
-                  <div class="card-body p-4">
-                      <div class="d-flex align-items-center">
-                          <div class="rounded-circle p-3 bg-primary bg-opacity-10">
-                              <i class="fas fa-car text-primary"></i>
-                          </div>
-                          <div class="ms-3">
-                              <h6 class="mb-0">Flota Total</h6>
-                              <h2 class="mb-0">{{ total_cars }}</h2>
-                          </div>
+<!-- TAB GENERAL -->
+<div class="tab-pane fade show active" id="general" role="tabpanel">
+  <!-- KPIs Row -->
+  <div class="row g-3 mb-4">
+      <div class="col-md-3">
+          <div class="card border-0 shadow-sm rounded-lg">
+              <div class="card-body p-4">
+                  <div class="d-flex align-items-center">
+                      <div class="rounded-circle p-3 bg-primary bg-opacity-10">
+                          <i class="fas fa-car text-primary"></i>
                       </div>
-                      <canvas id="fleetTrendMini" height="60"></canvas>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-3">
-              <div class="card border-0 shadow-sm rounded-lg">
-                  <div class="card-body p-4">
-                      <div class="d-flex align-items-center">
-                          <div class="rounded-circle p-3 bg-success bg-opacity-10">
-                              <i class="fas fa-dollar-sign text-success"></i>
-                          </div>
-                          <div class="ms-3">
-                              <h6 class="mb-0">Ingresos Mes</h6>
-                              <h2 class="mb-0">S/ {{ monthly_income|round(2) }}</h2>
-                          </div>
+                      <div class="ms-3">
+                          <h6 class="mb-0">Flota Total</h6>
+                          <h2 class="mb-0">{{ total_cars if total_cars else 0 }}</h2>
                       </div>
-                      <canvas id="incomeTrendMini" height="60"></canvas>
                   </div>
-              </div>
-          </div>
-          <div class="col-md-3">
-              <div class="card border-0 shadow-sm rounded-lg">
-                  <div class="card-body p-4">
-                      <div class="d-flex align-items-center">
-                          <div class="rounded-circle p-3 bg-warning bg-opacity-10">
-                              <i class="fas fa-calendar-check text-warning"></i>
-                          </div>
-                          <div class="ms-3">
-                              <h6 class="mb-0">Reservas Activas</h6>
-                              <h2 class="mb-0">{{ active_reservations|length }}</h2>
-                          </div>
-                      </div>
-                      <canvas id="reservationsTrendMini" height="60"></canvas>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-3">
-              <div class="card border-0 shadow-sm rounded-lg">
-                  <div class="card-body p-4">
-                      <div class="d-flex align-items-center">
-                          <div class="rounded-circle p-3 bg-info bg-opacity-10">
-                              <i class="fas fa-percentage text-info"></i>
-                          </div>
-                          <div class="ms-3">
-                              <h6 class="mb-0">Ocupación</h6>
-                              <h2 class="mb-0">{{ occupation_rate }}%</h2>
-                          </div>
-                      </div>
-                      <canvas id="occupationTrendMini" height="60"></canvas>
-                  </div>
+                  <canvas id="fleetTrendMini" height="60"></canvas>
               </div>
           </div>
       </div>
-
-      <!-- Main Charts Row -->
-      <div class="row g-3">
-          <div class="col-md-8">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h5 class="card-title">Resumen de Ingresos</h5>
-                      <canvas id="incomeOverviewChart" height="300"></canvas>
+      <div class="col-md-3">
+          <div class="card border-0 shadow-sm rounded-lg">
+              <div class="card-body p-4">
+                  <div class="d-flex align-items-center">
+                      <div class="rounded-circle p-3 bg-success bg-opacity-10">
+                          <i class="fas fa-dollar-sign text-success"></i>
+                      </div>
+                      <div class="ms-3">
+                          <h6 class="mb-0">Ingresos Mes</h6>
+                          <h2 class="mb-0">S/ {{ monthly_income|round(2) if monthly_income else "0.00" }}</h2>
+                      </div>
                   </div>
+                  <canvas id="incomeTrendMini" height="60"></canvas>
               </div>
           </div>
-          <div class="col-md-4">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h5 class="card-title">Estado de Flota</h5>
-                      <canvas id="fleetStatusChart" height="300"></canvas>
+      </div>
+      <div class="col-md-3">
+          <div class="card border-0 shadow-sm rounded-lg">
+              <div class="card-body p-4">
+                  <div class="d-flex align-items-center">
+                      <div class="rounded-circle p-3 bg-warning bg-opacity-10">
+                          <i class="fas fa-calendar-check text-warning"></i>
+                      </div>
+                      <div class="ms-3">
+                          <h6 class="mb-0">Reservas Activas</h6>
+                          <h2 class="mb-0">{{ active_reservations|length if active_reservations else 0 }}</h2>
+                      </div>
                   </div>
+                  <canvas id="reservationsTrendMini" height="60"></canvas>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-3">
+          <div class="card border-0 shadow-sm rounded-lg">
+              <div class="card-body p-4">
+                  <div class="d-flex align-items-center">
+                      <div class="rounded-circle p-3 bg-info bg-opacity-10">
+                          <i class="fas fa-percentage text-info"></i>
+                      </div>
+                      <div class="ms-3">
+                          <h6 class="mb-0">Ocupación</h6>
+                          <h2 class="mb-0">{{ occupation_rate if occupation_rate else "0" }}%</h2>
+                      </div>
+                  </div>
+                  <canvas id="occupationTrendMini" height="60"></canvas>
               </div>
           </div>
       </div>
   </div>
 
-  <!-- TAB AUTOS -->
-  <div class="tab-pane fade" id="autos" role="tabpanel">
-      <!-- KPIs específicos de autos -->
-      <div class="row g-3 mb-4">
-          <div class="col-md-4">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Utilización por Modelo</h6>
-                      <canvas id="modelUtilizationChart" height="300"></canvas>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Mantenimiento Programado</h6>
-                      <canvas id="maintenanceScheduleChart" height="300"></canvas>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Disponibilidad por Categoría</h6>
-                      <canvas id="categoryAvailabilityChart" height="300"></canvas>
-                  </div>
+  <!-- Main Charts Row -->
+  <div class="row g-3">
+      <div class="col-md-8">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h5 class="card-title">Resumen de Ingresos</h5>
+                  <canvas id="incomeOverviewChart" height="300"></canvas>
               </div>
           </div>
       </div>
-
-      <!-- Gráfico detallado de rendimiento -->
-      <div class="row g-3">
-          <div class="col-12">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h5 class="card-title">Rendimiento de Flota</h5>
-                      <canvas id="fleetPerformanceChart" height="300"></canvas>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <!-- TAB RESERVAS -->
-  <div class="tab-pane fade" id="reservas" role="tabpanel">
-      <!-- KPIs de reservas -->
-      <div class="row g-3 mb-4">
-          <div class="col-md-6">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Tendencia de Reservas</h6>
-                      <canvas id="reservationsTrendChart" height="300"></canvas>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-6">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Distribución por Duración</h6>
-                      <canvas id="reservationDurationChart" height="300"></canvas>
-                  </div>
-              </div>
-          </div>
-      </div>
-
-      <!-- Análisis detallado -->
-      <div class="row g-3">
-          <div class="col-md-4">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Reservas por Categoría</h6>
-                      <canvas id="reservationsByCategoryChart" height="250"></canvas>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Estado de Reservas</h6>
-                      <canvas id="reservationsStatusChart" height="250"></canvas>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Cancelaciones</h6>
-                      <canvas id="cancellationRateChart" height="250"></canvas>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <!-- TAB INGRESOS -->
-  <div class="tab-pane fade" id="ingresos" role="tabpanel">
-      <!-- KPIs de ingresos -->
-      <div class="row g-3 mb-4">
-          <div class="col-md-8">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Análisis de Ingresos</h6>
-                      <canvas id="revenueAnalysisChart" height="300"></canvas>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Distribución por Categoría</h6>
-                      <canvas id="revenueByCategoryChart" height="300"></canvas>
-                  </div>
-              </div>
-          </div>
-      </div>
-
-      <!-- Métricas financieras -->
-      <div class="row g-3">
-          <div class="col-md-6">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Margen por Modelo</h6>
-                      <canvas id="modelMarginChart" height="250"></canvas>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-6">
-              <div class="card border-0 shadow-sm">
-                  <div class="card-body p-4">
-                      <h6>Proyección de Ingresos</h6>
-                      <canvas id="revenueForecastChart" height="250"></canvas>
-                  </div>
+      <div class="col-md-4">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h5 class="card-title">Estado de Flota</h5>
+                  <canvas id="fleetStatusChart" height="300"></canvas>
               </div>
           </div>
       </div>
   </div>
 </div>
+
+
+<!-- TAB AUTOS -->
+<div class="tab-pane fade" id="autos" role="tabpanel">
+  <!-- KPIs específicos de autos -->
+  <div class="row g-3 mb-4">
+      <div class="col-md-4">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Utilización por Modelo</h6>
+                  {% if model_utilization_data %}
+                      <canvas id="modelUtilizationChart" height="300"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de utilización por modelo.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Mantenimiento Programado</h6>
+                  {% if maintenance_schedule_data %}
+                      <canvas id="maintenanceScheduleChart" height="300"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay autos en mantenimiento programado.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Disponibilidad por Categoría</h6>
+                  {% if category_availability_data %}
+                      <canvas id="categoryAvailabilityChart" height="300"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de disponibilidad por categoría.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Gráfico detallado de rendimiento -->
+  <div class="row g-3">
+      <div class="col-12">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h5 class="card-title">Rendimiento de Flota</h5>
+                  {% if fleet_performance_data %}
+                      <canvas id="fleetPerformanceChart" height="300"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de rendimiento de flota.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- TAB RESERVAS -->
+<div class="tab-pane fade" id="reservas" role="tabpanel">
+  <!-- KPIs de reservas -->
+  <div class="row g-3 mb-4">
+      <div class="col-md-6">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Tendencia de Reservas</h6>
+                  {% if reservations_trend_data %}
+                      <canvas id="reservationsTrendChart" height="300"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de reservas.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Distribución por Duración</h6>
+                  {% if reservation_duration_data %}
+                      <canvas id="reservationDurationChart" height="300"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de duración de reservas.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Análisis detallado -->
+  <div class="row g-3">
+      <div class="col-md-4">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Reservas por Categoría</h6>
+                  {% if reservations_by_category_data %}
+                      <canvas id="reservationsByCategoryChart" height="250"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de reservas por categoría.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Estado de Reservas</h6>
+                  {% if reservations_status_data %}
+                      <canvas id="reservationsStatusChart" height="250"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de estado de reservas.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Cancelaciones</h6>
+                  {% if cancellation_rate_data %}
+                      <canvas id="cancellationRateChart" height="250"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de cancelaciones.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- TAB INGRESOS -->
+<div class="tab-pane fade" id="ingresos" role="tabpanel">
+  <!-- KPIs de ingresos -->
+  <div class="row g-3 mb-4">
+      <div class="col-md-8">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Análisis de Ingresos</h6>
+                  {% if income_analysis_data %}
+                      <canvas id="incomeAnalysisChart" height="300"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de ingresos.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Distribución por Categoría</h6>
+                  {% if income_by_category_data %}
+                      <canvas id="incomeByCategoryChart" height="300"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de ingresos por categoría.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Métricas financieras -->
+  <div class="row g-3">
+      <div class="col-md-6">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Margen por Modelo</h6>
+                  {% if profit_by_model_data %}
+                      <canvas id="profitByModelChart" height="250"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de margen por modelo.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                  <h6>Proyección de Ingresos</h6>
+                  {% if income_forecast_data %}
+                      <canvas id="incomeForecastChart" height="250"></canvas>
+                  {% else %}
+                      <p class="text-muted">No hay datos de proyección de ingresos.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
 
 {% endblock %}
