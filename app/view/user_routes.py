@@ -132,17 +132,6 @@ def update_user(id):
     return render_template('users/create.html', user=user)
 
 
-# NUEVA RUTA: Dashboard
-@bp.route('/dashboard', methods=['GET'])
-@login_required
-def dashboard():
-    admin = get_admin_by_id(current_user.id)
-    if admin:
-        flash('Acceso no autorizado.', 'danger')
-        return redirect(url_for('base.base'))
-    return render_template('reports/dashboard.html')
-
-
 @bp.route('/create_admin', methods=['GET', 'POST'])
 @login_required
 def create_admin():

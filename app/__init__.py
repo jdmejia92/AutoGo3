@@ -33,14 +33,15 @@ def create_app():
     login.login_message_category = "warning"
 
     # Registro de blueprints y tareas iniciales
-    from .view import user_routes, reservations_routes, cars_routes, base_routes, auth_routes
+    from .view import user_routes, reservations_routes, cars_routes, base_routes, auth_routes, dashboard_routes 
     with app.app_context():
         app.register_blueprint(user_routes.bp)
         app.register_blueprint(cars_routes.bp)
         app.register_blueprint(reservations_routes.bp)
         app.register_blueprint(base_routes.bp)
         app.register_blueprint(auth_routes.bp)
-        db.create_all()  # Crear tablas en la base de datos si no existen
-        create_default_super_admin()  # Crear usuario administrador
+        app.register_blueprint(dashboard_routes.bp)  
+        db.create_all()  
+        create_default_super_admin()  
 
     return app

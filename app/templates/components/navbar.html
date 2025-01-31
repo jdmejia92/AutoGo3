@@ -12,7 +12,7 @@
                     {% if current_user.tier == 0 %}
                         <!-- Opciones exclusivas de Admin -->
                         <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
-                        <li class="nav-item"><a href="{{ url_for('users.dashboard') }}" class="nav-link">Dashboard</a></li>
+                        <li class="nav-item"><a href="{{ url_for('dashboard.dashboard') }}" class="nav-link">Dashboard</a></li>
                         <li class="nav-item"><a href="{{ url_for('cars.list_cars') }}" class="nav-link">Vehículos</a></li>
                         <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
                         <li class="nav-item"><a href="{{ url_for('users.list_users') }}" class="nav-link">Usuarios</a></li>

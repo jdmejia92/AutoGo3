@@ -1,18 +1,278 @@
 {% extends 'base_template.html' %}
-{% block title %} Dashboard {% endblock %}
-{% block content %}
 
-<div class="hero-wrap ftco-degree-bg" style="background-image: url('/static/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
-  <div class="overlay"></div>
+{% block head %}
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<!-- Chart.js Plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2" style="background-image: url('{{ url_for('static', filename='images/bg-dashboard.jpg') }}');">
+    <div class="overlay"></div>
     <div class="container">
-      <div class="row no-gutters slider-text justify-content-start align-items-center justify-content-center">
-        <div class="col-lg-8 ftco-animate">
-          <div class="text w-100 text-center mb-md-5 pb-md-5">
-              <h1 class="mb-4">Aqui pondria un Dashboar si tuviera uno</h1>
-          </div>
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-9 pb-5">
+                <h1 class="mb-3 bread text-white">Dashboard Analytics</h1>
+            </div>
         </div>
-      </div>
     </div>
+</section>
+
+<div class="container-fluid mt-4">
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs nav-fill mb-4" id="dashboardTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab">
+                <i class="fas fa-home mr-2"></i>General
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="autos-tab" data-toggle="tab" href="#autos" role="tab">
+                <i class="fas fa-car mr-2"></i>Autos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="reservas-tab" data-toggle="tab" href="#reservas" role="tab">
+                <i class="fas fa-calendar-alt mr-2"></i>Reservas
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="ingresos-tab" data-toggle="tab" href="#ingresos" role="tab">
+                <i class="fas fa-dollar-sign mr-2"></i>Ingresos
+            </a>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+<div class="tab-content" id="dashboardTabContent">
+  <!-- TAB GENERAL -->
+  <div class="tab-pane fade show active" id="general" role="tabpanel">
+      <!-- KPIs Row -->
+      <div class="row g-3 mb-4">
+          <div class="col-md-3">
+              <div class="card border-0 shadow-sm rounded-lg">
+                  <div class="card-body p-4">
+                      <div class="d-flex align-items-center">
+                          <div class="rounded-circle p-3 bg-primary bg-opacity-10">
+                              <i class="fas fa-car text-primary"></i>
+                          </div>
+                          <div class="ms-3">
+                              <h6 class="mb-0">Flota Total</h6>
+                              <h2 class="mb-0">{{ total_cars }}</h2>
+                          </div>
+                      </div>
+                      <canvas id="fleetTrendMini" height="60"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="card border-0 shadow-sm rounded-lg">
+                  <div class="card-body p-4">
+                      <div class="d-flex align-items-center">
+                          <div class="rounded-circle p-3 bg-success bg-opacity-10">
+                              <i class="fas fa-dollar-sign text-success"></i>
+                          </div>
+                          <div class="ms-3">
+                              <h6 class="mb-0">Ingresos Mes</h6>
+                              <h2 class="mb-0">S/ {{ monthly_income|round(2) }}</h2>
+                          </div>
+                      </div>
+                      <canvas id="incomeTrendMini" height="60"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="card border-0 shadow-sm rounded-lg">
+                  <div class="card-body p-4">
+                      <div class="d-flex align-items-center">
+                          <div class="rounded-circle p-3 bg-warning bg-opacity-10">
+                              <i class="fas fa-calendar-check text-warning"></i>
+                          </div>
+                          <div class="ms-3">
+                              <h6 class="mb-0">Reservas Activas</h6>
+                              <h2 class="mb-0">{{ active_reservations|length }}</h2>
+                          </div>
+                      </div>
+                      <canvas id="reservationsTrendMini" height="60"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="card border-0 shadow-sm rounded-lg">
+                  <div class="card-body p-4">
+                      <div class="d-flex align-items-center">
+                          <div class="rounded-circle p-3 bg-info bg-opacity-10">
+                              <i class="fas fa-percentage text-info"></i>
+                          </div>
+                          <div class="ms-3">
+                              <h6 class="mb-0">Ocupación</h6>
+                              <h2 class="mb-0">{{ occupation_rate }}%</h2>
+                          </div>
+                      </div>
+                      <canvas id="occupationTrendMini" height="60"></canvas>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Main Charts Row -->
+      <div class="row g-3">
+          <div class="col-md-8">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h5 class="card-title">Resumen de Ingresos</h5>
+                      <canvas id="incomeOverviewChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h5 class="card-title">Estado de Flota</h5>
+                      <canvas id="fleetStatusChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- TAB AUTOS -->
+  <div class="tab-pane fade" id="autos" role="tabpanel">
+      <!-- KPIs específicos de autos -->
+      <div class="row g-3 mb-4">
+          <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Utilización por Modelo</h6>
+                      <canvas id="modelUtilizationChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Mantenimiento Programado</h6>
+                      <canvas id="maintenanceScheduleChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Disponibilidad por Categoría</h6>
+                      <canvas id="categoryAvailabilityChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Gráfico detallado de rendimiento -->
+      <div class="row g-3">
+          <div class="col-12">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h5 class="card-title">Rendimiento de Flota</h5>
+                      <canvas id="fleetPerformanceChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- TAB RESERVAS -->
+  <div class="tab-pane fade" id="reservas" role="tabpanel">
+      <!-- KPIs de reservas -->
+      <div class="row g-3 mb-4">
+          <div class="col-md-6">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Tendencia de Reservas</h6>
+                      <canvas id="reservationsTrendChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Distribución por Duración</h6>
+                      <canvas id="reservationDurationChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Análisis detallado -->
+      <div class="row g-3">
+          <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Reservas por Categoría</h6>
+                      <canvas id="reservationsByCategoryChart" height="250"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Estado de Reservas</h6>
+                      <canvas id="reservationsStatusChart" height="250"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Cancelaciones</h6>
+                      <canvas id="cancellationRateChart" height="250"></canvas>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- TAB INGRESOS -->
+  <div class="tab-pane fade" id="ingresos" role="tabpanel">
+      <!-- KPIs de ingresos -->
+      <div class="row g-3 mb-4">
+          <div class="col-md-8">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Análisis de Ingresos</h6>
+                      <canvas id="revenueAnalysisChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Distribución por Categoría</h6>
+                      <canvas id="revenueByCategoryChart" height="300"></canvas>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Métricas financieras -->
+      <div class="row g-3">
+          <div class="col-md-6">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Margen por Modelo</h6>
+                      <canvas id="modelMarginChart" height="250"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                      <h6>Proyección de Ingresos</h6>
+                      <canvas id="revenueForecastChart" height="250"></canvas>
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
 </div>
 

@@ -8,7 +8,7 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     dni = db.Column(db.String(9), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password_hash = db.Column(db.String(256), nullable=False)  # Store hashed password
+    password_hash = db.Column(db.String(256), nullable=False) 
     phone = db.Column(db.String(15), nullable=True)
 
     # Driving Information
