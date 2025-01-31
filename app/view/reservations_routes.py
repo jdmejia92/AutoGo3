@@ -24,22 +24,11 @@ def list_reservations():
     reservations = list_reservations_controller(current_user.id)
     return render_template('reservations/list.html', reservations=reservations)
 
-@bp.route('/view/<int:id>')
-@login_required
-def view_reservation(id):
-    reservations = get_reservation_by_id(id)
-    if not reservations or reservations.user_id != current_user.id:
-        flash('Reserva no encontrada o no autorizada.', 'danger')
-        return redirect(url_for('reservations.list_reservations'))
-    
-    return render_template('reservations/view.html', reservations=reservations)
-
 @bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_reservation():
     if request.method == 'POST':
         try:
-            # Guardar form_data al inicio
             form_data = request.form.to_dict()
             
             car_id = request.form['car_category']
