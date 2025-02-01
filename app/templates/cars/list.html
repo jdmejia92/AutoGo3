@@ -56,11 +56,13 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
+                                    <a href="{{ url_for('cars.view_car', id=car.id) }}" class="btn btn-info btn-sm mr-2">Ver</a>
                                     <a href="{{ url_for('cars.update_car_route', id=car.id) }}" class="btn btn-warning btn-sm mr-2">Editar</a>
                                     <form action="{{ url_for('cars.delete_car_route', id=car.id) }}" method="post" class="d-inline">
                                         <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                                     </form>
                                 </div>
+                                
                             </td>
                         </tr>
                         {% endfor %}

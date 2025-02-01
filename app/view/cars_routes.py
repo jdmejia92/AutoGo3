@@ -144,6 +144,33 @@ def delete_car_route(id):
     flash('Auto eliminado exitosamente.', 'success')
     return redirect(url_for('cars.list_cars'))
 
+
+@bp.route('/details/<int:id>')
+def view_car(id):
+    car = get_car_by_id(id)
+    if not car:
+        flash("El vehículo no existe.", "error")
+        return redirect(url_for('cars.list_cars'))
+    
+    related_cars = list_all_cars()[:3]  # Ejemplo: obtener 3 autos relacionados
+
+    return render_template('cars/detail.html', car=car, related_cars=related_cars)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @bp.route('/pricing')
 def pricing():
     """Ruta para mostrar la página de precios"""
