@@ -25,40 +25,57 @@
                 <div class="col-md-12 featured-top">
                     <div class="row no-gutters">
                         <div class="col-md-4 d-flex align-items-center">
-                            <form action="{{ url_for('reservations.create_reservation') }}" method="GET" class="request-form ftco-animate bg-primary">
+                            <form action="#" class="request-form ftco-animate bg-primary fadeInUp ftco-animated">
                                 <h2>Organice su viaje</h2>
-                                
-                                <!-- Punto de recogida -->
                                 <div class="form-group">
-                                    <label for="pickup_location" class="label">Punto de recogida</label>
-                                    <input type="text" class="form-control" name="pickup_location" placeholder="Ciudad, aeropuerto, estación, etc" required>
+                                  <label for="" class="label">Punto de recogida</label>
+                                  <input type="text" class="form-control" placeholder="Ciudad, aeropuerto, estación, etc">
                                 </div>
-                                
-                                <!-- Punto de entrega -->
                                 <div class="form-group">
-                                    <label for="return_location" class="label">Punto de entrega</label>
-                                    <input type="text" class="form-control" name="return_location" placeholder="Ciudad, aeropuerto, estación, etc" required>
+                                  <label for="" class="label">Punto de entrega</label>
+                                  <input type="text" class="form-control" placeholder="Ciudad, aeropuerto, estación, etc">
                                 </div>
-                                
-                                <!-- Fechas de entrega y devolución -->
                                 <div class="d-flex">
-                                    <div class="form-group mr-2">
-                                        <label for="pickup_datetime" class="label">Fecha de recogida</label>
-                                        <input type="datetime-local" class="form-control" name="pickup_datetime" required>
-                                    </div>
-                                    <div class="form-group ml-2">
-                                        <label for="return_datetime" class="label">Fecha de devolución</label>
-                                        <input type="datetime-local" class="form-control" name="return_datetime" required>
-                                    </div>
+                                  <div class="form-group mr-2">
+                                    <label for="" class="label">Fecha de entrega</label>
+                                    <input type="text" class="form-control" id="book_pick_date" placeholder="Fecha">
+                                  </div>
+                                  <div class="form-group ml-2">
+                                    <label for="" class="label">Fecha de devolución</label>
+                                    <input type="text" class="form-control" id="book_off_date" placeholder="Fecha">
+                                  </div>
                                 </div>
-                                
-                                <!-- Botón para enviar -->
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-secondary py-3 px-4">
-                                        Renta un auto ahora
-                                    </button>
-                                </div>
-                            </form>
+                                    <a href="{{ url_for('reservations.create_reservation') }}" class="btn btn-secondary py-3 px-4">Renta un auto ahora</a>
+                                  </div>
+                                  
+                              </form>
+                            
+                                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                
                         </div>
     
                         <div class="col-md-8 d-flex align-items-center">
