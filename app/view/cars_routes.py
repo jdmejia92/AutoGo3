@@ -13,16 +13,20 @@ from ..controller.car_controller import (
 
 bp = Blueprint('cars', __name__, url_prefix='/cars')
 
+
 @bp.route('/')
 def list_cars():
     cars = list_all_cars()
-    print(f"Vehículos disponibles: {cars}") 
+    print(f"Vehículos disponibles: {cars}")
     return render_template('cars/list.html', cars=cars)
+
 
 @bp.route('/user-cars')
 def user_cars():
+    # Se asume que list_cars_for_users retorna un objeto de paginación
     cars = list_cars_for_users(request)
     return render_template('cars/user_cars.html', cars=cars.items, pagination=cars)
+
 
 @bp.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -35,7 +39,7 @@ def create_car_route():
             'plate': request.form.get('plate', '').strip(),
             'color': request.form.get('color', '').strip(),
             'chairs': request.form.get('chairs', '').strip(),
-            'car_type': request.form.get('type', '').strip(),
+            'car_type': request.form.get('car_type', '').strip(),
             'transmission': request.form.get('transmission', '').strip(),
             'fuel': request.form.get('fuel', '').strip(),
             'kilometer': request.form.get('kilometer', '').strip(),
@@ -45,6 +49,11 @@ def create_car_route():
             'daily_rate': request.form.get('daily_rate', '').strip(),
             'insurance_date': request.form.get('insurance_date', '').strip(),
             'itv_date': request.form.get('itv_date', '').strip(),
+            'gps': request.form.get('gps') == 'true',
+            'ac': request.form.get('ac') == 'true',
+            'bluetooth': request.form.get('bluetooth') == 'true',
+            'rear_camera': request.form.get('rear_camera') == 'true',
+            'parking_sensors': request.form.get('parking_sensors') == 'true',
             'description': request.form.get('description', '').strip()
         }
 
@@ -63,6 +72,7 @@ def create_car_route():
 
     return render_template('cars/create.html')
 
+
 @bp.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required
 def update_car_route(id):
@@ -76,7 +86,7 @@ def update_car_route(id):
             'plate': request.form.get('plate', '').strip(),
             'color': request.form.get('color', '').strip(),
             'chairs': request.form.get('chairs', '').strip(),
-            'car_type': request.form.get('type', '').strip(),
+            'car_type': request.form.get('car_type', '').strip(),
             'transmission': request.form.get('transmission', '').strip(),
             'fuel': request.form.get('fuel', '').strip(),
             'kilometer': request.form.get('kilometer', '').strip(),
@@ -86,6 +96,11 @@ def update_car_route(id):
             'daily_rate': request.form.get('daily_rate', '').strip(),
             'insurance_date': request.form.get('insurance_date', '').strip(),
             'itv_date': request.form.get('itv_date', '').strip(),
+            'gps': request.form.get('gps') == 'true',
+            'ac': request.form.get('ac') == 'true',
+            'bluetooth': request.form.get('bluetooth') == 'true',
+            'rear_camera': request.form.get('rear_camera') == 'true',
+            'parking_sensors': request.form.get('parking_sensors') == 'true',
             'description': request.form.get('description', '').strip()
         }
 
@@ -111,11 +126,11 @@ def update_car_route(id):
             kilometer=form_data.get('kilometer'),
             power=form_data.get('power'),
             status=form_data.get('status'),
-            gps=request.form.get('gps') == 'on',
-            ac=request.form.get('ac') == 'on',
-            bluetooth=request.form.get('bluetooth') == 'on',
-            rear_camera=request.form.get('rear_camera') == 'on',
-            parking_sensors=request.form.get('parking_sensors') == 'on',
+            gps=request.form.get('gps') == 'true',
+            ac=request.form.get('ac') == 'true',
+            bluetooth=request.form.get('bluetooth') == 'true',
+            rear_camera=request.form.get('rear_camera') == 'true',
+            parking_sensors=request.form.get('parking_sensors') == 'true',
             category=form_data.get('category'),
             daily_rate=form_data.get('daily_rate'),
             insurance_date=form_data.get('insurance_date'),
@@ -128,6 +143,7 @@ def update_car_route(id):
         return redirect(url_for('cars.list_cars'))
 
     return render_template('cars/update.html', vehicle=vehicle)
+
 
 @bp.after_request
 def add_header(response):
@@ -151,23 +167,10 @@ def view_car(id):
     if not car:
         flash("El vehículo no existe.", "error")
         return redirect(url_for('cars.list_cars'))
-    
+
     related_cars = list_all_cars()[:3]  # Ejemplo: obtener 3 autos relacionados
 
     return render_template('cars/detail.html', car=car, related_cars=related_cars)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

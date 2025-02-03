@@ -7,8 +7,8 @@
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
             <div class="col-md-9 ftco-animate pb-5">
                 <p class="breadcrumbs">
-                    <span class="mr-2"><a href="{{ url_for('base.base') }}">Home <i class="ion-ios-arrow-forward"></i></a></span>
-                    <span>Car Details <i class="ion-ios-arrow-forward"></i></span>
+                    <span class="mr-2"><a href="{{ url_for('base.base') }}">Inicio <i class="ion-ios-arrow-forward"></i></a></span>
+                    <span> Detalles del Vehiculo <i class="ion-ios-arrow-forward"></i></span>
                 </p>
                 <h1 class="mb-3 bread">Detalles del Vehículo</h1>
             </div>
@@ -21,7 +21,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="car-details">
-                    <div class="img rounded" style="background-image: url('{{ url_for('static', filename='images/' + car.photos if car.photos else 'images/default-car.jpg') }}');"></div>
+                    <<div class="img rounded" style="background-image: url('{{ url_for('static', filename='images/car-' ~ car.id ~ '.jpg') }}');"></div>
+
                     <div class="text text-center">
                         <span class="subheading">{{ car.brand }}</span>
                         <h2>{{ car.model }}</h2>
@@ -85,8 +86,7 @@
             </div>
         </div>
 
-        
-        <!-- Tabs de Características, Descripción y Reseñas -->
+        <!-- Tabs de Características y Descripción -->
         <div class="row">
             <div class="col-md-12 pills">
                 <div class="bd-example bd-example-tabs">
@@ -98,9 +98,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="pills-manufacturer-tab" data-toggle="pill" href="#pills-manufacturer" role="tab">Descripción</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-review-tab" data-toggle="pill" href="#pills-review" role="tab">Reseñas</a>
-                            </li>
                         </ul>
                     </div>
 
@@ -108,23 +105,21 @@
                         <!-- Características -->
                         <div class="tab-pane fade show active" id="pills-description" role="tabpanel">
                             <ul class="features">
-                                {% if car.gps %}<li class="check"><span class="ion-ios-checkmark"></span>GPS</li>{% endif %}
-                                {% if car.ac %}<li class="check"><span class="ion-ios-checkmark"></span>Aire Acondicionado</li>{% endif %}
-                                {% if car.bluetooth %}<li class="check"><span class="ion-ios-checkmark"></span>Bluetooth</li>{% endif %}
-                                {% if car.rear_camera %}<li class="check"><span class="ion-ios-checkmark"></span>Cámara Trasera</li>{% endif %}
-                                {% if car.parking_sensors %}<li class="check"><span class="ion-ios-checkmark"></span>Sensores de Estacionamiento</li>{% endif %}
+                                {% if car.gps or car.ac or car.bluetooth or car.rear_camera or car.parking_sensors %}
+                                    {% if car.gps %}<li class="check"><span class="ion-ios-checkmark"></span> GPS</li>{% endif %}
+                                    {% if car.ac %}<li class="check"><span class="ion-ios-checkmark"></span> Aire Acondicionado</li>{% endif %}
+                                    {% if car.bluetooth %}<li class="check"><span class="ion-ios-checkmark"></span> Bluetooth</li>{% endif %}
+                                    {% if car.rear_camera %}<li class="check"><span class="ion-ios-checkmark"></span> Cámara Trasera</li>{% endif %}
+                                    {% if car.parking_sensors %}<li class="check"><span class="ion-ios-checkmark"></span> Sensores de Estacionamiento</li>{% endif %}
+                                {% else %}
+                                    <li class="no-features">No hay características disponibles</li>
+                                {% endif %}
                             </ul>
                         </div>
 
                         <!-- Descripción -->
                         <div class="tab-pane fade" id="pills-manufacturer" role="tabpanel">
                             <p>{{ car.description if car.description else 'No hay descripción disponible.' }}</p>
-                        </div>
-
-                        <!-- Reseñas -->
-                        <div class="tab-pane fade" id="pills-review" role="tabpanel">
-                            <h3 class="head">Reseñas</h3>
-                            <p>Aún no hay reseñas para este vehículo.</p>
                         </div>
                     </div>
                 </div>

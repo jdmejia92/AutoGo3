@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end justify-content-start">
             <div class="col-md-9 pb-5">
-                <h1 class="mb-3 bread">Lista de Vehículos</h1>
+                <h1 class="mb-3 bread">Lista Completa de Vehículos</h1>
                 <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
             </div>
         </div>
@@ -32,8 +32,25 @@
                         <th>ID</th>
                         <th>Marca</th>
                         <th>Modelo</th>
+                        <th>Tipo</th>
                         <th>Matrícula</th>
+                        <th>Año</th>
                         <th>Color</th>
+                        <th>Asientos</th>
+                        <th>Combustible</th>
+                        <th>Kilometraje</th>
+                        <th>Transmisión</th>
+                        <th>Potencia</th>
+                        <th>Estado</th>
+                        <th>GPS</th>
+                        <th>Aire Acond.</th>
+                        <th>Bluetooth</th>
+                        <th>Cámara Trasera</th>
+                        <th>Sensores</th>
+                        <th>Categoría</th>
+                        <th>Tarifa Diaria</th>
+                        <th>Seguro Vigente</th>
+                        <th>ITV/Revisión</th>
                         <th>Foto</th>
                         <th>Acciones</th>
                     </tr>
@@ -45,15 +62,41 @@
                             <td>{{ car.id }}</td>
                             <td>{{ car.brand }}</td>
                             <td>{{ car.model }}</td>
+                            <td>{{ car.car_type }}</td>
                             <td>{{ car.plate }}</td>
+                            <td>{{ car.fabrication_year }}</td>
                             <td>{{ car.color }}</td>
+                            <td>{{ car.chairs }}</td>
+                            <td>{{ car.fuel }}</td>
+                            <td>{{ car.kilometer }} km</td>
+                            <td>{{ car.transmission }}</td>
+                            <td>{{ car.power }} HP</td>
                             <td>
-                                {% if car.photos %}
-                                    <img src="{{ url_for('static', filename='images/cars/' ~ car.id ~ '/' ~ car.photos.split(',')[0]) }}" alt="Foto del auto" style="width: 100px; height: auto;">
+                                {% if car.status == 0 %}
+                                    Disponible
+                                {% elif car.status == 1 %}
+                                    Ocupado
+                                {% elif car.status == 2 %}
+                                    Mantenimiento
                                 {% else %}
-                                    <img src="{{ url_for('static', filename='images/default-car.jpg') }}" alt="Foto por defecto" style="width: 100px; height: auto;">
+                                    Desconocido
                                 {% endif %}
                             </td>
+                            <td>{% if car.gps %}✅{% else %}❌{% endif %}</td>
+                            <td>{% if car.ac %}✅{% else %}❌{% endif %}</td>
+                            <td>{% if car.bluetooth %}✅{% else %}❌{% endif %}</td>
+                            <td>{% if car.rear_camera %}✅{% else %}❌{% endif %}</td>
+                            <td>{% if car.parking_sensors %}✅{% else %}❌{% endif %}</td>
+                            <td>{{ car.category }}</td>
+                            <td>${{ car.daily_rate }}</td>
+                            <td>{{ car.insurance_date.strftime('%d-%m-%Y') }}</td>
+                            <td>{{ car.itv_date.strftime('%d-%m-%Y') }}</td>
+                            <td style="padding: 0;">
+                                {% if car.photos %}
+                                    <img src="{{ url_for('static', filename='images/cars/' ~ car.id ~ '/' ~ car.photos.split(',')[0]) }}" alt="Foto del auto" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                {% endif %}
+                            </td>
+                            
                             <td>
                                 <div class="d-flex justify-content-center">
                                     <a href="{{ url_for('cars.view_car', id=car.id) }}" class="btn btn-info btn-sm mr-2">Ver</a>
@@ -62,13 +105,12 @@
                                         <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                                     </form>
                                 </div>
-                                
                             </td>
                         </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="7">No hay vehículos registrados.</td>
+                            <td colspan="24">No hay vehículos registrados.</td>
                         </tr>
                     {% endif %}
                 </tbody>

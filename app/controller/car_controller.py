@@ -2,6 +2,7 @@ from app.extensions import db
 from ..model.car_model import Car
 from werkzeug.utils import secure_filename
 from datetime import datetime
+from flask import current_app  # <--- Importa current_app
 import os
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -16,16 +17,20 @@ def list_all_cars():
         cars = Car.query.all()
         return cars
     except Exception as e:
+        # Retorna un mensaje de error o lanza la excepción según tu manejo global
         return f"Error al obtener la lista de carros: {str(e)}", 'error'
 
 def list_cars_for_users(request):
     """Fetch paginated cars for users."""
     page = request.args.get('page', 1, type=int)
     try:
-        cars = Car.query.filter(Car.status == 0).paginate(page=page, per_page=12)
+        # Se filtran los carros con status==0 (disponibles) y se aplican 6 elementos por página
+        cars = Car.query.filter(Car.status == 0).paginate(page=page, per_page=6)
         return cars
     except Exception as e:
-        return f"Error al obtener la lista de carros paginada: {str(e)}", 'error'
+        # Registra el error y devuelve None para manejarlo en la vista
+        current_app.logger.error(f"Error al obtener la lista de carros paginada: {str(e)}")
+        return None
 
 def get_car_by_id(car_id):
     """Fetch a single car by ID."""
@@ -79,7 +84,9 @@ def validate_car_data(form_data):
         errors.append("La marca es requerida.")
     if not form_data['model']:
         errors.append("El modelo es requerido.")
-    if not str(form_data['fabrication_year']).isdigit() or int(form_data['fabrication_year']) < 1900 or int(form_data['fabrication_year']) > datetime.now().year:
+    if (not str(form_data['fabrication_year']).isdigit() or 
+        int(form_data['fabrication_year']) < 1900 or 
+        int(form_data['fabrication_year']) > datetime.now().year):
         errors.append("El año de fabricación debe estar entre 1900 y el año actual.")
     if not form_data['plate']:
         errors.append("La matrícula es requerida.")

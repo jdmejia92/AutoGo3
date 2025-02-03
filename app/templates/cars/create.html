@@ -107,27 +107,45 @@
                 <div class="form-group">
                     <label for="status">Estado</label>
                     <select id="status" name="status" class="form-control" required>
-                        <option value="Disponible">Disponible</option>
-                        <option value="Mantenimiento">Mantenimiento</option>
-                        <option value="Reservado">Reservado</option>
-                        <option value="Inactivo">Inactivo</option>
+                        <option value="0">Disponible</option>
+                        <option value="1">Mantenimiento</option>
+                        <option value="2">Reservado</option>
+                        <option value="3">Inactivo</option>
                     </select>
                 </div>
+                
                 <div class="form-group">
-                    <label><input type="checkbox" name="gps"> GPS</label>
+                    <input type="hidden" name="gps" value="false">
+                    <label>
+                        <input type="checkbox" name="gps" value="true"> GPS
+                    </label>
                 </div>
                 <div class="form-group">
-                    <label><input type="checkbox" name="ac"> A/C</label>
+                    <input type="hidden" name="ac" value="false">
+                    <label>
+                        <input type="checkbox" name="ac" value="true"> A/C
+                    </label>
                 </div>
                 <div class="form-group">
-                    <label><input type="checkbox" name="bluetooth"> Bluetooth</label>
+                    <input type="hidden" name="bluetooth" value="false">
+                    <label>
+                        <input type="checkbox" name="bluetooth" value="true"> Bluetooth
+                    </label>
                 </div>
                 <div class="form-group">
-                    <label><input type="checkbox" name="rear_camera"> Cámara de Retroceso</label>
+                    <input type="hidden" name="rear_camera" value="false">
+                    <label>
+                        <input type="checkbox" name="rear_camera" value="true"> Cámara de Retroceso
+                    </label>
                 </div>
                 <div class="form-group">
-                    <label><input type="checkbox" name="parking_sensors"> Sensores de Estacionamiento</label>
+                    <input type="hidden" name="parking_sensors" value="false">
+                    <label>
+                        <input type="checkbox" name="parking_sensors" value="true"> Sensores de Estacionamiento
+                    </label>
                 </div>
+                
+                
 
                 <!-- Información Comercial -->
                 <h4 class="mb-3 mt-4">Información Comercial</h4>

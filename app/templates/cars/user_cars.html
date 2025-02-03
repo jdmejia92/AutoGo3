@@ -27,17 +27,16 @@
         {% for car in cars %}
         <div class="col-md-4">
           <div class="car-wrap rounded ftco-animate">
-            <div class="img rounded d-flex align-items-end" style="background-image: url('{{ url_for('static', filename=car.image_url) }}');"></div>
+            <div class="img rounded d-flex align-items-end" style="background-image: url('{{ url_for('static', filename='images/car-' ~ car.id ~ '.jpg') }}');"></div>
             <div class="text">
               <h2 class="mb-0"><a href="#">{{ car.model }}</a></h2>
               <div class="d-flex mb-3">
                 <span class="cat">{{ car.brand }}</span>
                 <p class="price ml-auto">S/{{ car.daily_rate|int }} <span>/día</span></p>
-
               </div>
               <p class="d-flex mb-0 d-block">
                 <a href="{{ url_for('reservations.create_reservation', car_id=car.id) }}" class="btn btn-primary py-2 mr-1">Reservar</a>
-                <a href="#" class="btn btn-secondary py-2 ml-1">Detalles</a>
+                <a href="{{ url_for('cars.view_car', id=car.id) }}" class="btn btn-secondary py-2 ml-1">Detalles</a>
               </p>
             </div>
           </div>
@@ -47,21 +46,59 @@
         <p class="text-center w-100">No hay vehículos disponibles en este momento.</p>
       {% endif %}
     </div>
+    {% if pagination.pages > 1 %}
     <div class="row mt-5">
       <div class="col text-center">
-        <div class="block-27">
-          <ul>
-            <li><a href="#">&lt;</a></li>
-            <li class="active"><span>1</span></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&gt;</a></li>
+        <nav aria-label="Navegación de páginas">
+          <ul class="pagination justify-content-center">
+            {% if pagination.has_prev %}
+            <li class="page-item">
+              <a class="page-link" href="{{ url_for('cars.user_cars', page=pagination.prev_num) }}" aria-label="Anterior">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <span class="page-link" aria-label="Anterior">
+                <span aria-hidden="true">&laquo;</span>
+              </span>
+            </li>
+            {% endif %}
+
+            {% for page in pagination.iter_pages(left_edge=2, left_current=2, right_current=2, right_edge=2) %}
+              {% if page %}
+                {% if page == pagination.page %}
+                  <li class="page-item active">
+                    <span class="page-link">{{ page }}</span>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="{{ url_for('cars.user_cars', page=page) }}">{{ page }}</a>
+                  </li>
+                {% endif %}
+              {% else %}
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+              {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="{{ url_for('cars.user_cars', page=pagination.next_num) }}" aria-label="Siguiente">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <span class="page-link" aria-label="Siguiente">
+                <span aria-hidden="true">&raquo;</span>
+              </span>
+            </li>
+            {% endif %}
           </ul>
-        </div>
+        </nav>
       </div>
     </div>
+    {% endif %}
   </div>
 </section>
 {% endblock %}
