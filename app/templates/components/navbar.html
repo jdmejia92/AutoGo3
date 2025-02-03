@@ -17,10 +17,6 @@
                         <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
                         <li class="nav-item"><a href="{{ url_for('users.list_users') }}" class="nav-link">Usuarios</a></li>
                     {% else %}
-
-                    
-
-
                         <!-- Opciones exclusivas para Stock y User -->
                         <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
                         <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros" class="nav-link">Nosotros</a></li>
@@ -30,7 +26,7 @@
                     {% endif %}
                     
                     <!-- Dropdown para usuarios autenticados -->
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown mt-2 mt-lg-0">
                         <a class="nav-link dropdown-toggle btn btn-primary text-white ml-3 px-4"
                            href="{{ url_for('auth.account') }}" id="accountDropdown"
                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -47,7 +43,7 @@
                     <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros" class="nav-link">Nosotros</a></li>
                     <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
                     <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
-                    <li class="nav-item">
+                    <li class="nav-item mt-2 mt-lg-0">
                         <a href="{{ url_for('auth.login') }}" class="nav-link btn btn-primary text-white ml-3 px-4">
                             Iniciar Sesión
                         </a>
