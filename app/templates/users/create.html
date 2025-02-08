@@ -4,119 +4,158 @@
 
 <!-- Hero Section -->
 <section class="hero-wrap hero-wrap-2" style="background-image: url('{{ url_for('static', filename='images/bg_newuser.jpg') }}');" data-stellar-background-ratio="0.5">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text align-items-end justify-content-start">
-            <div class="col-md-9 pb-5">
-                <h1 class="mb-3 bread">Registrar Usuario</h1>
-                <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
-            </div>
-        </div>
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text align-items-end justify-content-start">
+      <div class="col-md-9 pb-5">
+        <h1 class="mb-3 bread">Registrar Usuario</h1>
+        <a href="{{ url_for('base.base') }}">Volver a Inicio</a>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Registration Form Section -->
 <section class="ftco-section">
-    <div class="container d-flex justify-content-center align-items-center">
-        <div class="form-container w-75 bg-light p-5 rounded">
-            <h2 class="text-center mb-4">Formulario de Registro</h2>
-            <form action="{{ url_for('users.create_user') }}" method="POST" class="contact-form">
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="form-container w-75 bg-light p-5 rounded">
+      <h2 class="text-center mb-4">Formulario de Registro</h2>
+      <form action="{{ url_for('users.create_user') }}" method="POST" class="contact-form">
 
-                <!-- Información Personal -->
-                <h4 class="mb-3">Información Personal</h4>
-                <div class="form-group">
-                    <label for="first_name">Nombre</label>
-                    <input type="text" id="first_name" name="first_name" class="form-control" maxlength="50" required>
-                </div>
-                <div class="form-group">
-                    <label for="last_name">Apellido</label>
-                    <input type="text" id="last_name" name="last_name" class="form-control" maxlength="50" required>
-                </div>
-                <div class="form-group">
-                    <label for="dni">DNI/Identificación</label>
-                    <input type="text" id="dni" name="dni" class="form-control" maxlength="9" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="form-control" maxlength="100" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" class="form-control" minlength="8" required>
-                </div>
-                <div class="form-group">
-                    <label for="confirm_password">Confirmar Contraseña</label>
-                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" minlength="8" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Teléfono</label>
-                    <input type="text" id="phone" name="phone" class="form-control" maxlength="15">
-                </div>
-
-                <!-- Información de Conducción -->
-                <h4 class="mb-3 mt-4">Información de Conducción</h4>
-                <div class="form-group">
-                    <label for="license_number">Número de licencia de conducir</label>
-                    <input type="text" id="license_number" name="license_number" class="form-control" maxlength="20" required>
-                </div>
-                <div class="form-group">
-                    <label for="license_expiration">Fecha de vencimiento de licencia</label>
-                    <input type="date" id="license_expiration" name="license_expiration" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="license_country">País emisor de licencia</label>
-                    <input type="text" id="license_country" name="license_country" class="form-control" maxlength="100" required>
-                </div>
-                
-                <!-- Dirección -->
-                <h4 class="mb-3 mt-4">Dirección</h4>
-                <div class="form-group">
-                    <label for="address">Calle y número</label>
-                    <input type="text" id="address" name="address" class="form-control" maxlength="100" required>
-                </div>
-                <div class="form-group">
-                    <label for="city">Ciudad</label>
-                    <input type="text" id="city" name="city" class="form-control" maxlength="50" required>
-                </div>
-                <div class="form-group">
-                    <label for="postal_code">Código postal</label>
-                    <input type="text" id="postal_code" name="postal_code" class="form-control" maxlength="10" required>
-                </div>
-                <div class="form-group">
-                    <label for="country">País</label>
-                    <input type="text" id="country" name="country" class="form-control" maxlength="100" required>
-                </div>
-                <div class="form-group">
-                    <label for="state">Provincia/Estado</label>
-                    <input type="text" id="state" name="state" class="form-control" maxlength="50" required>
-                </div>
-
-                <!-- Verificación -->
-                <h4 class="mb-3 mt-4">Verificación</h4>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" name="terms_accepted" required checked> Acepto los términos y condiciones
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" name="privacy_policy_accepted" required checked> Acepto la política de privacidad
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" name="offers_accepted" checked> Deseo recibir ofertas y promociones
-                    </label>
-                </div>
-
-                <!-- Botón de Enviar -->
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary py-3 px-5">Registrar</button>
-                </div>
-            </form>
-
+        <!-- Información Personal -->
+        <h4 class="mb-3">Información Personal</h4>
+        <div class="form-group">
+          <label for="first_name">Nombre</label>
+          <input type="text" id="first_name" name="first_name" class="form-control" maxlength="50" required>
         </div>
+        <div class="form-group">
+          <label for="last_name">Apellido</label>
+          <input type="text" id="last_name" name="last_name" class="form-control" maxlength="50" required>
+        </div>
+        <div class="form-group">
+          <label for="dni">DNI/Identificación</label>
+          <input type="text" id="dni" name="dni" class="form-control" maxlength="9" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" class="form-control" maxlength="100" required>
+        </div>
+        
+        <!-- Contraseñas con botón toggle -->
+        <div class="form-group position-relative">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" class="form-control" minlength="8" required>
+          <button type="button" class="btn position-absolute" 
+                  style="top: 0; right: 10px; height: 100%; border: none; background: none; padding: 0;" 
+                  onclick="togglePasswordVisibility()">
+            <img id="togglePasswordIcon" src="/static/svg/eye.svg" alt="Mostrar Contraseña" width="20" height="20">
+          </button>
+        </div>
+        <div class="form-group position-relative">
+          <label for="confirm_password">Confirmar Contraseña</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="form-control" minlength="8" required>
+          <button type="button" class="btn position-absolute" 
+                  style="top: 0; right: 10px; height: 100%; border: none; background: none; padding: 0;" 
+                  onclick="toggleConfirmPasswordVisibility()">
+            <img id="toggleConfirmPasswordIcon" src="/static/svg/eye.svg" alt="Mostrar Contraseña" width="20" height="20">
+          </button>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Teléfono</label>
+          <input type="text" id="phone" name="phone" class="form-control" maxlength="15">
+        </div>
+
+        <!-- Información de Conducción -->
+        <h4 class="mb-3 mt-4">Información de Conducción</h4>
+        <div class="form-group">
+          <label for="license_number">Número de licencia de conducir</label>
+          <input type="text" id="license_number" name="license_number" class="form-control" maxlength="20" required>
+        </div>
+        <div class="form-group">
+          <label for="license_expiration">Fecha de vencimiento de licencia</label>
+          <input type="date" id="license_expiration" name="license_expiration" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="license_country">País emisor de licencia</label>
+          <input type="text" id="license_country" name="license_country" class="form-control" maxlength="100" required>
+        </div>
+                
+        <!-- Dirección -->
+        <h4 class="mb-3 mt-4">Dirección</h4>
+        <div class="form-group">
+          <label for="address">Calle y número</label>
+          <input type="text" id="address" name="address" class="form-control" maxlength="100" required>
+        </div>
+        <div class="form-group">
+          <label for="city">Ciudad</label>
+          <input type="text" id="city" name="city" class="form-control" maxlength="50" required>
+        </div>
+        <div class="form-group">
+          <label for="postal_code">Código postal</label>
+          <input type="text" id="postal_code" name="postal_code" class="form-control" maxlength="10" required>
+        </div>
+        <div class="form-group">
+          <label for="country">País</label>
+          <input type="text" id="country" name="country" class="form-control" maxlength="100" required>
+        </div>
+        <div class="form-group">
+          <label for="state">Provincia/Estado</label>
+          <input type="text" id="state" name="state" class="form-control" maxlength="50" required>
+        </div>
+
+        <!-- Verificación -->
+        <h4 class="mb-3 mt-4">Verificación</h4>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="terms_accepted" required checked> Acepto los términos y condiciones
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="privacy_policy_accepted" required checked> Acepto la política de privacidad
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="offers_accepted" checked> Deseo recibir ofertas y promociones
+          </label>
+        </div>
+
+        <!-- Botón de Enviar -->
+        <div class="form-group text-center">
+          <button type="submit" class="btn btn-primary py-3 px-5">Registrar</button>
+        </div>
+      </form>
     </div>
+  </div>
 </section>
+
+<!-- Scripts para mostrar/ocultar contraseñas -->
+<script>
+  function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const passwordIcon = document.getElementById('togglePasswordIcon');
+      if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          passwordIcon.src = '/static/svg/eye-slash.svg';
+      } else {
+          passwordInput.type = 'password';
+          passwordIcon.src = '/static/svg/eye.svg';
+      }
+  }
+
+  function toggleConfirmPasswordVisibility() {
+      const confirmPasswordInput = document.getElementById('confirm_password');
+      const confirmPasswordIcon = document.getElementById('toggleConfirmPasswordIcon');
+      if (confirmPasswordInput.type === 'password') {
+          confirmPasswordInput.type = 'text';
+          confirmPasswordIcon.src = '/static/svg/eye-slash.svg';
+      } else {
+          confirmPasswordInput.type = 'password';
+          confirmPasswordIcon.src = '/static/svg/eye.svg';
+      }
+  }
+</script>
 
 {% endblock %}
