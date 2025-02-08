@@ -1,137 +1,207 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{{ url_for('static', filename='images/bg_3.jpg') }}');" data-stellar-background-ratio="0.5">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-            <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs">
-                    <span class="mr-2"><a href="{{ url_for('base.base') }}">Inicio <i class="ion-ios-arrow-forward"></i></a></span>
-                    <span> Detalles del Vehiculo <i class="ion-ios-arrow-forward"></i></span>
-                </p>
-                <h1 class="mb-3 bread">Detalles del Vehículo</h1>
-            </div>
-        </div>
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2 js-fullheight" 
+         style="background-image: url('{{ url_for('static', filename='images/bg_3.jpg') }}'); background-size: cover; background-position: center;" 
+         data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+      <div class="col-12 col-md-9 ftco-animate pb-5 text-center text-md-left">
+        <p class="breadcrumbs">
+          <span class="mr-2">
+            <a href="{{ url_for('base.base') }}">Inicio <i class="ion-ios-arrow-forward"></i></a>
+          </span>
+          <span> Detalles del Vehículo <i class="ion-ios-arrow-forward"></i></span>
+        </p>
+        <h1 class="mb-3 bread">Detalles del Vehículo</h1>
+      </div>
     </div>
+  </div>
 </section>
 
+<!-- Detalles del Vehículo -->
 <section class="ftco-section ftco-car-details">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="car-details">
-                    <<div class="img rounded" style="background-image: url('{{ url_for('static', filename='images/car-' ~ car.id ~ '.jpg') }}');"></div>
-
-                    <div class="text text-center">
-                        <span class="subheading">{{ car.brand }}</span>
-                        <h2>{{ car.model }}</h2>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <!-- Imagen y Datos Básicos -->
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="car-details text-center">
+          <!-- Se corrigió el error de símbolo extra ("<<") y se ajusta la imagen -->
+          <div class="img rounded" 
+               style="background-image: url('{{ url_for('static', filename='images/car-' ~ car.id ~ '.jpg') }}'); background-size: cover; background-position: center; height: 300px;">
+          </div>
+          <div class="text mt-4">
+            <span class="subheading d-block">{{ car.brand }}</span>
+            <h2 class="mb-0">{{ car.model }}</h2>
+          </div>
         </div>
-
-        <div class="row">
-            <!-- Kilometraje -->
-            <div class="col-md d-flex align-self-stretch ftco-animate">
-                <div class="media block-6 services">
-                    <div class="media-body py-md-4">
-                        <div class="d-flex mb-3 align-items-center">
-                            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-dashboard"></span></div>
-                            <div class="text">
-                                <h3 class="heading mb-0 pl-3">Kilometraje <span>{{ car.kilometer }} km</span></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>      
-            </div>
-            <!-- Transmisión -->
-            <div class="col-md d-flex align-self-stretch ftco-animate">
-                <div class="media block-6 services">
-                    <div class="media-body py-md-4">
-                        <div class="d-flex mb-3 align-items-center">
-                            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-pistons"></span></div>
-                            <div class="text">
-                                <h3 class="heading mb-0 pl-3">Transmisión <span>{{ car.transmission }}</span></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>      
-            </div>
-            <!-- Asientos -->
-            <div class="col-md d-flex align-self-stretch ftco-animate">
-                <div class="media block-6 services">
-                    <div class="media-body py-md-4">
-                        <div class="d-flex mb-3 align-items-center">
-                            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-car-seat"></span></div>
-                            <div class="text">
-                                <h3 class="heading mb-0 pl-3">Asientos <span>{{ car.chairs }} personas</span></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>      
-            </div>
-            <!-- Combustible -->
-            <div class="col-md d-flex align-self-stretch ftco-animate">
-                <div class="media block-6 services">
-                    <div class="media-body py-md-4">
-                        <div class="d-flex mb-3 align-items-center">
-                            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-diesel"></span></div>
-                            <div class="text">
-                                <h3 class="heading mb-0 pl-3">Combustible <span>{{ car.fuel }}</span></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>      
-            </div>
-        </div>
-
-        <!-- Tabs de Características y Descripción -->
-        <div class="row">
-            <div class="col-md-12 pills">
-                <div class="bd-example bd-example-tabs">
-                    <div class="d-flex justify-content-center">
-                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="pills-description-tab" data-toggle="pill" href="#pills-description" role="tab">Características</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-manufacturer-tab" data-toggle="pill" href="#pills-manufacturer" role="tab">Descripción</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="tab-content" id="pills-tabContent">
-                        <!-- Características -->
-                        <div class="tab-pane fade show active" id="pills-description" role="tabpanel">
-                            <ul class="features">
-                                {% if car.gps or car.ac or car.bluetooth or car.rear_camera or car.parking_sensors %}
-                                    {% if car.gps %}<li class="check"><span class="ion-ios-checkmark"></span> GPS</li>{% endif %}
-                                    {% if car.ac %}<li class="check"><span class="ion-ios-checkmark"></span> Aire Acondicionado</li>{% endif %}
-                                    {% if car.bluetooth %}<li class="check"><span class="ion-ios-checkmark"></span> Bluetooth</li>{% endif %}
-                                    {% if car.rear_camera %}<li class="check"><span class="ion-ios-checkmark"></span> Cámara Trasera</li>{% endif %}
-                                    {% if car.parking_sensors %}<li class="check"><span class="ion-ios-checkmark"></span> Sensores de Estacionamiento</li>{% endif %}
-                                {% else %}
-                                    <li class="no-features">No hay características disponibles</li>
-                                {% endif %}
-                            </ul>
-                        </div>
-
-                        <!-- Descripción -->
-                        <div class="tab-pane fade" id="pills-manufacturer" role="tabpanel">
-                            <p>{{ car.description if car.description else 'No hay descripción disponible.' }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Botón para volver -->
-        <div class="row mt-4">
-            <div class="col-md-12 text-center">
-                <a href="{{ url_for('cars.list_cars') }}" class="btn btn-secondary">Volver</a>
-            </div>
-        </div>
+      </div>
     </div>
+
+    <!-- Datos Adicionales: Kilometraje, Transmisión, Asientos y Combustible -->
+    <div class="row mt-4">
+      <!-- Kilometraje -->
+      <div class="col-12 col-md d-flex align-self-stretch ftco-animate">
+        <div class="media block-6 services">
+          <div class="media-body py-md-4">
+            <div class="d-flex mb-3 align-items-center justify-content-start">
+              <div class="icon d-flex align-items-center justify-content-center">
+                <span class="flaticon-dashboard"></span>
+              </div>
+              <div class="text ml-2">
+                <h3 class="heading mb-0">Kilometraje <span>{{ car.kilometer }} km</span></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Transmisión -->
+      <div class="col-12 col-md d-flex align-self-stretch ftco-animate">
+        <div class="media block-6 services">
+          <div class="media-body py-md-4">
+            <div class="d-flex mb-3 align-items-center justify-content-start">
+              <div class="icon d-flex align-items-center justify-content-center">
+                <span class="flaticon-pistons"></span>
+              </div>
+              <div class="text ml-2">
+                <h3 class="heading mb-0">Transmisión <span>{{ car.transmission }}</span></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Asientos -->
+      <div class="col-12 col-md d-flex align-self-stretch ftco-animate">
+        <div class="media block-6 services">
+          <div class="media-body py-md-4">
+            <div class="d-flex mb-3 align-items-center justify-content-start">
+              <div class="icon d-flex align-items-center justify-content-center">
+                <span class="flaticon-car-seat"></span>
+              </div>
+              <div class="text ml-2">
+                <h3 class="heading mb-0">Asientos <span>{{ car.chairs }} personas</span></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Combustible -->
+      <div class="col-12 col-md d-flex align-self-stretch ftco-animate">
+        <div class="media block-6 services">
+          <div class="media-body py-md-4">
+            <div class="d-flex mb-3 align-items-center justify-content-start">
+              <div class="icon d-flex align-items-center justify-content-center">
+                <span class="flaticon-diesel"></span>
+              </div>
+              <div class="text ml-2">
+                <h3 class="heading mb-0">Combustible <span>{{ car.fuel }}</span></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs: Características y Descripción -->
+    <div class="row mt-5">
+      <div class="col-12 pills">
+        <div class="bd-example bd-example-tabs">
+          <div class="d-flex justify-content-center">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="pills-description-tab" data-toggle="pill" href="#pills-description" role="tab">Características</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-manufacturer-tab" data-toggle="pill" href="#pills-manufacturer" role="tab">Descripción</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="tab-content" id="pills-tabContent">
+            <!-- Características en 3 columnas (texto centrado) -->
+            <div class="tab-pane fade show active" id="pills-description" role="tabpanel">
+              <div class="row">
+                <!-- Columna 1 -->
+                <div class="col-12 col-md-4">
+                  <ul class="features text-center">
+                    <li class="{{ 'check' if car.ac else 'remove' }}">
+                      <span class="{{ 'ion-ios-checkmark' if car.ac else 'ion-ios-close' }}"></span> Aire Acondicionado
+                    </li>
+                    <li class="remove">
+                      <span class="ion-ios-close"></span> Asiento para niños
+                    </li>
+                    <li class="{{ 'check' if car.gps else 'remove' }}">
+                      <span class="{{ 'ion-ios-checkmark' if car.gps else 'ion-ios-close' }}"></span> GPS
+                    </li>
+                    <li class="check">
+                      <span class="ion-ios-checkmark"></span> Capacidad de equipaje
+                    </li>
+                    <li class="check">
+                      <span class="ion-ios-checkmark"></span> Sistema multimedia
+                    </li>
+                  </ul>
+                </div>
+                <!-- Columna 2 -->
+                <div class="col-12 col-md-4">
+                  <ul class="features text-center">
+                    <li class="check">
+                      <span class="ion-ios-checkmark"></span> Cinturón de seguridad
+                    </li>
+                    <li class="remove">
+                      <span class="ion-ios-close"></span> Cama para dormir
+                    </li>
+                    <li class="remove">
+                      <span class="ion-ios-close"></span> Agua embotellada
+                    </li>
+                    <li class="{{ 'check' if car.bluetooth else 'remove' }}">
+                      <span class="{{ 'ion-ios-checkmark' if car.bluetooth else 'ion-ios-close' }}"></span> Bluetooth
+                    </li>
+                    <li class="remove">
+                      <span class="ion-ios-close"></span> Computadora a bordo
+                    </li>
+                  </ul>
+                </div>
+                <!-- Columna 3 -->
+                <div class="col-12 col-md-4">
+                  <ul class="features text-center">
+                    <li class="check">
+                      <span class="ion-ios-checkmark"></span> Entrada de audio
+                    </li>
+                    <li class="check">
+                      <span class="ion-ios-checkmark"></span> Viajes largos
+                    </li>
+                    <li class="check">
+                      <span class="ion-ios-checkmark"></span> Kit de auto
+                    </li>
+                    <li class="check">
+                      <span class="ion-ios-checkmark"></span> Cierre centralizado remoto
+                    </li>
+                    <li class="check">
+                      <span class="ion-ios-checkmark"></span> Control de clima
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="tab-pane fade" id="pills-manufacturer" role="tabpanel">
+              <p class="text-center">{{ car.description if car.description else 'No hay descripción disponible.' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón para Volver y Reservar -->
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <a href="{{ url_for('reservations.create_reservation') }}" class="btn btn-primary mr-2">Reservar</a>
+        <a href="{{ url_for('cars.list_cars') }}" class="btn btn-secondary">Volver</a>
+      </div>
+    </div>
+  </div>
 </section>
 {% endblock %}

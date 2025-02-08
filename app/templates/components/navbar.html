@@ -1,55 +1,230 @@
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-        <a class="navbar-brand" href="{{ url_for('base.base') }}">Auto<span>GO</span></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
-            aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="oi oi-menu"></span> Menu
-        </button>
-
-        <div class="collapse navbar-collapse" id="ftco-nav">
-            <ul class="navbar-nav ml-auto">
-                {% if current_user.is_authenticated %}
-                    {% if current_user.tier == 0 %}
-                        <!-- Opciones exclusivas de Admin -->
-                        <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
-                        <li class="nav-item"><a href="{{ url_for('dashboard.dashboard') }}" class="nav-link">Dashboard</a></li>
-                        <li class="nav-item"><a href="{{ url_for('cars.list_cars') }}" class="nav-link">Vehículos</a></li>
-                        <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
-                        <li class="nav-item"><a href="{{ url_for('users.list_users') }}" class="nav-link">Usuarios</a></li>
-                    {% else %}
-                        <!-- Opciones exclusivas para Stock y User -->
-                        <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
-                        <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros" class="nav-link">Nosotros</a></li>
-                        <li class="nav-item"><a href="{{ url_for('cars.pricing') }}" class="nav-link">Precios</a></li>
-                        <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
-                        <li class="nav-item"><a href="{{ url_for('reservations.create_reservation') }}" class="nav-link">Reservas</a></li>
-                    {% endif %}
-                    
-                    <!-- Dropdown para usuarios autenticados -->
-                    <li class="nav-item dropdown mt-2 mt-lg-0">
-                        <a class="nav-link dropdown-toggle btn btn-primary text-white ml-3 px-4"
-                           href="{{ url_for('auth.account') }}" id="accountDropdown"
-                           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           Sesión Iniciada
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="accountDropdown">
-                            <a class="dropdown-item" href="{{ url_for('auth.account') }}">Mi Cuenta</a>
-                            <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
-                        </div>
-                    </li>
-                {% else %}
-                    <!-- Opciones para usuarios no autenticados -->
-                    <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
-                    <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros" class="nav-link">Nosotros</a></li>
-                    <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
-                    <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
-                    <li class="nav-item mt-2 mt-lg-0">
-                        <a href="{{ url_for('auth.login') }}" class="nav-link btn btn-primary text-white ml-3 px-4">
-                            Iniciar Sesión
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
+      <a class="navbar-brand" href="{{ url_for('base.base') }}">Auto<span>GO</span></a>
+      <!-- Botón de hamburguesa para mobile -->
+      <button class="navbar-toggler d-lg-none" type="button" onclick="openSidebar()">
+        <span class="oi oi-menu"></span> Menu
+      </button>
+      <!-- Menú normal para pantallas grandes -->
+      <div class="collapse navbar-collapse d-none d-lg-block">
+        <ul class="navbar-nav ml-auto">
+          {% if current_user.is_authenticated %}
+            {% if current_user.tier == 0 %}
+              <!-- Opciones exclusivas de Admin -->
+              <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
+              <li class="nav-item"><a href="{{ url_for('dashboard.dashboard') }}" class="nav-link">Dashboard</a></li>
+              <li class="nav-item"><a href="{{ url_for('cars.list_cars') }}" class="nav-link">Vehículos</a></li>
+              <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
+              <li class="nav-item"><a href="{{ url_for('users.list_users') }}" class="nav-link">Usuarios</a></li>
+            {% else %}
+              <!-- Opciones exclusivas para Stock y User -->
+              <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
+              <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros" class="nav-link">Nosotros</a></li>
+            
+              <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
+              <li class="nav-item"><a href="{{ url_for('reservations.create_reservation') }}" class="nav-link">Reservas</a></li>
+            {% endif %}
+            
+            <!-- Dropdown para usuarios autenticados -->
+            <li class="nav-item dropdown mt-2 mt-lg-0">
+              <a class="nav-link dropdown-toggle btn btn-primary text-white ml-3 px-4"
+                 href="{{ url_for('auth.account') }}" id="accountDropdown"
+                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sesión Iniciada
+              </a>
+              <div class="dropdown-menu" aria-labelledby="accountDropdown">
+                <a class="dropdown-item" href="{{ url_for('auth.account') }}">Mi Cuenta</a>
+                <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
+              </div>
+            </li>
+          {% else %}
+            <!-- Opciones para usuarios no autenticados -->
+            <li class="nav-item"><a href="{{ url_for('base.base') }}" class="nav-link">Inicio</a></li>
+            <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros" class="nav-link">Nosotros</a></li>
+            <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}" class="nav-link">Vehículos</a></li>
+            <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}" class="nav-link">Reservas</a></li>
+            <li class="nav-item mt-2 mt-lg-0">
+              <a href="{{ url_for('auth.login') }}" class="nav-link btn btn-primary text-white ml-3 px-4">
+                Iniciar Sesión
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
-</nav>
+  </nav>
+  
+  <!-- Menú Lateral (Sidebar) para mobile -->
+  <div id="sidebarMenu" class="sidebar-menu d-lg-none">
+    <button class="close-btn" onclick="closeSidebar()">&times;</button>
+    <ul class="navbar-nav">
+      {% if current_user.is_authenticated %}
+        {% if current_user.tier == 0 %}
+          <li class="nav-item"><a href="{{ url_for('base.base') }}">Inicio</a></li>
+          <li class="nav-item"><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
+          <li class="nav-item"><a href="{{ url_for('cars.list_cars') }}">Vehículos</a></li>
+          <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}">Reservas</a></li>
+          <li class="nav-item"><a href="{{ url_for('users.list_users') }}">Usuarios</a></li>
+        {% else %}
+          <li class="nav-item"><a href="{{ url_for('base.base') }}">Inicio</a></li>
+          <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros">Nosotros</a></li>
+         
+          <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}">Vehículos</a></li>
+          <li class="nav-item"><a href="{{ url_for('reservations.create_reservation') }}">Reservas</a></li>
+        {% endif %}
+        <li class="nav-item dropdown">
+           <a class="nav-link dropdown-toggle btn btn-primary text-white ml-3 px-4" href="{{ url_for('auth.account') }}" id="accountDropdownMobile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sesión Iniciada
+           </a>
+           <div class="dropdown-menu" aria-labelledby="accountDropdownMobile">
+               <a class="dropdown-item" href="{{ url_for('auth.account') }}">Mi Cuenta</a>
+               <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
+           </div>
+        </li>
+      {% else %}
+        <li class="nav-item"><a href="{{ url_for('base.base') }}">Inicio</a></li>
+        <li class="nav-item"><a href="{{ url_for('base.base') }}#nosotros">Nosotros</a></li>
+        <li class="nav-item"><a href="{{ url_for('cars.user_cars') }}">Vehículos</a></li>
+        <li class="nav-item"><a href="{{ url_for('reservations.list_reservations') }}">Reservas</a></li>
+        <li class="nav-item"><a href="{{ url_for('auth.login') }}" class="btn btn-primary text-white ml-3 px-4">Iniciar Sesión</a></li>
+      {% endif %}
+    </ul>
+  </div>
+  
+  <!-- Overlay para detectar click/tap fuera del sidebar -->
+  <div id="sidebarOverlay" class="sidebar-overlay d-lg-none" onclick="closeSidebar()"></div>
+  
+  <style>
+    /* Estilos para el menú lateral (sidebar) */
+    .sidebar-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      /* Ancho dinámico: se ajusta al contenido hasta un máximo del 75% del viewport, pero no menos de 250px */
+      width: auto;
+      max-width: 75%;
+      min-width: 400px;
+      height: 100%;
+      /* Valor por defecto (se actualizará con JS) */
+      background-color: #343a40;
+      color: #fff;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 1050;
+      padding-top: 60px;
+      overflow-y: auto;
+    }
+    .sidebar-menu.show {
+      transform: translateX(0);
+    }
+    .sidebar-menu .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 2rem;
+      color: inherit;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .sidebar-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-menu li {
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .sidebar-menu li a {
+      color: inherit;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+    /* Estilos para el overlay */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1040;
+      display: none;
+    }
+    .sidebar-overlay.show {
+      display: block;
+    }
+    /* Ajuste para que el dropdown se ajuste al ancho del botón y su contenido quede centrado */
+    .dropdown-menu {
+      width: 100% !important;
+      text-align: center;
+    }
+  </style>
+  
+  <script>
+    // Función para determinar si un color (en formato rgb) es oscuro
+    function isColorDark(rgbColor) {
+      var rgb = rgbColor.match(/\d+/g);
+      if (rgb && rgb.length >= 3) {
+        var r = parseInt(rgb[0], 10);
+        var g = parseInt(rgb[1], 10);
+        var b = parseInt(rgb[2], 10);
+        // Fórmula de luminancia relativa
+        var brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+      }
+      return true;
+    }
+  
+    function openSidebar() {
+      var nav = document.getElementById('ftco-navbar');
+      var sidebar = document.getElementById('sidebarMenu');
+      var overlay = document.getElementById('sidebarOverlay');
+      // Obtiene el color de fondo actual del navbar
+      var navBg = window.getComputedStyle(nav).backgroundColor;
+      sidebar.style.backgroundColor = navBg;
+      // Determina el color del texto según el brillo
+      var textColor = isColorDark(navBg) ? '#fff' : '#000';
+      sidebar.style.color = textColor;
+      // Actualiza el color de todos los enlaces del sidebar
+      var links = sidebar.getElementsByTagName('a');
+      for (var i = 0; i < links.length; i++) {
+        links[i].style.color = textColor;
+      }
+      // Actualiza el estilo de los botones dropdown en el sidebar
+      var dropdownToggles = sidebar.querySelectorAll('.dropdown-toggle');
+      for (var j = 0; j < dropdownToggles.length; j++) {
+        dropdownToggles[j].style.backgroundColor = navBg;
+        dropdownToggles[j].style.color = textColor;
+      }
+      // Actualiza el estilo de los menús dropdown del sidebar
+      var dropdownMenus = sidebar.querySelectorAll('.dropdown-menu');
+      for (var k = 0; k < dropdownMenus.length; k++) {
+        dropdownMenus[k].style.backgroundColor = navBg;
+        var items = dropdownMenus[k].getElementsByClassName('dropdown-item');
+        for (var l = 0; l < items.length; l++) {
+          items[l].style.color = textColor;
+        }
+      }
+      sidebar.classList.add('show');
+      overlay.classList.add('show');
+    }
+  
+    function closeSidebar() {
+      document.getElementById('sidebarMenu').classList.remove('show');
+      document.getElementById('sidebarOverlay').classList.remove('show');
+    }
+  
+    // Ajusta el ancho del dropdown al ancho del botón cuando se muestre (usando jQuery y Bootstrap 4)
+    $(document).on('show.bs.dropdown', function (e) {
+      var $button = $(e.relatedTarget);
+      var $dropdownMenu = $button.next('.dropdown-menu');
+      // Establece el ancho del dropdown igual al ancho del botón
+      $dropdownMenu.css({
+        'width': $button.outerWidth() + 'px',
+        'text-align': 'center'
+      });
+    });
+  </script>
+  

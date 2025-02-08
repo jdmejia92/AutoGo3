@@ -2,28 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Meta viewport optimizado para Bootstrap 4 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Iniciar Sesión - AutoGO</title>
     {% include 'components/styles.html' %}
 </head>
 <body class="bg-gradient-primary" style="font-family: 'Poppins', sans-serif;">
     <div class="container">
-        <!-- Outer Row -->
-        <div class="row justify-content-center">
+        <!-- Outer Row: se centra horizontal y verticalmente -->
+        <div class="row justify-content-center align-items-center min-vh-100">
             <div class="col-xl-10 col-lg-12 col-md-9">
-                <div class="card shadow-lg my-5 animated fadeIn">
+                <div class="card shadow-lg animated fadeIn">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <!-- Imagen de la izquierda -->
-                            <div class="col-lg-6 d-none d-lg-block"
-                                style="
-                                    background: url('/static/images/image_1.jpg') center center no-repeat;
-                                    background-size: cover;
-                                    height: auto;
-                                    width: 100%;"></div>
+                            <!-- Imagen de la izquierda: visible solo en pantallas grandes -->
+                            <div class="d-none d-lg-block col-lg-6"
+                                 style="background: url('/static/images/image_1.jpg') center center no-repeat;
+                                        background-size: cover;">
+                            </div>
                             <!-- Formulario de login -->
-                            <div class="col-lg-6">
+                            <div class="col-12 col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">¡Bienvenido de nuevo!</h1>
@@ -45,15 +44,15 @@
                                     <form class="user" method="POST" action="{{ url_for('auth.login') }}">
                                         <div class="form-group">
                                             <input type="email" name="email" class="form-control form-control-user"
-                                                id="email" aria-describedby="emailHelp"
-                                                placeholder="Ingresa tu correo electrónico..." required>
+                                                   id="email" aria-describedby="emailHelp"
+                                                   placeholder="Ingresa tu correo electrónico..." required>
                                         </div>
                                         <div class="form-group position-relative">
                                             <input type="password" name="password" class="form-control form-control-user"
-                                                id="password" placeholder="Contraseña" required>
+                                                   id="password" placeholder="Contraseña" required>
                                             <button type="button" class="btn position-absolute" 
-                                                style="top: 0; right: 10px; height: 100%; border: none; background: none; padding: 0;" 
-                                                onclick="togglePasswordVisibility()">
+                                                    style="top: 0; right: 10px; height: 100%; border: none; background: none; padding: 0;" 
+                                                    onclick="togglePasswordVisibility()">
                                                 <img id="togglePasswordIcon" src="/static/svg/eye.svg" alt="Mostrar Contraseña" width="20" height="20">
                                             </button>
                                         </div>
@@ -79,7 +78,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> <!-- Fin de row dentro de card-body -->
                     </div>
                 </div>
             </div>
