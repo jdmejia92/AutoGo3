@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from ..model.car_model import Car
 from ..controller.car_controller import list_cars_for_users
-from ..controller.reservation_controller import create_reservation_controller, update_reservation, delete_reservation, get_reservation_by_id, list_reservations_controller, list_all_reservations
+from ..controller.reservation_controller import create_reservation_controller, update_reservation, delete_reservation, get_reservation_by_id, list_reservations_controller, list_all_reservations as list_all_reservations_controller
 
 bp = Blueprint('reservations', __name__, url_prefix='/reservations')
 
@@ -13,7 +13,7 @@ def list_all_reservations():
         flash('No tienes permiso para acceder a esta página.', 'danger')
         return redirect(url_for('reservations.list_reservations'))
     
-    reservations = list_all_reservations(current_user.tier)
+    reservations = list_all_reservations_controller(current_user.is_super_admin())
     if reservations == []:
         flash('El usuario no es admin o no hay reservas registradas.', 'info')
     return render_template('reservations/list.html', reservations=reservations)
