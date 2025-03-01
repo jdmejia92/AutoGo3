@@ -9,7 +9,7 @@ bp = Blueprint('reservations', __name__, url_prefix='/reservations')
 @bp.route('/all')
 @login_required
 def list_all_reservations():
-    if not current_user.is_admin():
+    if not current_user.is_super_admin():
         flash('No tienes permiso para acceder a esta página.', 'danger')
         return redirect(url_for('reservations.list_reservations'))
     
