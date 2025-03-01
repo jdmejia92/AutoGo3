@@ -2,8 +2,8 @@ from app.extensions import db
 from ..model.reservation_model import Reservation
 from datetime import datetime
 
-def list_all_reservations(tier):
-    if tier == 0:
+def list_all_reservations(superadmin=False):
+    if superadmin:
         return Reservation.query.all()
     return []
 
