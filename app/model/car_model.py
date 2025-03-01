@@ -23,11 +23,10 @@ class Car(db.Model):
     daily_rate = db.Column(db.Float, nullable=False)  
     insurance_date = db.Column(db.Date, nullable=False)  
     itv_date = db.Column(db.Date, nullable=False)  
-    photo_url = db.Column(db.String(500), nullable=True)  # URL de la imagen en S3 o Cloudinary
     description = db.Column(db.Text, nullable=True)  
 
 class CarPhoto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
     url = db.Column(db.String(500), nullable=False)  # URL de la imagen
-    car = db.relationship('Car', backref=db.backref('photos', lazy=True))
+    car = db.relationship('Car', backref=db.backref('photo_list', lazy=True))

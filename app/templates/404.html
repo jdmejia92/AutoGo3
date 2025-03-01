@@ -1,0 +1,26 @@
+{% extends 'base_template.html' %}
+{% block title %}Error {{ error_code }} - AutoGO{% endblock %}
+{% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Sección de Error -->
+<section class="hero-wrap ftco-degree-bg d-flex align-items-center justify-content-center" 
+         style="background-image: url('/static/images/bg_1.jpg'); min-height: 80vh;">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 text-center ftco-animate">
+        <div class="error-content bg-white p-5 rounded-lg shadow-lg">
+          <h1 class="display-1 text-primary mb-4" style="font-weight: 900;">{{ error_code }}</h1>
+          <h2 class="mb-4">¡Ups! Algo salió mal</h2>
+          <p class="lead mb-4">{{ error_message }}</p>
+          <a href="{{ url_for('base.base') }}" class="btn btn-primary py-3 px-4">
+            <i class="fas fa-arrow-left mr-2"></i>Volver al Inicio
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

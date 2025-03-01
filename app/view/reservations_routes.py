@@ -29,21 +29,19 @@ def list_reservations():
 def create_reservation():
     if request.method == 'POST':
         try:
-            form_data = request.form.to_dict()
-            
-            car_id = request.form['car_category']
-            pickup_datetime = request.form['pickup_datetime']
-            return_datetime = request.form['return_datetime']
-            pickup_location = request.form['pickup_location']
-            return_location = request.form['return_location']
+            car_id = request.form.get('car_category')
+            pickup_datetime = request.form.get('pickup_datetime')
+            return_datetime = request.form.get('return_datetime')
+            pickup_location = request.form.get('pickup_location')
+            return_location = request.form.get('return_location')
             additional_driver = 'additional_driver' in request.form
-            additional_driver_name = request.form.get('additional_driver_name')
-            additional_driver_license = request.form.get('additional_driver_license')
-            insurance_type = request.form['insurance_type']
+            additional_driver_name = request.form.get('additional_driver_name', '')
+            additional_driver_license = request.form.get('additional_driver_license', '')
+            insurance_type = request.form.get('insurance_type')
             payment_method = request.form.get('payment_method', '')
             terms_accepted = 'terms_accepted' in request.form
-            comments = request.form.get('comments')
-            
+            comments = request.form.get('comments', '')
+
             reservation = create_reservation_controller(
                 user_id=current_user.id,
                 car_id=car_id,
@@ -60,23 +58,18 @@ def create_reservation():
                 comments=comments
             )
 
-            if reservation[1] == 'warning':
-                flash(reservation[0], reservation[1])
-                return redirect(url_for('reservations.create_reservation'))
-            
             flash(reservation[0], reservation[1])
-            
-            if current_user.is_admin():
-                return redirect(url_for('reservations.list_reservations'))
-            else:
-                return redirect(url_for('account.history'))  # Ajusta esto según la ruta de historial
+
+            # Redirigir según el tipo de usuario
+            return redirect(url_for('reservations.list_all_reservations' if current_user.is_admin() else 'reservations.list_reservations'))
 
         except Exception as e:
             flash(f'Error al crear la reserva: {str(e)}', 'danger')
             return redirect(url_for('reservations.create_reservation'))
-    
+
     cars = list_cars_for_users(request)
     return render_template('reservations/create.html', user=current_user, cars=cars)
+
 
 @bp.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required

@@ -42,11 +42,11 @@ class Admin(UserMixin, db.Model):
 
     def is_super_admin(self):
         """Check if the user is an admin."""
-        return self.role == 0
+        return self.tier == 0
 
     def is_admin(self):
         """Check if the user is a worker."""
-        return self.role == 1
+        return self.tier == 1
     
     def get_id(self):
         return self.email

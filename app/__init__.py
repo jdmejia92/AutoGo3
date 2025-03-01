@@ -35,7 +35,7 @@ def create_app():
 
     @app.errorhandler(404)
     def pagina_no_encontrada(error):
-        return render_template('templates/404.html'), 404
+        return render_template('404.html'), 404
 
     # Registro de blueprints y tareas iniciales
     from .view import user_routes, reservations_routes, cars_routes, base_routes, auth_routes, dashboard_routes 
