@@ -98,7 +98,32 @@
                     <div class="card mt-4">
                         <div class="card-body">
                             <h4 class="card-title">Historial y Reservas</h4>
-                            <p>Contenido aquí...</p>
+                            {% if reservations %}
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Vehículo</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fecha Fin</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in reservations %}
+                                        <tr>
+                                            <td>{{ res.id }}</td>
+                                            <td>{{ res.vehicle_name }}</td>
+                                            <td>{{ res.start_date }}</td>
+                                            <td>{{ res.end_date }}</td>
+                                            <td>{{ res.status }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p>No tienes reservas registradas.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

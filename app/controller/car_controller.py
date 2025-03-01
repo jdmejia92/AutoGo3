@@ -107,7 +107,7 @@ def handle_photos(photos, upload_folder):
             photo_path = os.path.join(upload_folder, filename)
             try:
                 photo.save(photo_path)
-                photo_paths.append(photo_path)
+                photo_paths.append(f"/static/uploads/{filename}")  # Ruta accesible desde el servidor
             except Exception as e:
                 raise ValueError(f"Error al guardar la foto {filename}: {str(e)}")
     return photo_paths

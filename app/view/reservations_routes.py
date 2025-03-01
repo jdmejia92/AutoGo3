@@ -65,8 +65,12 @@ def create_reservation():
                 return redirect(url_for('reservations.create_reservation'))
             
             flash(reservation[0], reservation[1])
-            return redirect(url_for('reservations.list_reservations'))
             
+            if current_user.is_admin():
+                return redirect(url_for('reservations.list_reservations'))
+            else:
+                return redirect(url_for('account.history'))  # Ajusta esto según la ruta de historial
+
         except Exception as e:
             flash(f'Error al crear la reserva: {str(e)}', 'danger')
             return redirect(url_for('reservations.create_reservation'))

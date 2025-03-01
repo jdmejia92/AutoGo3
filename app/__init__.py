@@ -1,6 +1,7 @@
 from flask import Flask
 from app.extensions import db, migrate, login
 from .controller.admin_controller import create_default_super_admin
+from flask import render_template
 import os
 
 def create_app():
@@ -31,6 +32,10 @@ def create_app():
     login.login_view = "auth.login"
     login.login_message = "Inicia sesión para acceder a esta página."
     login.login_message_category = "warning"
+
+    @app.errorhandler(404)
+    def pagina_no_encontrada(error):
+        return render_template('templates/404.html'), 404
 
     # Registro de blueprints y tareas iniciales
     from .view import user_routes, reservations_routes, cars_routes, base_routes, auth_routes, dashboard_routes 
