@@ -61,7 +61,7 @@ def create_reservation():
             flash(reservation[0], reservation[1])
 
             # Redirigir según el tipo de usuario
-            return redirect(url_for('reservations.list_all_reservations' if current_user.is_admin() else 'reservations.list_reservations'))
+            return redirect(url_for('reservations.list_all_reservations' if current_user.is_super_admin() else 'reservations.list_reservations'))
 
         except Exception as e:
             flash(f'Error al crear la reserva: {str(e)}', 'danger')
